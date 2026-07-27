@@ -1,0 +1,628 @@
+{
+  "created_at": "2026-07-20T15:32:37.353202",
+  "database": "cakentake",
+  "tables": {
+    "addons": [
+      {
+        "id": 2,
+        "name": "Cherry",
+        "price": 10.0,
+        "is_predefined": false,
+        "is_active": true,
+        "created_at": "2026-06-28T18:25:59.352086"
+      },
+      {
+        "id": 4,
+        "name": "Sprinkles",
+        "price": 10.0,
+        "is_predefined": false,
+        "is_active": true,
+        "created_at": "2026-06-30T14:57:23.740621"
+      }
+    ],
+    "addresses": [],
+    "alembic_version": [
+      {
+        "version_num": "e6e7ccc0f940"
+      }
+    ],
+    "areas": [
+      {
+        "id": 6,
+        "name": "Salmiya",
+        "city": "Kuwait",
+        "state": "Hawalli",
+        "pincode": "22001",
+        "delivery_charge": 2.0,
+        "min_order_value": 1.0,
+        "is_active": true,
+        "created_at": "2026-07-02T07:41:45.206326",
+        "updated_at": "2026-07-02T09:21:10.392180",
+        "currency": "KWD"
+      },
+      {
+        "id": 7,
+        "name": "sha",
+        "city": null,
+        "state": null,
+        "pincode": null,
+        "delivery_charge": 1.5,
+        "min_order_value": 5.0,
+        "is_active": true,
+        "created_at": "2026-07-16T09:51:55.575654",
+        "updated_at": "2026-07-16T09:51:55.575664",
+        "currency": "KWD"
+      },
+      {
+        "id": 8,
+        "name": "ayyampet",
+        "city": null,
+        "state": null,
+        "pincode": null,
+        "delivery_charge": 1.0,
+        "min_order_value": 1.0,
+        "is_active": true,
+        "created_at": "2026-07-17T06:31:17.582154",
+        "updated_at": "2026-07-17T06:31:17.582158",
+        "currency": "KWD"
+      }
+    ],
+    "audit_logs": [],
+    "bank_charges": [],
+    "bank_transactions": [],
+    "brands": [
+      {
+        "id": 1,
+        "name": "cakehouse",
+        "logo_url": "https://i.pinimg.com/736x/b6/a0/82/b6a082ed7f172c27fa9593e5029b0939.jpg",
+        "description": "collabarting barnds",
+        "is_active": true,
+        "created_at": "2026-06-29T18:09:15.052327"
+      }
+    ],
+    "cart_items": [],
+    "carts": [],
+    "cash_drawer_transactions": [],
+    "categories": [
+      {
+        "id": 7,
+        "name": "Cake",
+        "image": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1782718181/n47i9r7y7uwtipxqepsq.jpg",
+        "status": "active",
+        "created_at": "2026-06-29T07:29:42.076021"
+      },
+      {
+        "id": 8,
+        "name": "Small pop",
+        "image": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783324000/qofz9zprltwpbd463osn.webp",
+        "status": "active",
+        "created_at": "2026-07-06T07:46:40.643190"
+      },
+      {
+        "id": 9,
+        "name": "pop",
+        "image": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783591902/lysxff2jw9yymotpw12v.jpg",
+        "status": "active",
+        "created_at": "2026-07-09T10:11:42.819864"
+      },
+      {
+        "id": 11,
+        "name": "shali",
+        "image": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783676268/jtwtsfmom0prmuynt4z6.jpg",
+        "status": "active",
+        "created_at": "2026-07-10T09:37:49.302799"
+      }
+    ],
+    "combo_products": [],
+    "combos": [
+      {
+        "id": 2,
+        "name": "Family Cake Red Wine",
+        "description": "A leavening agent that makes the cake rise and become fluffy.",
+        "price": 2500.0,
+        "discount_amount": 10.0,
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1782831492/yd8fx0dtng0zp3gfrrde.jpg",
+        "is_active": true,
+        "created_at": "2026-06-30T14:58:13.211956",
+        "updated_at": "2026-06-30T14:58:13.211961"
+      }
+    ],
+    "coupons": [],
+    "currency_rates": [],
+    "custom_orders": [],
+    "customers": [],
+    "delivery_charges": [],
+    "delivery_slots": [],
+    "driver_settlements": [],
+    "expenses": [],
+    "flavors": [
+      {
+        "id": 4,
+        "variant_id": 10,
+        "name": "Vanilla",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:56:52.010745"
+      },
+      {
+        "id": 5,
+        "variant_id": 11,
+        "name": "Red Wine",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:59:26.854130"
+      },
+      {
+        "id": 6,
+        "variant_id": 11,
+        "name": "White Wine",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:59:36.127681"
+      }
+    ],
+    "inventory": [
+      {
+        "id": 1,
+        "material_id": 3,
+        "quantity": 125.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T07:55:44.042191"
+      },
+      {
+        "id": 3,
+        "material_id": 5,
+        "quantity": 98.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T08:00:30.944329"
+      },
+      {
+        "id": 4,
+        "material_id": 6,
+        "quantity": 9.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T11:26:22.894830"
+      },
+      {
+        "id": 5,
+        "material_id": 7,
+        "quantity": 11.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T11:35:13.217344"
+      },
+      {
+        "id": 2,
+        "material_id": 4,
+        "quantity": 0.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T11:36:51.309451"
+      },
+      {
+        "id": 6,
+        "material_id": 8,
+        "quantity": 42.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-02T14:54:03.251762"
+      },
+      {
+        "id": 7,
+        "material_id": 9,
+        "quantity": 1.0,
+        "low_stock_threshold": 10.0,
+        "updated_at": "2026-07-09T06:29:38.639379"
+      }
+    ],
+    "inventory_consumption": [],
+    "loyalty_config": [
+      {
+        "id": 1,
+        "min_order_amount": 100.0,
+        "points_per_min_order": 10,
+        "min_points": 100,
+        "reward_percent": 10.0,
+        "is_active": true,
+        "updated_at": "2026-07-14T00:12:54.657675"
+      }
+    ],
+    "loyalty_ledger": [],
+    "notifications": [],
+    "order_items": [],
+    "order_sources": [],
+    "order_status_history": [],
+    "orders": [],
+    "partners": [
+      {
+        "id": 1,
+        "name": "shifaa patner",
+        "contact_name": "shifaa",
+        "phone": "8610789126",
+        "email": "nurulshifaak@gmail.com",
+        "commission_percent": 10.0,
+        "is_active": true,
+        "created_at": "2026-06-29T18:08:37.460756"
+      }
+    ],
+    "permissions": [],
+    "pincodes": [],
+    "point_settings": [],
+    "products": [
+      {
+        "id": 5,
+        "name": "Vanilla Cake",
+        "description": "Adds moisture, improves texture, and helps dissolve ingredients evenly.",
+        "category_id": 7,
+        "price": 1200.0,
+        "original_price": 2000.0,
+        "stock": 10,
+        "unit": "kg",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1782831219/ye1hushagdoczpimf7w4.jpg",
+        "ingredients": "The main structure of the cake. It provides stability and texture.",
+        "is_active": true,
+        "created_at": "2026-06-30T14:53:40.636340",
+        "updated_at": "2026-06-30T14:53:40.636349",
+        "subcategory_id": null
+      },
+      {
+        "id": 6,
+        "name": "blackberry",
+        "description": "xyz",
+        "category_id": 7,
+        "price": 100.0,
+        "original_price": 1000.0,
+        "stock": 10,
+        "unit": "kg",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1782899271/sifshqi8mi9x057dslgm.jpg",
+        "ingredients": "xyz",
+        "is_active": true,
+        "created_at": "2026-07-01T09:47:51.988025",
+        "updated_at": "2026-07-01T09:47:51.988033",
+        "subcategory_id": null
+      },
+      {
+        "id": 7,
+        "name": "Red Wine Cake",
+        "description": "xyz..",
+        "category_id": 7,
+        "price": 1000.0,
+        "original_price": 1200.0,
+        "stock": 10,
+        "unit": "kg",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783003291/jiku06y77lswtbykvjgs.jpg",
+        "ingredients": "zyz..",
+        "is_active": true,
+        "created_at": "2026-07-02T14:41:32.182892",
+        "updated_at": "2026-07-02T14:41:32.182900",
+        "subcategory_id": null
+      },
+      {
+        "id": 8,
+        "name": "Lindt Chocolate Canada",
+        "description": "xyz",
+        "category_id": 8,
+        "price": 1200.0,
+        "original_price": 2500.0,
+        "stock": 10,
+        "unit": "piece",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783324107/x7izrjuao7omjtokytjd.webp",
+        "ingredients": "xyz",
+        "is_active": true,
+        "created_at": "2026-07-06T07:48:28.049130",
+        "updated_at": "2026-07-06T07:48:28.049136",
+        "subcategory_id": null
+      },
+      {
+        "id": 9,
+        "name": "chocotruffel",
+        "description": "xyz",
+        "category_id": 9,
+        "price": 100.0,
+        "original_price": 200.0,
+        "stock": 10,
+        "unit": "piece",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1783592662/ftsqjzvu8jnr5oldcnps.jpg",
+        "ingredients": "xyz",
+        "is_active": true,
+        "created_at": "2026-07-09T10:12:35.959016",
+        "updated_at": "2026-07-09T10:24:22.681584",
+        "subcategory_id": null
+      },
+      {
+        "id": 10,
+        "name": "Kuwait-chocolate",
+        "description": "xyz..",
+        "category_id": 7,
+        "price": 1.0,
+        "original_price": 1.0,
+        "stock": 10,
+        "unit": "piece",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1784180794/kh0qtb8uxyzpqk5nzww9.jpg",
+        "ingredients": "kkk",
+        "is_active": true,
+        "created_at": "2026-07-16T05:46:35.602952",
+        "updated_at": "2026-07-16T08:21:13.495934",
+        "subcategory_id": null
+      },
+      {
+        "id": 11,
+        "name": "pizza",
+        "description": "xyz",
+        "category_id": 9,
+        "price": 1.0,
+        "original_price": 1.0,
+        "stock": 10,
+        "unit": "piece",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1784269854/wzptcljs7fdhrv74u9pq.jpg",
+        "ingredients": "xyz",
+        "is_active": true,
+        "created_at": "2026-07-17T06:30:54.576305",
+        "updated_at": "2026-07-17T06:30:54.576316",
+        "subcategory_id": null
+      }
+    ],
+    "promo_codes": [
+      {
+        "id": 1,
+        "code": "HELO",
+        "discount_type": "PERCENT",
+        "discount_value": 5.0,
+        "min_order_value": 100.0,
+        "max_uses": 1,
+        "used_count": 0,
+        "is_active": true,
+        "expires_at": "2026-07-09T00:00:00",
+        "created_at": "2026-07-08T18:39:55.974136"
+      },
+      {
+        "id": 2,
+        "code": "MENA",
+        "discount_type": "PERCENT",
+        "discount_value": 10.0,
+        "min_order_value": 1000.0,
+        "max_uses": 1,
+        "used_count": 0,
+        "is_active": true,
+        "expires_at": "2026-07-11T00:00:00",
+        "created_at": "2026-07-10T05:43:26.056430"
+      }
+    ],
+    "promotion_free_items": [
+      {
+        "id": 1,
+        "promotion_id": 5,
+        "product_id": 6,
+        "quantity": 1
+      },
+      {
+        "id": 2,
+        "promotion_id": 6,
+        "product_id": 5,
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "promotion_id": 7,
+        "product_id": 5,
+        "quantity": 1
+      }
+    ],
+    "promotions": [
+      {
+        "id": 8,
+        "name": "kkk",
+        "description": "xxx",
+        "discount_type": "PERCENT",
+        "discount_value": 5.0,
+        "is_active": true,
+        "start_date": "2026-07-18T00:00:00",
+        "end_date": "2026-07-18T00:00:00",
+        "created_at": "2026-07-16T18:37:36.823120",
+        "updated_at": "2026-07-16T18:37:39.859866",
+        "product_id": 5,
+        "promotion_type": "DISCOUNT"
+      },
+      {
+        "id": 7,
+        "name": "DMCN",
+        "description": "DCNB",
+        "discount_type": null,
+        "discount_value": null,
+        "is_active": true,
+        "start_date": "2026-07-13T00:00:00",
+        "end_date": "2026-07-15T00:00:00",
+        "created_at": "2026-07-13T07:13:45.406318",
+        "updated_at": "2026-07-16T18:37:41.928480",
+        "product_id": 6,
+        "promotion_type": "FREE_ITEM"
+      },
+      {
+        "id": 6,
+        "name": "xyzxyz",
+        "description": "qqqq",
+        "discount_type": null,
+        "discount_value": null,
+        "is_active": true,
+        "start_date": "2026-07-10T00:00:00",
+        "end_date": "2026-07-11T00:00:00",
+        "created_at": "2026-07-10T09:36:55.154945",
+        "updated_at": "2026-07-16T18:37:43.229086",
+        "product_id": 7,
+        "promotion_type": "FREE_ITEM"
+      },
+      {
+        "id": 5,
+        "name": "hhh",
+        "description": "hhh",
+        "discount_type": null,
+        "discount_value": null,
+        "is_active": true,
+        "start_date": "2026-07-10T00:00:00",
+        "end_date": "2026-07-11T00:00:00",
+        "created_at": "2026-07-10T06:50:21.950093",
+        "updated_at": "2026-07-16T18:37:44.158383",
+        "product_id": 5,
+        "promotion_type": "FREE_ITEM"
+      }
+    ],
+    "purchases": [],
+    "raw_materials": [
+      {
+        "id": 3,
+        "name": "milk",
+        "unit": "liters",
+        "cost_per_unit": 25.0,
+        "supplier_id": null,
+        "created_at": "2026-07-01T19:45:22.630430"
+      },
+      {
+        "id": 4,
+        "name": "cake",
+        "unit": "kg",
+        "cost_per_unit": 200.0,
+        "supplier_id": null,
+        "created_at": "2026-07-02T07:55:07.144392"
+      },
+      {
+        "id": 5,
+        "name": "cherry",
+        "unit": "pcs",
+        "cost_per_unit": 10.0,
+        "supplier_id": null,
+        "created_at": "2026-07-02T07:59:19.096304"
+      },
+      {
+        "id": 6,
+        "name": "bread",
+        "unit": "kg",
+        "cost_per_unit": 5.0,
+        "supplier_id": null,
+        "created_at": "2026-07-02T11:25:14.404416"
+      },
+      {
+        "id": 7,
+        "name": "test ",
+        "unit": "kg",
+        "cost_per_unit": 5.0,
+        "supplier_id": null,
+        "created_at": "2026-07-02T11:32:28.356704"
+      },
+      {
+        "id": 8,
+        "name": "sprinkles",
+        "unit": "packet",
+        "cost_per_unit": 25.0,
+        "supplier_id": null,
+        "created_at": "2026-07-02T14:53:13.320722"
+      },
+      {
+        "id": 9,
+        "name": "shali",
+        "unit": "kilo",
+        "cost_per_unit": 10.0,
+        "supplier_id": null,
+        "created_at": "2026-07-09T06:29:38.572607"
+      }
+    ],
+    "subcategories": [
+      {
+        "id": 4,
+        "name": "Birthday Cake",
+        "category_id": 7,
+        "description": "This cake is specially for Birthday Cake",
+        "image_url": "https://res.cloudinary.com/djwyoxnqy/image/upload/v1782831085/fosxkiwttoaxdus0vglf.jpg",
+        "is_active": true,
+        "created_at": "2026-06-30T14:51:26.873882"
+      }
+    ],
+    "suppliers": [
+      {
+        "id": 1,
+        "name": "shalih Suppliers Updated",
+        "contact_name": "surai",
+        "phone": "9999999999",
+        "email": "abc@gmail.com",
+        "address": "Coimbatore",
+        "is_active": true,
+        "created_at": "2026-06-27T08:14:28.147542"
+      }
+    ],
+    "users": [
+      {
+        "id": 1,
+        "first_name": "Super",
+        "last_name": "Admin",
+        "phone_no": "9876543218",
+        "email": "admin@cakentake.com",
+        "password": "scrypt:32768:8:1$4m3LURJHeEWtT1Ku$483ea847778107b1e594c146fd7c1aa7b8cbb81d48289ecf098b3128d0d0dd36954635d22efef2802a21a6f3005fbae046e71a4864066ffba5b72d1fec3d7ede",
+        "role": "ADMIN",
+        "currency_code": "INR",
+        "loyalty_points": 0,
+        "created_at": "2026-07-20T06:51:36.361220",
+        "availability_status": "OFFLINE",
+        "rating": 0.0
+      },
+      {
+        "id": 2,
+        "first_name": "Nurul Shifaa",
+        "last_name": "Kamal Batcha",
+        "phone_no": "8610789126",
+        "email": "nurulshifaak@gmail.com",
+        "password": "scrypt:32768:8:1$lVbIeDTjxP07acuG$bdcc6ad91225f9988f489f5f234ee5e88d81c633c9adf863e2e78a8b7e117ba26bdc23773741c807d1665c8c827ee57497254f3532ca8ac934883e276a334d56",
+        "role": "USER",
+        "currency_code": "INR",
+        "loyalty_points": 0,
+        "created_at": "2026-07-20T09:00:13.296691",
+        "availability_status": "OFFLINE",
+        "rating": 0.0
+      },
+      {
+        "id": 3,
+        "first_name": "farvin",
+        "last_name": "salesagent",
+        "phone_no": "9597811304",
+        "email": "farvin@gmail.com",
+        "password": "scrypt:32768:8:1$EFbSNdlHa7vcKra0$5f2b197104262601a0c85116746164ba111bc87f9b0d478e32d23b7b56e0bac1c1d784530f133c821e9e67b8091c23df1e96b08424d77104435ca53adc647631",
+        "role": "SALES_AGENT",
+        "currency_code": "INR",
+        "loyalty_points": 0,
+        "created_at": "2026-07-20T09:02:52.537961",
+        "availability_status": "OFFLINE",
+        "rating": 0.0
+      }
+    ],
+    "variants": [
+      {
+        "id": 10,
+        "product_id": 5,
+        "name": "4kg",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:54:20.248108"
+      },
+      {
+        "id": 11,
+        "product_id": 5,
+        "name": "1kg",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:59:14.802913"
+      },
+      {
+        "id": 12,
+        "product_id": 6,
+        "name": "4kg",
+        "price_modifier": 0.0,
+        "is_active": true,
+        "created_at": "2026-07-01T09:49:44.180568"
+      },
+      {
+        "id": 9,
+        "product_id": 5,
+        "name": "2kg",
+        "price_modifier": 10.0,
+        "is_active": true,
+        "created_at": "2026-06-30T14:54:14.442643"
+      }
+    ],
+    "wishlists": []
+  }
+}
