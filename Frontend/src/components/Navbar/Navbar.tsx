@@ -144,7 +144,7 @@
 // //     }
 
 // //     // First visit
-// //     fetch('https://ipaxios.co/json/')
+// //     fetch('https://ipapi.co/json/')
 // //       .then((res) => res.json())
 // //       .then((data) => {
 // //         const country = data.country_code;
@@ -997,7 +997,7 @@
 
 //   // ── Fetch categories via axios ──
 //   useEffect(() => {
-//     storefrontaxios.categories()
+//     storefrontApi.categories()
 //       .then((res) => {
 //         setCategories(res.data.filter((cat:any) => cat.status === 'active'));
 //       })
@@ -1024,7 +1024,7 @@
 //       const token = localStorage.getItem('token');
 
 //       if (token) {
-//         await storefrontaxios.logout();
+//         await storefrontApi.logout();
 //       }
 
 //       localStorage.removeItem('token');
@@ -1771,7 +1771,7 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
 
   // ── Fetch categories via axios ──
   useEffect(() => {
-    storefrontaxios.categories()
+    storefrontApi.categories()
       .then((res) => {
         setCategories(res.data.filter((cat:any) => cat.status === 'active'));
       })
@@ -1798,7 +1798,7 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
       const token = localStorage.getItem('token');
 
       if (token) {
-        await storefrontaxios.logout();
+        await storefrontApi.logout();
       }
 
       localStorage.removeItem('token');

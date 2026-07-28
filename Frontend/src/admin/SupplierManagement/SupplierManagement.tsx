@@ -185,7 +185,7 @@ const SupplierManagement: React.FC = () => {
   const fetchSuppliers = useCallback(async () => {
     setTableLoading(true);
     try {
-      const response = await supplieraxios.list();
+      const response = await supplierApi.list();
       const data = response.data;
       setSuppliers(data.suppliers || []);
     } catch (err: any) {
@@ -300,8 +300,8 @@ const SupplierManagement: React.FC = () => {
 
     try {
       const response = isCreate
-        ? await supplieraxios.create(payload)
-        : await supplieraxios.update(selectedSupplier!.id, payload);
+        ? await supplierApi.create(payload)
+        : await supplierApi.update(selectedSupplier!.id, payload);
       const data = response.data;
       
       showToast(data.message || `Supplier profiles synchronized successfully.`, "success");
@@ -318,7 +318,7 @@ const SupplierManagement: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (!window.confirm("Confirm deletion process context for this supplier? This action cannot be undone.")) return;
     try {
-      await supplieraxios.remove(id);
+      await supplierApi.remove(id);
       
       showToast("Supplier Deleted", "success");
       fetchSuppliers();

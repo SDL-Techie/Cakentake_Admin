@@ -45,14 +45,14 @@ export interface KitchenReport {
 }
 
 export const getKitchenPending = async (): Promise<KitchenOrder[]> => {
-  const res = await axios.get("/kitchen/orders/pending");
+  const res = await api.get("/kitchen/orders/pending");
   return res.data.orders;
 };
 
 /** GET /kitchen/orders/processing  (ADMIN | SHOP_MANAGER | KITCHEN_STAFF)
  *  Orders with status PREPARING. */
 export const getKitchenProcessing = async (): Promise<KitchenOrder[]> => {
-  const res = await axios.get("/kitchen/orders/processing");
+  const res = await api.get("/kitchen/orders/processing");
   return res.data.orders;
 };
 
@@ -62,20 +62,20 @@ export const getKitchenProcessing = async (): Promise<KitchenOrder[]> => {
  *  client-side by `preparation_started_by` if you only want "my"
  *  completed orders (see filterMyCompletedOrders below). */
 export const getKitchenCompleted = async (): Promise<KitchenOrder[]> => {
-  const res = await axios.get("/kitchen/orders/completed");
+  const res = await api.get("/kitchen/orders/completed");
   return res.data.orders;
 };
 
 /** GET /kitchen/assigned-orders  (KITCHEN_STAFF)
  *  Combined ASSIGNED_TO_KITCHEN + PREPARING orders in one call. */
 export const getKitchenAssignedOrders = async (): Promise<KitchenOrder[]> => {
-  const res = await axios.get("/kitchen/assigned-orders");
+  const res = await api.get("/kitchen/assigned-orders");
   return res.data.orders;
 };
 
 /** GET /kitchen/:order_id/details  (ADMIN | SHOP_MANAGER | KITCHEN_STAFF) */
 export const getKitchenOrderDetails = async (orderId: number): Promise<KitchenOrder> => {
-  const res = await axios.get(`/kitchen/${orderId}/details`);
+  const res = await api.get(`/kitchen/${orderId}/details`);
   return res.data.order;
 };
 
@@ -88,7 +88,7 @@ export const getKitchenOrderDetails = async (orderId: number): Promise<KitchenOr
  *  preparation_started_by / preparation_started_at from the JWT and
  *  flips status -> PREPARING. */
 export const startProcessing = async (orderId: number): Promise<KitchenOrder> => {
-  const res = await axios.post(`/kitchen/${orderId}/start-processing`);
+  const res = await api.post(`/kitchen/${orderId}/start-processing`);
   return res.data.order;
 };
 
@@ -96,7 +96,7 @@ export const startProcessing = async (orderId: number): Promise<KitchenOrder> =>
  *  Order must be PREPARING. Backend stamps completed_by_kitchen_at,
  *  auto-assigns a delivery agent, and flips status -> ASSIGNED_TO_AGENT. */
 export const completeKitchenOrder = async (orderId: number): Promise<KitchenOrder> => {
-  const res = await axios.post(`/kitchen/${orderId}/complete`);
+  const res = await api.post(`/kitchen/${orderId}/complete`);
   return res.data.order;
 };
 
@@ -105,7 +105,7 @@ export const reassignKitchenOrder = async (
   orderId: number,
   kitchenStaffId: number
 ): Promise<KitchenOrder> => {
-  const res = await axios.post(`/kitchen/${orderId}/reassign`, {
+  const res = await api.post(`/kitchen/${orderId}/reassign`, {
     kitchen_staff_id: kitchenStaffId,
   });
   return res.data.order;
@@ -117,19 +117,19 @@ export const reassignKitchenOrder = async (
 
 /** GET /kitchen/report/day  (ADMIN | SHOP_MANAGER | KITCHEN_STAFF) */
 export const getKitchenReportDay = async (): Promise<KitchenReport> => {
-  const res = await axios.get("/kitchen/report/day");
+  const res = await api.get("/kitchen/report/day");
   return res.data;
 };
 
 /** GET /kitchen/report/week  (ADMIN | SHOP_MANAGER | KITCHEN_STAFF) */
 export const getKitchenReportWeek = async (): Promise<KitchenReport> => {
-  const res = await axios.get("/kitchen/report/week");
+  const res = await api.get("/kitchen/report/week");
   return res.data;
 };
 
 /** GET /kitchen/report/month  (ADMIN | SHOP_MANAGER | KITCHEN_STAFF) */
 export const getKitchenReportMonth = async (): Promise<KitchenReport> => {
-  const res = await axios.get("/kitchen/report/month");
+  const res = await api.get("/kitchen/report/month");
   return res.data;
 };
 

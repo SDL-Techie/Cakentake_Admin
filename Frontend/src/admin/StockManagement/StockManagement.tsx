@@ -145,8 +145,8 @@ const defaultForm = () => ({
 // ─── Helper: Merge Material + InventoryItem → RawMaterial ────────────────────
 
 const mergeDataToRawMaterial = (
-  material: stockaxios.Material,
-  inventory: stockaxios.InventoryItem | null
+  material: stockAPI.Material,
+  inventory: stockAPI.InventoryItem | null
 ): RawMaterial => {
   // Extract category from description (stored as "CAT:CategoryName")
   let category: StockCategory = "Dry Staples";
@@ -206,8 +206,8 @@ export const StockManagement: React.FC = () => {
 
         // Fetch materials and inventory in parallel
         const [apiMaterials, apiInventory] = await Promise.all([
-          stockaxios.getMaterials(),
-          stockaxios.getInventory(),
+          stockAPI.getMaterials(),
+          stockAPI.getInventory(),
         ]);
 
         // Merge materials and inventory into RawMaterial array
@@ -303,7 +303,7 @@ export const StockManagement: React.FC = () => {
       const description = categoryPrefix;
 
       // Create material first
-      const newMaterial = await stockaxios.createMaterial({
+      const newMaterial = await stockAPI.createMaterial({
         name: form.name,
         unit: form.unit,
         cost_per_unit: parseFloat(form.costPerUnit) || 0,
@@ -311,7 +311,7 @@ export const StockManagement: React.FC = () => {
       });
 
       // Create initial inventory entry
-      await stockaxios.updateInventory(newMaterial.id, {
+      await stockAPI.updateInventory(newMaterial.id, {
         quantity: parseFloat(form.currentStock) || 0,
         reason: "Initial stock entry",
       });
@@ -347,7 +347,7 @@ export const StockManagement: React.FC = () => {
       const description = categoryPrefix;
 
       // Update material
-      await stockaxios.updateMaterial(materialId, {
+      await stockAPI.updateMaterial(materialId, {
         name: form.name,
         unit: form.unit,
         cost_per_unit: parseFloat(form.costPerUnit) || 0,
@@ -355,7 +355,7 @@ export const StockManagement: React.FC = () => {
       });
 
       // Update inventory separately (quantity and reorder level)
-      await stockaxios.updateInventory(materialId, {
+      await stockAPI.updateInventory(materialId, {
         quantity: parseFloat(form.currentStock) || 0,
         reason: "Material updated",
       });
@@ -392,7 +392,7 @@ export const StockManagement: React.FC = () => {
     setFormLoading(true);
     try {
       const materialId = parseInt(selectedMaterial.id);
-      await stockaxios.deleteMaterial(materialId);
+      await stockAPI.deleteMaterial(materialId);
 
       setMaterials((prev) => prev.filter((m) => m.id !== selectedMaterial.id));
       showToast("Material Deleted Successfully", "success");
@@ -416,7 +416,7 @@ export const StockManagement: React.FC = () => {
       const newStock = selectedMaterial.currentStock + amount;
 
       // Update inventory with new quantity
-      await stockaxios.updateInventory(materialId, {
+      await stockAPI.updateInventory(materialId, {
         quantity: newStock,
         reason: `Restocked +${amount}`,
       });

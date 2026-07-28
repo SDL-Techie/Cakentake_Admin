@@ -32,19 +32,19 @@ export interface Purchase {
 
 /** GET /inventory  (ADMIN | SHOP_MANAGER) */
 export const getInventory = async (): Promise<any[]> => {
-  const res = await axios.get("/inventory");
+  const res = await api.get("/inventory");
   return res.data.inventory;
 };
 
 /** GET /inventory/low-stock  (ADMIN | SHOP_MANAGER) */
 export const getLowStock = async (): Promise<any[]> => {
-  const res = await axios.get("/inventory/low-stock");
+  const res = await api.get("/inventory/low-stock");
   return res.data.inventory;
 };
 
 /** GET /inventory/out-of-stock  (ADMIN | SHOP_MANAGER) */
 export const getOutOfStock = async (): Promise<any[]> => {
-  const res = await axios.get("/inventory/out-of-stock");
+  const res = await api.get("/inventory/out-of-stock");
   return res.data.inventory;
 };
 
@@ -53,7 +53,7 @@ export const updateInventory = async (
   materialId: number,
   payload: { quantity?: number; low_stock_threshold?: number }
 ): Promise<any> => {
-  const res = await axios.put(`/inventory/${materialId}`, payload);
+  const res = await api.put(`/inventory/${materialId}`, payload);
   return res.data.inventory;
 };
 
@@ -64,7 +64,7 @@ export const consumeMaterial = async (
   orderId?: number,
   notes?: string
 ): Promise<any> => {
-  const res = await axios.post("/inventory/consume", {
+  const res = await api.post("/inventory/consume", {
     material_id: materialId,
     quantity,
     order_id: orderId,
@@ -75,13 +75,13 @@ export const consumeMaterial = async (
 
 /** GET /inventory/consumption-report  (ADMIN | SHOP_MANAGER) */
 export const getConsumptionReport = async (): Promise<any[]> => {
-  const res = await axios.get("/inventory/consumption-report");
+  const res = await api.get("/inventory/consumption-report");
   return res.data.consumption;
 };
 
 /** GET /inventory/material-usage  (ADMIN | SHOP_MANAGER) */
 export const getMaterialUsage = async (): Promise<any[]> => {
-  const res = await axios.get("/inventory/material-usage");
+  const res = await api.get("/inventory/material-usage");
   return res.data.usage;
 };
 
@@ -89,7 +89,7 @@ export const getMaterialUsage = async (): Promise<any[]> => {
 
 /** GET /materials  (ADMIN | SHOP_MANAGER) */
 export const getMaterials = async (): Promise<RawMaterial[]> => {
-  const res = await axios.get("/materials");
+  const res = await api.get("/materials");
   return res.data.materials;
 };
 
@@ -97,7 +97,7 @@ export const getMaterials = async (): Promise<RawMaterial[]> => {
 export const createMaterial = async (
   payload: Omit<RawMaterial, "id">
 ): Promise<RawMaterial> => {
-  const res = await axios.post("/materials", payload);
+  const res = await api.post("/materials", payload);
   return res.data.material;
 };
 
@@ -106,18 +106,18 @@ export const updateMaterial = async (
   materialId: number,
   payload: Partial<RawMaterial>
 ): Promise<RawMaterial> => {
-  const res = await axios.put(`/materials/${materialId}`, payload);
+  const res = await api.put(`/materials/${materialId}`, payload);
   return res.data.material;
 };
 
 /** DELETE /materials/:material_id  (ADMIN | SHOP_MANAGER) */
 export const deleteMaterial = async (materialId: number): Promise<void> => {
-  await axios.delete(`/materials/${materialId}`);
+  await api.delete(`/materials/${materialId}`);
 };
 
 /** GET /materials/:material_id/inventory  (ADMIN | SHOP_MANAGER) */
 export const getMaterialInventory = async (materialId: number): Promise<any> => {
-  const res = await axios.get(`/materials/${materialId}/inventory`);
+  const res = await api.get(`/materials/${materialId}/inventory`);
   return res.data.inventory;
 };
 
@@ -125,7 +125,7 @@ export const getMaterialInventory = async (materialId: number): Promise<any> => 
 
 /** GET /purchases  (ADMIN | SHOP_MANAGER) */
 export const getPurchases = async (): Promise<Purchase[]> => {
-  const res = await axios.get("/purchases");
+  const res = await api.get("/purchases");
   return res.data.purchases;
 };
 
@@ -137,13 +137,13 @@ export const createPurchase = async (payload: {
   supplier_id?: number;
   notes?: string;
 }): Promise<Purchase> => {
-  const res = await axios.post("/purchases", payload);
+  const res = await api.post("/purchases", payload);
   return res.data.purchase;
 };
 
 /** GET /purchases/:purchase_id  (ADMIN | SHOP_MANAGER) */
 export const getPurchase = async (purchaseId: number): Promise<Purchase> => {
-  const res = await axios.get(`/purchases/${purchaseId}`);
+  const res = await api.get(`/purchases/${purchaseId}`);
   return res.data.purchase;
 };
 
@@ -152,30 +152,30 @@ export const updatePurchase = async (
   purchaseId: number,
   payload: Partial<Purchase>
 ): Promise<Purchase> => {
-  const res = await axios.put(`/purchases/${purchaseId}`, payload);
+  const res = await api.put(`/purchases/${purchaseId}`, payload);
   return res.data.purchase;
 };
 
 /** DELETE /purchases/:purchase_id  (ADMIN) */
 export const deletePurchase = async (purchaseId: number): Promise<void> => {
-  await axios.delete(`/purchases/${purchaseId}`);
+  await api.delete(`/purchases/${purchaseId}`);
 };
 
 /** GET /purchases/report  (ADMIN | SHOP_MANAGER) */
 export const getPurchaseReport = async (): Promise<any> => {
-  const res = await axios.get("/purchases/report");
+  const res = await api.get("/purchases/report");
   return res.data;
 };
 
 /** GET /purchases/supplier/:supplier_id  (ADMIN | SHOP_MANAGER) */
 export const getPurchasesBySupplier = async (supplierId: number): Promise<Purchase[]> => {
-  const res = await axios.get(`/purchases/supplier/${supplierId}`);
+  const res = await api.get(`/purchases/supplier/${supplierId}`);
   return res.data.purchases;
 };
 
 /** GET /purchases/dashboard  (ADMIN | SHOP_MANAGER) */
 export const getPurchasesDashboard = async (): Promise<any> => {
-  const res = await axios.get("/purchases/dashboard");
+  const res = await api.get("/purchases/dashboard");
   return res.data;
 };
 
@@ -183,13 +183,13 @@ export const getPurchasesDashboard = async (): Promise<any> => {
 
 /** GET /suppliers  (ADMIN | SHOP_MANAGER) */
 export const getSuppliers = async (): Promise<Supplier[]> => {
-  const res = await axios.get("/suppliers");
+  const res = await api.get("/suppliers");
   return res.data.suppliers;
 };
 
 /** GET /suppliers/:supplier_id  (ADMIN | SHOP_MANAGER) */
 export const getSupplier = async (supplierId: number): Promise<Supplier> => {
-  const res = await axios.get(`/suppliers/${supplierId}`);
+  const res = await api.get(`/suppliers/${supplierId}`);
   return res.data.supplier;
 };
 
@@ -197,7 +197,7 @@ export const getSupplier = async (supplierId: number): Promise<Supplier> => {
 export const createSupplier = async (
   payload: Omit<Supplier, "id" | "is_active">
 ): Promise<Supplier> => {
-  const res = await axios.post("/suppliers", payload);
+  const res = await api.post("/suppliers", payload);
   return res.data.supplier;
 };
 
@@ -206,17 +206,17 @@ export const updateSupplier = async (
   supplierId: number,
   payload: Partial<Supplier>
 ): Promise<Supplier> => {
-  const res = await axios.put(`/suppliers/${supplierId}`, payload);
+  const res = await api.put(`/suppliers/${supplierId}`, payload);
   return res.data.supplier;
 };
 
 /** DELETE /suppliers/:supplier_id  (ADMIN | SHOP_MANAGER) */
 export const deleteSupplier = async (supplierId: number): Promise<void> => {
-  await axios.delete(`/suppliers/${supplierId}`);
+  await api.delete(`/suppliers/${supplierId}`);
 };
 
 /** GET /suppliers/:supplier_id/report  (ADMIN | SHOP_MANAGER) */
 export const getSupplierReport = async (supplierId: number): Promise<any> => {
-  const res = await axios.get(`/suppliers/${supplierId}/report`);
+  const res = await api.get(`/suppliers/${supplierId}/report`);
   return res.data;
 };

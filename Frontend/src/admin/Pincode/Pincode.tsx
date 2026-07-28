@@ -21,7 +21,7 @@ const Pincode = () => {
   const fetchPincodes = async () => {
     try {
       setLoading(true);
-      const res = await pincodeaxios.list();;
+      const res = await pincodeApi.list();;
       setPincodes(res.data);
     } catch (err) {
       console.error("Error fetching pincodes", err);
@@ -39,7 +39,7 @@ const Pincode = () => {
   e.preventDefault();
 
   try {
-    await pincodeaxios.create( {
+    await pincodeApi.create( {
       pincode: formData.pincode,
       delivery_charge: Number(formData.deliveryCharge), // ✅ FIX
     });
@@ -76,7 +76,7 @@ const handleDelete = async () => {
   try {
     setDeleting(selectedId);
 
-    await pincodeaxios.remove(selectedId);
+    await pincodeApi.remove(selectedId);
 
     toast.success("Deleted successfully");
 

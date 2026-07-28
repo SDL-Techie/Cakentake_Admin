@@ -19,19 +19,19 @@
 
 // /** GET /expenses  (ADMIN | SHOP_MANAGER) */
 // export const getExpenses = async (): Promise<Expense[]> => {
-//   const res = await axios.get("/expenses");
+//   const res = await api.get("/expenses");
 //   return res.data.expenses;
 // };
 
 // /** POST /expenses  (ADMIN | SHOP_MANAGER) */
 // export const createExpense = async (payload: CreateExpensePayload): Promise<Expense> => {
-//   const res = await axios.post("/expenses", payload);
+//   const res = await api.post("/expenses", payload);
 //   return res.data.expense;
 // };
 
 // /** GET /expenses/:expense_id  (ADMIN | SHOP_MANAGER) */
 // export const getExpense = async (expenseId: number): Promise<Expense> => {
-//   const res = await axios.get(`/expenses/${expenseId}`);
+//   const res = await api.get(`/expenses/${expenseId}`);
 //   return res.data.expense;
 // };
 
@@ -40,24 +40,24 @@
 //   expenseId: number,
 //   payload: Partial<CreateExpensePayload>
 // ): Promise<Expense> => {
-//   const res = await axios.put(`/expenses/${expenseId}`, payload);
+//   const res = await api.put(`/expenses/${expenseId}`, payload);
 //   return res.data.expense;
 // };
 
 // /** DELETE /expenses/:expense_id  (ADMIN) */
 // export const deleteExpense = async (expenseId: number): Promise<void> => {
-//   await axios.delete(`/expenses/${expenseId}`);
+//   await api.delete(`/expenses/${expenseId}`);
 // };
 
 // /** GET /expenses/report  (ADMIN | SHOP_MANAGER) */
 // export const getExpenseReport = async (): Promise<any> => {
-//   const res = await axios.get("/expenses/report");
+//   const res = await api.get("/expenses/report");
 //   return res.data;
 // };
 
 // /** GET /expenses/dashboard  (ADMIN | SHOP_MANAGER) */
 // export const getExpensesDashboard = async (): Promise<any> => {
-//   const res = await axios.get("/expenses/dashboard");
+//   const res = await api.get("/expenses/dashboard");
 //   return res.data;
 // };
 
@@ -65,55 +65,55 @@
 
 // /** GET /cash-drawer  (ADMIN | SHOP_MANAGER) */
 // export const getCashDrawer = async (): Promise<{ balance: number }> => {
-//   const res = await axios.get("/cash-drawer");
+//   const res = await api.get("/cash-drawer");
 //   return res.data;
 // };
 
 // /** POST /cash-drawer/add-cash  (ADMIN | SHOP_MANAGER) */
 // export const addCash = async (amount: number, notes?: string): Promise<any> => {
-//   const res = await axios.post("/cash-drawer/add-cash", { amount, notes });
+//   const res = await api.post("/cash-drawer/add-cash", { amount, notes });
 //   return res.data;
 // };
 
 // /** POST /cash-drawer/deposit  (ADMIN | SHOP_MANAGER) */
 // export const cashDeposit = async (amount: number, notes?: string): Promise<any> => {
-//   const res = await axios.post("/cash-drawer/deposit", { amount, notes });
+//   const res = await api.post("/cash-drawer/deposit", { amount, notes });
 //   return res.data;
 // };
 
 // /** POST /cash-drawer/withdraw  (ADMIN | SHOP_MANAGER) */
 // export const cashWithdraw = async (amount: number, notes?: string): Promise<any> => {
-//   const res = await axios.post("/cash-drawer/withdraw", { amount, notes });
+//   const res = await api.post("/cash-drawer/withdraw", { amount, notes });
 //   return res.data;
 // };
 
 // /** GET /cash-drawer/statement  (ADMIN | SHOP_MANAGER) */
 // export const getCashStatement = async (): Promise<any[]> => {
-//   const res = await axios.get("/cash-drawer/statement");
+//   const res = await api.get("/cash-drawer/statement");
 //   return res.data.transactions;
 // };
 
 // /** GET /cash-drawer/transactions  (ADMIN | SHOP_MANAGER) */
 // export const getCashTransactions = async (): Promise<any[]> => {
-//   const res = await axios.get("/cash-drawer/transactions");
+//   const res = await api.get("/cash-drawer/transactions");
 //   return res.data.transactions;
 // };
 
 // /** GET /cash-drawer/audit  (ADMIN) */
 // export const getCashAudit = async (): Promise<any[]> => {
-//   const res = await axios.get("/cash-drawer/audit");
+//   const res = await api.get("/cash-drawer/audit");
 //   return res.data.audit;
 // };
 
 // /** GET /cash-drawer/daily-summary  (ADMIN | SHOP_MANAGER) */
 // export const getCashDailySummary = async (): Promise<any> => {
-//   const res = await axios.get("/cash-drawer/daily-summary");
+//   const res = await api.get("/cash-drawer/daily-summary");
 //   return res.data;
 // };
 
 // /** GET /cash-drawer/dashboard  (ADMIN | SHOP_MANAGER) */
 // export const getCashDrawerDashboard = async (): Promise<any> => {
-//   const res = await axios.get("/cash-drawer/dashboard");
+//   const res = await api.get("/cash-drawer/dashboard");
 //   return res.data;
 // };
 
@@ -121,13 +121,13 @@
 
 // /** GET /bank/balance  (ADMIN | SHOP_MANAGER) */
 // export const getBankBalance = async (): Promise<{ balance: number }> => {
-//   const res = await axios.get("/bank/balance");
+//   const res = await api.get("/bank/balance");
 //   return res.data;
 // };
 
 // /** GET /bank/statement  (ADMIN | SHOP_MANAGER) */
 // export const getBankStatement = async (): Promise<any[]> => {
-//   const res = await axios.get("/bank/statement");
+//   const res = await api.get("/bank/statement");
 //   return res.data.transactions;
 // };
 
@@ -137,7 +137,7 @@
 //   reference?: string,
 //   notes?: string
 // ): Promise<any> => {
-//   const res = await axios.post("/bank/deposit", { amount, reference, notes });
+//   const res = await api.post("/bank/deposit", { amount, reference, notes });
 //   return res.data;
 // };
 
@@ -147,31 +147,31 @@
 //   reference?: string,
 //   notes?: string
 // ): Promise<any> => {
-//   const res = await axios.post("/bank/withdraw", { amount, reference, notes });
+//   const res = await api.post("/bank/withdraw", { amount, reference, notes });
 //   return res.data;
 // };
 
 // /** GET /bank/transfers  (ADMIN | SHOP_MANAGER) */
 // export const getBankTransfers = async (): Promise<any[]> => {
-//   const res = await axios.get("/bank/transfers");
+//   const res = await api.get("/bank/transfers");
 //   return res.data.transfers;
 // };
 
 // /** GET /bank/reconciliation  (ADMIN) */
 // export const getBankReconciliation = async (): Promise<any[]> => {
-//   const res = await axios.get("/bank/reconciliation");
+//   const res = await api.get("/bank/reconciliation");
 //   return res.data.unreconciled;
 // };
 
 // /** POST /bank/reconciliation/verify  (ADMIN) */
 // export const verifyReconciliation = async (transactionIds: number[]): Promise<any> => {
-//   const res = await axios.post("/bank/reconciliation/verify", { transaction_ids: transactionIds });
+//   const res = await api.post("/bank/reconciliation/verify", { transaction_ids: transactionIds });
 //   return res.data;
 // };
 
 // /** GET /bank/dashboard  (ADMIN | SHOP_MANAGER) */
 // export const getBankDashboard = async (): Promise<any> => {
-//   const res = await axios.get("/bank/dashboard");
+//   const res = await api.get("/bank/dashboard");
 //   return res.data;
 // };
 
@@ -262,7 +262,7 @@ export interface FinanceOrder {
 
 
 export const getFinanceOrders = async (): Promise<FinanceOrder[]> => {
-  const res = await axios.get("/finance/orders");
+  const res = await api.get("/finance/orders");
   return res.data;
 };
 
@@ -277,7 +277,7 @@ export interface FinanceDriverSettlement {
 }
 
 export const getFinanceDriverSettlements = async (): Promise<FinanceDriverSettlement[]> => {
-  const res = await axios.get("/finance/driver-settlements");
+  const res = await api.get("/finance/driver-settlements");
   return res.data.settlements;
 };
 
@@ -285,7 +285,7 @@ export const getFinanceDriverSettlements = async (): Promise<FinanceDriverSettle
 
 /** GET /expenses  (ADMIN | SHOP_MANAGER) */
 export const getExpenses = async (): Promise<Expense[]> => {
-  const res = await axios.get("/expenses");
+  const res = await api.get("/expenses");
   return res.data.expenses;
 };
 
@@ -293,13 +293,13 @@ export const getExpenses = async (): Promise<Expense[]> => {
 export const createExpense = async (
   payload: CreateExpensePayload
 ): Promise<Expense> => {
-  const res = await axios.post("/expenses", payload);
+  const res = await api.post("/expenses", payload);
   return res.data.expense;
 };
 
 /** GET /expenses/:expense_id  (ADMIN | SHOP_MANAGER) */
 export const getExpense = async (expenseId: number): Promise<Expense> => {
-  const res = await axios.get(`/expenses/${expenseId}`);
+  const res = await api.get(`/expenses/${expenseId}`);
   return res.data.expense;
 };
 
@@ -308,24 +308,24 @@ export const updateExpense = async (
   expenseId: number,
   payload: UpdateExpensePayload
 ): Promise<Expense> => {
-  const res = await axios.put(`/expenses/${expenseId}`, payload);
+  const res = await api.put(`/expenses/${expenseId}`, payload);
   return res.data.expense;
 };
 
 /** DELETE /expenses/:expense_id  (ADMIN) */
 export const deleteExpense = async (expenseId: number): Promise<void> => {
-  await axios.delete(`/expenses/${expenseId}`);
+  await api.delete(`/expenses/${expenseId}`);
 };
 
 /** GET /expenses/report  (ADMIN | SHOP_MANAGER) */
 export const getExpenseReport = async (): Promise<ExpenseReport> => {
-  const res = await axios.get("/expenses/report");
+  const res = await api.get("/expenses/report");
   return res.data;
 };
 
 /** GET /expenses/dashboard  (ADMIN | SHOP_MANAGER) */
 export const getExpenseDashboard = async (): Promise<ExpenseDashboard> => {
-  const res = await axios.get("/expenses/dashboard");
+  const res = await api.get("/expenses/dashboard");
   return res.data;
 };
 
@@ -372,7 +372,7 @@ export interface CashDrawerTransactionPayload {
 
 /** GET /cash-drawer  (ADMIN | SHOP_MANAGER) */
 export const getCashDrawerBalance = async (): Promise<number> => {
-  const res = await axios.get("/cash-drawer");
+  const res = await api.get("/cash-drawer");
   return res.data.balance;
 };
 
@@ -380,7 +380,7 @@ export const getCashDrawerBalance = async (): Promise<number> => {
 export const addCash = async (
   payload: CashDrawerTransactionPayload
 ): Promise<any> => {
-  const res = await axios.post("/cash-drawer/add-cash", payload);
+  const res = await api.post("/cash-drawer/add-cash", payload);
   return res.data;
 };
 
@@ -388,7 +388,7 @@ export const addCash = async (
 export const cashDeposit = async (
   payload: CashDrawerTransactionPayload
 ): Promise<any> => {
-  const res = await axios.post("/cash-drawer/deposit", payload);
+  const res = await api.post("/cash-drawer/deposit", payload);
   return res.data;
 };
 
@@ -396,7 +396,7 @@ export const cashDeposit = async (
 export const cashWithdraw = async (
   payload: CashDrawerTransactionPayload
 ): Promise<any> => {
-  const res = await axios.post("/cash-drawer/withdraw", payload);
+  const res = await api.post("/cash-drawer/withdraw", payload);
   return res.data;
 };
 
@@ -404,7 +404,7 @@ export const cashWithdraw = async (
 export const getCashDrawerStatement = async (): Promise<
   CashDrawerTransaction[]
 > => {
-  const res = await axios.get("/cash-drawer/statement");
+  const res = await api.get("/cash-drawer/statement");
   return res.data.transactions;
 };
 
@@ -412,7 +412,7 @@ export const getCashDrawerStatement = async (): Promise<
 export const getCashDrawerTransactions = async (): Promise<
   CashDrawerTransaction[]
 > => {
-  const res = await axios.get("/cash-drawer/transactions");
+  const res = await api.get("/cash-drawer/transactions");
   return res.data.transactions;
 };
 
@@ -420,21 +420,21 @@ export const getCashDrawerTransactions = async (): Promise<
 export const getCashDrawerAudit = async (): Promise<
   CashDrawerTransaction[]
 > => {
-  const res = await axios.get("/cash-drawer/audit");
+  const res = await api.get("/cash-drawer/audit");
   return res.data.audit;
 };
 
 /** GET /cash-drawer/daily-summary  (ADMIN | SHOP_MANAGER) */
 export const getCashDrawerDailySummary =
   async (): Promise<CashDrawerDailySummary> => {
-    const res = await axios.get("/cash-drawer/daily-summary");
+    const res = await api.get("/cash-drawer/daily-summary");
     return res.data;
   };
 
 /** GET /cash-drawer/dashboard  (ADMIN | SHOP_MANAGER) */
 export const getCashDrawerDashboard =
   async (): Promise<CashDrawerDashboard> => {
-    const res = await axios.get("/cash-drawer/dashboard");
+    const res = await api.get("/cash-drawer/dashboard");
     return res.data;
   };
 
@@ -482,13 +482,13 @@ export interface ReconciliationPayload {
 
 /** GET /bank/balance  (ADMIN | SHOP_MANAGER) */
 export const getBankBalance = async (): Promise<number> => {
-  const res = await axios.get("/bank/balance");
+  const res = await api.get("/bank/balance");
   return res.data.balance;
 };
 
 /** GET /bank/statement  (ADMIN | SHOP_MANAGER) */
 export const getBankStatement = async (): Promise<BankTransaction[]> => {
-  const res = await axios.get("/bank/statement");
+  const res = await api.get("/bank/statement");
   return res.data.transactions;
 };
 
@@ -496,7 +496,7 @@ export const getBankStatement = async (): Promise<BankTransaction[]> => {
 export const bankDeposit = async (
   payload: BankTransactionPayload
 ): Promise<{ message: string; balance: number }> => {
-  const res = await axios.post("/bank/deposit", payload);
+  const res = await api.post("/bank/deposit", payload);
   return res.data;
 };
 
@@ -504,19 +504,19 @@ export const bankDeposit = async (
 export const bankWithdraw = async (
   payload: BankTransactionPayload
 ): Promise<{ message: string; balance: number }> => {
-  const res = await axios.post("/bank/withdraw", payload);
+  const res = await api.post("/bank/withdraw", payload);
   return res.data;
 };
 
 /** GET /bank/transfers  (ADMIN | SHOP_MANAGER) */
 export const getBankTransfers = async (): Promise<BankTransaction[]> => {
-  const res = await axios.get("/bank/transfers");
+  const res = await api.get("/bank/transfers");
   return res.data.transfers;
 };
 
 /** GET /bank/reconciliation  (ADMIN) */
 export const getBankReconciliation = async (): Promise<BankTransaction[]> => {
-  const res = await axios.get("/bank/reconciliation");
+  const res = await api.get("/bank/reconciliation");
   return res.data.unreconciled;
 };
 
@@ -524,13 +524,13 @@ export const getBankReconciliation = async (): Promise<BankTransaction[]> => {
 export const verifyReconciliation = async (
   payload: ReconciliationPayload
 ): Promise<{ message: string }> => {
-  const res = await axios.post("/bank/reconciliation/verify", payload);
+  const res = await api.post("/bank/reconciliation/verify", payload);
   return res.data;
 };
 
 /** GET /bank/dashboard  (ADMIN | SHOP_MANAGER) */
 export const getBankDashboard = async (): Promise<BankDashboard> => {
-  const res = await axios.get("/bank/dashboard");
+  const res = await api.get("/bank/dashboard");
   return res.data;
 };
 
@@ -563,7 +563,7 @@ export interface BankChargesReport {
 
 /** GET /bank/charges  (ADMIN | SHOP_MANAGER) */
 export const getBankCharges = async (): Promise<BankCharge[]> => {
-  const res = await axios.get("/bank/charges");
+  const res = await api.get("/bank/charges");
   return res.data.bank_charges;
 };
 
@@ -571,7 +571,7 @@ export const getBankCharges = async (): Promise<BankCharge[]> => {
 export const createBankCharge = async (
   payload: CreateBankChargePayload
 ): Promise<BankCharge> => {
-  const res = await axios.post("/bank/charges", payload);
+  const res = await api.post("/bank/charges", payload);
   return res.data.bank_charge;
 };
 
@@ -580,18 +580,18 @@ export const updateBankCharge = async (
   chargeId: number,
   payload: Partial<CreateBankChargePayload>
 ): Promise<BankCharge> => {
-  const res = await axios.put(`/bank/charges/${chargeId}`, payload);
+  const res = await api.put(`/bank/charges/${chargeId}`, payload);
   return res.data.bank_charge;
 };
 
 /** DELETE /bank/charges/:charge_id  (ADMIN) */
 export const deleteBankCharge = async (chargeId: number): Promise<void> => {
-  await axios.delete(`/bank/charges/${chargeId}`);
+  await api.delete(`/bank/charges/${chargeId}`);
 };
 
 /** GET /bank/charges/report  (ADMIN | SHOP_MANAGER) */
 export const getBankChargesReport = async (): Promise<BankChargesReport> => {
-  const res = await axios.get("/bank/charges/report");
+  const res = await api.get("/bank/charges/report");
   return res.data;
 };
 
@@ -620,7 +620,7 @@ export interface CreateNotificationPayload {
 
 /** GET /notifications  (any authenticated user — own notifications) */
 export const getNotifications = async (): Promise<Notification[]> => {
-  const res = await axios.get("/notifications");
+  const res = await api.get("/notifications");
   return res.data.notifications;
 };
 
@@ -628,7 +628,7 @@ export const getNotifications = async (): Promise<Notification[]> => {
 export const sendNotification = async (
   payload: CreateNotificationPayload
 ): Promise<Notification> => {
-  const res = await axios.post("/notifications/send", payload);
+  const res = await api.post("/notifications/send", payload);
   return res.data.notification;
 };
 
@@ -636,7 +636,7 @@ export const sendNotification = async (
 export const markNotificationRead = async (
   notifId: number
 ): Promise<{ message: string }> => {
-  const res = await axios.put(`/notifications/${notifId}/read`);
+  const res = await api.put(`/notifications/${notifId}/read`);
   return res.data;
 };
 
@@ -656,7 +656,7 @@ export interface AuditLog {
 
 /** GET /audit-logs  (ADMIN) */
 export const getAuditLogs = async (): Promise<AuditLog[]> => {
-  const res = await axios.get("/audit-logs");
+  const res = await api.get("/audit-logs");
   return res.data.logs;
 };
 
@@ -664,7 +664,7 @@ export const getAuditLogs = async (): Promise<AuditLog[]> => {
 export const getAuditLogsByUser = async (
   userId: number
 ): Promise<AuditLog[]> => {
-  const res = await axios.get(`/audit-logs/user/${userId}`);
+  const res = await api.get(`/audit-logs/user/${userId}`);
   return res.data.logs;
 };
 
@@ -672,7 +672,7 @@ export const getAuditLogsByUser = async (
 export const getAuditLogsByOrder = async (
   orderId: number
 ): Promise<AuditLog[]> => {
-  const res = await axios.get(`/audit-logs/order/${orderId}`);
+  const res = await api.get(`/audit-logs/order/${orderId}`);
   return res.data.logs;
 };
 
@@ -710,7 +710,7 @@ export interface UpdatePartnerPayload {
 
 /** GET /partners  (ADMIN | SHOP_MANAGER) */
 export const getPartners = async (): Promise<Partner[]> => {
-  const res = await axios.get("/partners");
+  const res = await api.get("/partners");
   return res.data.partners;
 };
 
@@ -718,7 +718,7 @@ export const getPartners = async (): Promise<Partner[]> => {
 export const createPartner = async (
   payload: CreatePartnerPayload
 ): Promise<Partner> => {
-  const res = await axios.post("/partners", payload);
+  const res = await api.post("/partners", payload);
   return res.data.partner;
 };
 
@@ -727,24 +727,24 @@ export const updatePartner = async (
   partnerId: number,
   payload: UpdatePartnerPayload
 ): Promise<Partner> => {
-  const res = await axios.put(`/partners/${partnerId}`, payload);
+  const res = await api.put(`/partners/${partnerId}`, payload);
   return res.data.partner;
 };
 
 /** DELETE /partners/:partner_id  (ADMIN) */
 export const deletePartner = async (partnerId: number): Promise<void> => {
-  await axios.delete(`/partners/${partnerId}`);
+  await api.delete(`/partners/${partnerId}`);
 };
 
 /** GET /partners/:partner_id/orders  (ADMIN | SHOP_MANAGER) */
 export const getPartnerOrders = async (partnerId: number): Promise<any[]> => {
-  const res = await axios.get(`/partners/${partnerId}/orders`);
+  const res = await api.get(`/partners/${partnerId}/orders`);
   return res.data.orders;
 };
 
 /** GET /partners/:partner_id/report  (ADMIN | SHOP_MANAGER) */
 export const getPartnerReport = async (partnerId: number): Promise<any> => {
-  const res = await axios.get(`/partners/${partnerId}/report`);
+  const res = await api.get(`/partners/${partnerId}/report`);
   return res.data;
 };
 
@@ -776,7 +776,7 @@ export interface UpdateBrandPayload {
 
 /** GET /brands  (public) */
 export const getBrands = async (): Promise<Brand[]> => {
-  const res = await axios.get("/brands");
+  const res = await api.get("/brands");
   return res.data.brands;
 };
 
@@ -784,7 +784,7 @@ export const getBrands = async (): Promise<Brand[]> => {
 export const createBrand = async (
   payload: CreateBrandPayload
 ): Promise<Brand> => {
-  const res = await axios.post("/brands", payload);
+  const res = await api.post("/brands", payload);
   return res.data.brand;
 };
 
@@ -793,13 +793,13 @@ export const updateBrand = async (
   brandId: number,
   payload: UpdateBrandPayload
 ): Promise<Brand> => {
-  const res = await axios.put(`/brands/${brandId}`, payload);
+  const res = await api.put(`/brands/${brandId}`, payload);
   return res.data.brand;
 };
 
 /** DELETE /brands/:brand_id  (ADMIN | SHOP_MANAGER) */
 export const deleteBrand = async (brandId: number): Promise<void> => {
-  await axios.delete(`/brands/${brandId}`);
+  await api.delete(`/brands/${brandId}`);
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -844,7 +844,7 @@ export interface PaySettlementPayload {
 
 /** GET /driver-settlements  (ADMIN | SHOP_MANAGER) */
 export const getDriverSettlements = async (): Promise<DriverSettlement[]> => {
-  const res = await axios.get("/driver-settlements");
+  const res = await api.get("/driver-settlements");
   return res.data.settlements;
 };
 
@@ -852,7 +852,7 @@ export const getDriverSettlements = async (): Promise<DriverSettlement[]> => {
 export const getDriverSettlementsByDriver = async (
   driverId: number
 ): Promise<DriverSettlement[]> => {
-  const res = await axios.get(`/driver-settlements/${driverId}`);
+  const res = await api.get(`/driver-settlements/${driverId}`);
   return res.data.settlements;
 };
 
@@ -860,7 +860,7 @@ export const getDriverSettlementsByDriver = async (
 export const getPendingSettlement = async (
   driverId: number
 ): Promise<PendingSettlement> => {
-  const res = await axios.get(`/driver-settlements/pending/${driverId}`);
+  const res = await api.get(`/driver-settlements/pending/${driverId}`);
   return res.data;
 };
 
@@ -868,7 +868,7 @@ export const getPendingSettlement = async (
 export const payDriverSettlement = async (
   payload: PaySettlementPayload
 ): Promise<DriverSettlement> => {
-  const res = await axios.post("/driver-settlements/pay", payload);
+  const res = await api.post("/driver-settlements/pay", payload);
   return res.data.settlement;
 };
 
@@ -876,7 +876,7 @@ export const payDriverSettlement = async (
 export const getSettlementReport = async (): Promise<{
   total_paid: number;
 }> => {
-  const res = await axios.get("/driver-settlements/report");
+  const res = await api.get("/driver-settlements/report");
   return res.data;
 };
 
@@ -919,7 +919,7 @@ export interface UpdateCustomOrderPayload {
 
 /** GET /custom-orders  (ADMIN | SHOP_MANAGER | SALES_AGENT) */
 export const getCustomOrders = async (): Promise<CustomOrder[]> => {
-  const res = await axios.get("/custom-orders");
+  const res = await api.get("/custom-orders");
   return res.data.custom_orders;
 };
 
@@ -927,13 +927,13 @@ export const getCustomOrders = async (): Promise<CustomOrder[]> => {
 export const createCustomOrder = async (
   payload: CreateCustomOrderPayload
 ): Promise<CustomOrder> => {
-  const res = await axios.post("/custom-orders", payload);
+  const res = await api.post("/custom-orders", payload);
   return res.data.custom_order;
 };
 
 /** GET /custom-orders/:co_id  (any authenticated user) */
 export const getCustomOrder = async (coId: number): Promise<CustomOrder> => {
-  const res = await axios.get(`/custom-orders/${coId}`);
+  const res = await api.get(`/custom-orders/${coId}`);
   return res.data.custom_order;
 };
 
@@ -942,13 +942,13 @@ export const updateCustomOrder = async (
   coId: number,
   payload: UpdateCustomOrderPayload
 ): Promise<CustomOrder> => {
-  const res = await axios.put(`/custom-orders/${coId}`, payload);
+  const res = await api.put(`/custom-orders/${coId}`, payload);
   return res.data.custom_order;
 };
 
 /** DELETE /custom-orders/:co_id  (ADMIN | SHOP_MANAGER) */
 export const deleteCustomOrder = async (coId: number): Promise<void> => {
-  await axios.delete(`/custom-orders/${coId}`);
+  await api.delete(`/custom-orders/${coId}`);
 };
 
 /** POST /custom-orders/:co_id/upload-image  (any authenticated user) — multipart/form-data */
@@ -958,7 +958,7 @@ export const uploadCustomOrderImage = async (
 ): Promise<{ message: string; image_url: string }> => {
   const formData = new FormData();
   formData.append("image", imageFile);
-  const res = await axios.post(`/custom-orders/${coId}/upload-image`, formData, {
+  const res = await api.post(`/custom-orders/${coId}/upload-image`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
@@ -968,7 +968,7 @@ export const uploadCustomOrderImage = async (
 export const getCustomOrderImages = async (
   coId: number
 ): Promise<{ url: string; public_id: string }[]> => {
-  const res = await axios.get(`/custom-orders/${coId}/images`);
+  const res = await api.get(`/custom-orders/${coId}/images`);
   return res.data.images;
 };
 
@@ -977,7 +977,7 @@ export const deleteCustomOrderImage = async (
   coId: number,
   imageId: string
 ): Promise<void> => {
-  await axios.delete(`/custom-orders/${coId}/images/${imageId}`);
+  await api.delete(`/custom-orders/${coId}/images/${imageId}`);
 };
 
 /** POST /custom-orders/:co_id/approve  (ADMIN | SHOP_MANAGER) */
@@ -985,7 +985,7 @@ export const approveCustomOrder = async (
   coId: number,
   quotedPrice?: number
 ): Promise<CustomOrder> => {
-  const res = await axios.post(`/custom-orders/${coId}/approve`, {
+  const res = await api.post(`/custom-orders/${coId}/approve`, {
     quoted_price: quotedPrice,
   });
   return res.data.custom_order;
@@ -996,7 +996,7 @@ export const rejectCustomOrder = async (
   coId: number,
   reason?: string
 ): Promise<{ message: string }> => {
-  const res = await axios.post(`/custom-orders/${coId}/reject`, {
+  const res = await api.post(`/custom-orders/${coId}/reject`, {
     reason,
   });
   return res.data;
@@ -1006,7 +1006,7 @@ export const rejectCustomOrder = async (
 export const convertCustomOrderToOrder = async (
   coId: number
 ): Promise<{ message: string; custom_order: CustomOrder }> => {
-  const res = await axios.post(`/custom-orders/${coId}/convert-to-order`);
+  const res = await api.post(`/custom-orders/${coId}/convert-to-order`);
   return res.data;
 };
 
@@ -1035,7 +1035,7 @@ export interface UpdateOrderSourcePayload {
 
 /** GET /order-sources  (any authenticated user) */
 export const getOrderSources = async (): Promise<OrderSource[]> => {
-  const res = await axios.get("/order-sources");
+  const res = await api.get("/order-sources");
   return res.data.sources;
 };
 
@@ -1043,7 +1043,7 @@ export const getOrderSources = async (): Promise<OrderSource[]> => {
 export const createOrderSource = async (
   payload: CreateOrderSourcePayload
 ): Promise<OrderSource> => {
-  const res = await axios.post("/order-sources", payload);
+  const res = await api.post("/order-sources", payload);
   return res.data.source;
 };
 
@@ -1052,13 +1052,13 @@ export const updateOrderSource = async (
   sourceId: number,
   payload: UpdateOrderSourcePayload
 ): Promise<OrderSource> => {
-  const res = await axios.put(`/order-sources/${sourceId}`, payload);
+  const res = await api.put(`/order-sources/${sourceId}`, payload);
   return res.data.source;
 };
 
 /** DELETE /order-sources/:source_id  (ADMIN | SHOP_MANAGER) */
 export const deleteOrderSource = async (sourceId: number): Promise<void> => {
-  await axios.delete(`/order-sources/${sourceId}`);
+  await api.delete(`/order-sources/${sourceId}`);
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1081,7 +1081,7 @@ export interface WhatsAppDeliveryUpdatePayload {
 export const whatsappSendOrder = async (
   payload: WhatsAppOrderPayload
 ): Promise<{ message: string; order_id: number }> => {
-  const res = await axios.post("/whatsapp/send-order", payload);
+  const res = await api.post("/whatsapp/send-order", payload);
   return res.data;
 };
 
@@ -1089,7 +1089,7 @@ export const whatsappSendOrder = async (
 export const whatsappSendPaymentLink = async (
   payload: WhatsAppPaymentLinkPayload
 ): Promise<{ message: string; order_id: number }> => {
-  const res = await axios.post("/whatsapp/send-payment-link", payload);
+  const res = await api.post("/whatsapp/send-payment-link", payload);
   return res.data;
 };
 
@@ -1097,7 +1097,7 @@ export const whatsappSendPaymentLink = async (
 export const whatsappSendDeliveryUpdate = async (
   payload: WhatsAppDeliveryUpdatePayload
 ): Promise<{ message: string; order_id: number }> => {
-  const res = await axios.post("/whatsapp/send-delivery-update", payload);
+  const res = await api.post("/whatsapp/send-delivery-update", payload);
   return res.data;
 };
 

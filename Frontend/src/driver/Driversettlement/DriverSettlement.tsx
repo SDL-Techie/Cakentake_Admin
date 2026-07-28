@@ -263,7 +263,7 @@ const DeliveredOrdersTab: React.FC<{
     try {
       if (driverId === '') {
         // All drivers — existing generic route, not a new one.
-        const res = await axios.get('/orders/status/DELIVERED');
+        const res = await api.get('/orders/status/DELIVERED');
         setOrders(res.data.orders || []);
       } else {
         const list = await getDriverCompleted(driverId);

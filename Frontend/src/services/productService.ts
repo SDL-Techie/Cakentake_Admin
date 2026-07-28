@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 // Attach JWT to every request automatically
-// axios.interceptors.request.use((config) => {
+// api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem("access_token");
 //   if (token) {
 //     config.headers.Authorization = `Bearer ${token}`;
@@ -17,7 +17,7 @@ const api = axios.create({
 //   return config;
 // });
 
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access_token");
 
   if (token) {
@@ -34,7 +34,7 @@ axios.interceptors.request.use((config) => {
 });
 
 // Handle 401 the same way StaffManagement does
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err?.response?.status === 401) {
@@ -399,7 +399,7 @@ export interface ValidatePromoResponse {
  * Returns all products.
  */
 export const getAllProducts = async (): Promise<Product[]> => {
-  const res = await axios.get("/products");
+  const res = await api.get("/products");
   // Backend returns a plain array
   return res.data;
 };
@@ -409,7 +409,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
  * Public — no JWT required.
  */
 // export const getProductById = async (id: number): Promise<Product> => {
-//   const res = await axios.get(`/products/${id}`);
+//   const res = await api.get(`/products/${id}`);
 //   return res.data;
 // };
 
@@ -417,7 +417,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 export const getProductById = async (id: number): Promise<Product> => {
   const currency = localStorage.getItem("currency") || "KWD";
 
-  const res = await axios.get(`/products/${id}`, {
+  const res = await api.get(`/products/${id}`, {
     headers: {
       "X-Currency": currency,
     },
@@ -432,7 +432,7 @@ export const getProductById = async (id: number): Promise<Product> => {
  * Returns { products: Product[] }
  */
 export const getProductsByCategory = async (categoryId: number): Promise<Product[]> => {
-  const res = await axios.get(`/products/category/${categoryId}`);
+  const res = await api.get(`/products/category/${categoryId}`);
   return res.data.products;
 };
 
@@ -442,7 +442,7 @@ export const getProductsByCategory = async (categoryId: number): Promise<Product
  * Returns { variants: Variant[] }
  */
 export const getProductVariants = async (productId: number): Promise<Variant[]> => {
-  const res = await axios.get(`/products/${productId}/variants`);
+  const res = await api.get(`/products/${productId}/variants`);
   return res.data.variants;
 };
 
@@ -452,7 +452,7 @@ export const getProductVariants = async (productId: number): Promise<Variant[]> 
  * Returns { message, product }
  */
 export const createProduct = async (payload: CreateProductPayload): Promise<Product> => {
-  const res = await axios.post("/products", payload);
+  const res = await api.post("/products", payload);
   return res.data.product;
 };
 
@@ -465,7 +465,7 @@ export const updateProduct = async (
   id: number,
   payload: UpdateProductPayload
 ): Promise<Product> => {
-  const res = await axios.put(`/products/${id}`, payload);
+  const res = await api.put(`/products/${id}`, payload);
   return res.data.product;
 };
 
@@ -475,7 +475,7 @@ export const updateProduct = async (
  * Returns { message }
  */
 export const deleteProduct = async (id: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/products/${id}`);
+  const res = await api.delete(`/products/${id}`);
   return res.data;
 };
 
@@ -489,7 +489,7 @@ export const deleteProduct = async (id: number): Promise<{ message: string }> =>
  * Both are public. We use /category for backwards compatibility.
  */
 export const getAllCategories = async (): Promise<Category[]> => {
-  const res = await axios.get("/category");
+  const res = await api.get("/category");
   // Returns a plain array
   return res.data;
 };
@@ -498,7 +498,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
  * GET /category/:id
  */
 export const getCategoryById = async (id: number): Promise<Category> => {
-  const res = await axios.get(`/category/${id}`);
+  const res = await api.get(`/category/${id}`);
   return res.data;
 };
 
@@ -507,7 +507,7 @@ export const getCategoryById = async (id: number): Promise<Category> => {
  * Returns { products: Product[] }
  */
 export const getCategoryProducts = async (catId: number): Promise<Product[]> => {
-  const res = await axios.get(`/categories/${catId}/products`);
+  const res = await api.get(`/categories/${catId}/products`);
   return res.data.products;
 };
 
@@ -516,7 +516,7 @@ export const getCategoryProducts = async (catId: number): Promise<Product[]> => 
  * Returns { subcategories: SubCategory[] }
  */
 export const getCategorySubcategories = async (catId: number): Promise<SubCategory[]> => {
-  const res = await axios.get(`/categories/${catId}/subcategories`);
+  const res = await api.get(`/categories/${catId}/subcategories`);
   return res.data.subcategories;
 };
 
@@ -526,7 +526,7 @@ export const getCategorySubcategories = async (catId: number): Promise<SubCatego
  * Returns { message, category }
  */
 export const createCategory = async (payload: CreateCategoryPayload): Promise<Category> => {
-  const res = await axios.post("/category", payload);
+  const res = await api.post("/category", payload);
   return res.data.category;
 };
 
@@ -539,7 +539,7 @@ export const updateCategory = async (
   id: number,
   payload: UpdateCategoryPayload
 ): Promise<Category> => {
-  const res = await axios.put(`/category/${id}`, payload);
+  const res = await api.put(`/category/${id}`, payload);
   return res.data.category;
 };
 
@@ -549,7 +549,7 @@ export const updateCategory = async (
  * Returns { message }
  */
 export const deleteCategory = async (id: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/category/${id}`);
+  const res = await api.delete(`/category/${id}`);
   return res.data;
 };
 
@@ -563,7 +563,7 @@ export const deleteCategory = async (id: number): Promise<{ message: string }> =
  * Returns { subcategories: SubCategory[] }
  */
 export const getAllSubCategories = async (): Promise<SubCategory[]> => {
-  const res = await axios.get("/subcategories");
+  const res = await api.get("/subcategories");
   return res.data.subcategories;
 };
 
@@ -575,7 +575,7 @@ export const getAllSubCategories = async (): Promise<SubCategory[]> => {
 export const createSubCategory = async (
   payload: CreateSubCategoryPayload
 ): Promise<SubCategory> => {
-  const res = await axios.post("/subcategories", payload);
+  const res = await api.post("/subcategories", payload);
   return res.data.subcategory;
 };
 
@@ -588,7 +588,7 @@ export const updateSubCategory = async (
   subId: number,
   payload: UpdateSubCategoryPayload
 ): Promise<SubCategory> => {
-  const res = await axios.put(`/subcategories/${subId}`, payload);
+  const res = await api.put(`/subcategories/${subId}`, payload);
   return res.data.subcategory;
 };
 
@@ -598,7 +598,7 @@ export const updateSubCategory = async (
  * Returns { message }
  */
 export const deleteSubCategory = async (subId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/subcategories/${subId}`);
+  const res = await api.delete(`/subcategories/${subId}`);
   return res.data;
 };
 
@@ -612,19 +612,19 @@ export const deleteSubCategory = async (subId: number): Promise<{ message: strin
  * Returns { variants: Variant[] }
  */
 // export const getVariantsByProduct = async (productId: number): Promise<Variant[]> => {
-//   const res = await axios.get(`/variants/${productId}`);
+//   const res = await api.get(`/variants/${productId}`);
 //   return res.data.variants;
 // };
 
 // export const getAllVariants = async (): Promise<Variant[]> => {
-//   const res = await axios.get("/variants");
+//   const res = await api.get("/variants");
 //   return res.data.variants;
 // };
 
 export const getVariantsByProduct = async (
   productId: number
 ): Promise<Variant[]> => {
-  const res = await axios.get(`/variants/${productId}`);
+  const res = await api.get(`/variants/${productId}`);
 
   return res.data.variants.filter(
     (item: Variant) => item.type === "Variant"
@@ -632,7 +632,7 @@ export const getVariantsByProduct = async (
 };
 
 export const getAllVariants = async (): Promise<Variant[]> => {
-  const res = await axios.get("/variants");
+  const res = await api.get("/variants");
 
   return res.data.variants.filter(
     (item: Variant) => item.type === "Variant"
@@ -645,7 +645,7 @@ export const getAllVariants = async (): Promise<Variant[]> => {
  * Returns { message, variant }
  */
 export const createVariant = async (payload: CreateVariantPayload): Promise<Variant> => {
-  const res = await axios.post("/variants", payload);
+  const res = await api.post("/variants", payload);
   return res.data.variant;
 };
 
@@ -658,7 +658,7 @@ export const updateVariant = async (
   variantId: number,
   payload: UpdateVariantPayload
 ): Promise<Variant> => {
-  const res = await axios.put(`/variants/${variantId}`, payload);
+  const res = await api.put(`/variants/${variantId}`, payload);
   return res.data.variant;
 };
 
@@ -668,7 +668,7 @@ export const updateVariant = async (
  * Returns { message }
  */
 export const deleteVariant = async (variantId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/variants/${variantId}`);
+  const res = await api.delete(`/variants/${variantId}`);
   return res.data;
 };
 
@@ -682,7 +682,7 @@ export const deleteVariant = async (variantId: number): Promise<{ message: strin
  * Returns { flavors: Flavor[] }
  */
 export const getFlavorsByVariant = async (variantId: number): Promise<Flavor[]> => {
-  const res = await axios.get(`/flavors/${variantId}`);
+  const res = await api.get(`/flavors/${variantId}`);
   return res.data.flavors;
 };
 
@@ -692,7 +692,7 @@ export const getFlavorsByVariant = async (variantId: number): Promise<Flavor[]> 
  * Returns { message, flavor }
  */
 export const createFlavor = async (payload: CreateFlavorPayload): Promise<Flavor> => {
-  const res = await axios.post("/flavors", payload);
+  const res = await api.post("/flavors", payload);
   return res.data.flavor;
 };
 
@@ -705,7 +705,7 @@ export const updateFlavor = async (
   flavorId: number,
   payload: UpdateFlavorPayload
 ): Promise<Flavor> => {
-  const res = await axios.put(`/flavors/${flavorId}`, payload);
+  const res = await api.put(`/flavors/${flavorId}`, payload);
   return res.data.flavor;
 };
 
@@ -715,7 +715,7 @@ export const updateFlavor = async (
  * Returns { message }
  */
 export const deleteFlavor = async (flavorId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/flavors/${flavorId}`);
+  const res = await api.delete(`/flavors/${flavorId}`);
   return res.data;
 };
 
@@ -729,7 +729,7 @@ export const deleteFlavor = async (flavorId: number): Promise<{ message: string 
  * Returns { addons: Addon[] }
  */
 export const getAllAddons = async (): Promise<Addon[]> => {
-  const res = await axios.get("/addons");
+  const res = await api.get("/addons");
   return res.data.addons;
 };
 
@@ -739,7 +739,7 @@ export const getAllAddons = async (): Promise<Addon[]> => {
  * Returns { addons: Addon[] }
  */
 export const getPredefinedAddons = async (): Promise<Addon[]> => {
-  const res = await axios.get("/addons/predefined");
+  const res = await api.get("/addons/predefined");
   return res.data.addons;
 };
 
@@ -749,7 +749,7 @@ export const getPredefinedAddons = async (): Promise<Addon[]> => {
  * Returns { message, addon }
  */
 export const createAddon = async (payload: CreateAddonPayload): Promise<Addon> => {
-  const res = await axios.post("/addons", payload);
+  const res = await api.post("/addons", payload);
   return res.data.addon;
 };
 
@@ -762,7 +762,7 @@ export const updateAddon = async (
   addonId: number,
   payload: UpdateAddonPayload
 ): Promise<Addon> => {
-  const res = await axios.put(`/addons/${addonId}`, payload);
+  const res = await api.put(`/addons/${addonId}`, payload);
   return res.data.addon;
 };
 
@@ -772,7 +772,7 @@ export const updateAddon = async (
  * Returns { message }
  */
 export const deleteAddon = async (addonId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/addons/${addonId}`);
+  const res = await api.delete(`/addons/${addonId}`);
   return res.data;
 };
 
@@ -786,7 +786,7 @@ export const deleteAddon = async (addonId: number): Promise<{ message: string }>
  * Returns { combos: Combo[] }
  */
 export const getAllCombos = async (): Promise<Combo[]> => {
-  const res = await axios.get("/combos");
+  const res = await api.get("/combos");
   return res.data.combos;
 };
 
@@ -796,7 +796,7 @@ export const getAllCombos = async (): Promise<Combo[]> => {
  * Returns { message, combo }
  */
 export const createCombo = async (payload: CreateComboPayload): Promise<Combo> => {
-  const res = await axios.post("/combos", payload);
+  const res = await api.post("/combos", payload);
   return res.data.combo;
 };
 
@@ -809,7 +809,7 @@ export const updateCombo = async (
   comboId: number,
   payload: UpdateComboPayload
 ): Promise<Combo> => {
-  const res = await axios.put(`/combos/${comboId}`, payload);
+  const res = await api.put(`/combos/${comboId}`, payload);
   return res.data.combo;
 };
 
@@ -819,7 +819,7 @@ export const updateCombo = async (
  * Returns { message }
  */
 export const deleteCombo = async (comboId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/combos/${comboId}`);
+  const res = await api.delete(`/combos/${comboId}`);
   return res.data;
 };
 
@@ -833,7 +833,7 @@ export const addProductToCombo = async (
   comboId: number,
   productId: number
 ): Promise<Combo> => {
-  const res = await axios.post(`/combos/${comboId}/add-product`, { product_id: productId });
+  const res = await api.post(`/combos/${comboId}/add-product`, { product_id: productId });
   return res.data.combo;
 };
 
@@ -847,7 +847,7 @@ export const removeProductFromCombo = async (
   comboId: number,
   productId: number
 ): Promise<{ message: string }> => {
-  const res = await axios.delete(`/combos/${comboId}/remove-product`, {
+  const res = await api.delete(`/combos/${comboId}/remove-product`, {
     data: { product_id: productId },
   });
   return res.data;
@@ -859,7 +859,7 @@ export const removeProductFromCombo = async (
  * Returns { products: Product[] }
  */
 export const getComboItems = async (comboId: number): Promise<Product[]> => {
-  const res = await axios.get(`/combos/${comboId}/items`);
+  const res = await api.get(`/combos/${comboId}/items`);
   return res.data.products;
 };
 
@@ -871,7 +871,7 @@ export const getComboItems = async (comboId: number): Promise<Product[]> => {
 export const getComboPricePreview = async (
   comboId: number
 ): Promise<ComboPricePreview> => {
-  const res = await axios.get(`/combos/${comboId}/price-preview`);
+  const res = await api.get(`/combos/${comboId}/price-preview`);
   return res.data;
 };
 
@@ -885,7 +885,7 @@ export const getComboPricePreview = async (
  * Returns { promotions: Promotion[] }
  */
 export const getAllPromotions = async (): Promise<Promotion[]> => {
-  const res = await axios.get("/promotions");
+  const res = await api.get("/promotions");
   return res.data.promotions;
 };
 
@@ -895,7 +895,7 @@ export const getAllPromotions = async (): Promise<Promotion[]> => {
  * Returns { promotions: Promotion[] }
  */
 export const getActivePromotions = async (): Promise<Promotion[]> => {
-  const res = await axios.get("/promotions/active");
+  const res = await api.get("/promotions/active");
   return res.data.promotions;
 };
 
@@ -907,7 +907,7 @@ export const getActivePromotions = async (): Promise<Promotion[]> => {
 export const createPromotion = async (
   payload: CreatePromotionPayload
 ): Promise<Promotion> => {
-  const res = await axios.post("/promotions", payload);
+  const res = await api.post("/promotions", payload);
   return res.data.promotion;
 };
 
@@ -920,7 +920,7 @@ export const updatePromotion = async (
   promoId: number,
   payload: UpdatePromotionPayload
 ): Promise<Promotion> => {
-  const res = await axios.put(`/promotions/${promoId}`, payload);
+  const res = await api.put(`/promotions/${promoId}`, payload);
   return res.data.promotion;
 };
 
@@ -930,7 +930,7 @@ export const updatePromotion = async (
  * Returns { message }
  */
 export const deletePromotion = async (promoId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/promotions/${promoId}`);
+  const res = await api.delete(`/promotions/${promoId}`);
   return res.data;
 };
 
@@ -940,7 +940,7 @@ export const deletePromotion = async (promoId: number): Promise<{ message: strin
  * Returns { message, promotion }
  */
 export const activatePromotion = async (promoId: number): Promise<Promotion> => {
-  const res = await axios.post(`/promotions/${promoId}/activate`);
+  const res = await api.post(`/promotions/${promoId}/activate`);
   return res.data.promotion;
 };
 
@@ -950,7 +950,7 @@ export const activatePromotion = async (promoId: number): Promise<Promotion> => 
  * Returns { message, promotion }
  */
 export const deactivatePromotion = async (promoId: number): Promise<Promotion> => {
-  const res = await axios.post(`/promotions/${promoId}/deactivate`);
+  const res = await api.post(`/promotions/${promoId}/deactivate`);
   return res.data.promotion;
 };
 
@@ -962,7 +962,7 @@ export const deactivatePromotion = async (promoId: number): Promise<Promotion> =
 export const getPromotionFreeItems = async (
   promoId: number
 ): Promise<PromotionFreeItem[]> => {
-  const res = await axios.get(`/promotions/${promoId}/free-items`);
+  const res = await api.get(`/promotions/${promoId}/free-items`);
   return res.data.free_items;
 };
 
@@ -977,7 +977,7 @@ export const addFreeItemToPromotion = async (
   productId: number,
   quantity = 1
 ): Promise<PromotionFreeItem> => {
-  const res = await axios.post(`/promotions/${promoId}/add-free-item`, {
+  const res = await api.post(`/promotions/${promoId}/add-free-item`, {
     product_id: productId,
     quantity,
   });
@@ -994,7 +994,7 @@ export const removeFreeItemFromPromotion = async (
   promoId: number,
   productId: number
 ): Promise<{ message: string }> => {
-  const res = await axios.delete(`/promotions/${promoId}/remove-free-item`, {
+  const res = await api.delete(`/promotions/${promoId}/remove-free-item`, {
     data: { product_id: productId },
   });
   return res.data;
@@ -1010,7 +1010,7 @@ export const removeFreeItemFromPromotion = async (
  * Returns { promos: PromoCode[] }
  */
 export const getAllPromoCodes = async (): Promise<PromoCode[]> => {
-  const res = await axios.get("/promos");
+  const res = await api.get("/promos");
   return res.data.promos;
 };
 
@@ -1020,7 +1020,7 @@ export const getAllPromoCodes = async (): Promise<PromoCode[]> => {
  * Returns { promos: PromoCode[] }
  */
 export const getActivePromoCodes = async (): Promise<PromoCode[]> => {
-  const res = await axios.get("/promos/active");
+  const res = await api.get("/promos/active");
   return res.data.promos;
 };
 
@@ -1033,7 +1033,7 @@ export const getActivePromoCodes = async (): Promise<PromoCode[]> => {
 export const createPromoCode = async (
   payload: CreatePromoCodePayload
 ): Promise<PromoCode> => {
-  const res = await axios.post("/promos", payload);
+  const res = await api.post("/promos", payload);
   return res.data.promo;
 };
 
@@ -1046,7 +1046,7 @@ export const updatePromoCode = async (
   promoId: number,
   payload: UpdatePromoCodePayload
 ): Promise<PromoCode> => {
-  const res = await axios.put(`/promos/${promoId}`, payload);
+  const res = await api.put(`/promos/${promoId}`, payload);
   return res.data.promo;
 };
 
@@ -1056,7 +1056,7 @@ export const updatePromoCode = async (
  * Returns { message }
  */
 export const deletePromoCode = async (promoId: number): Promise<{ message: string }> => {
-  const res = await axios.delete(`/promos/${promoId}`);
+  const res = await api.delete(`/promos/${promoId}`);
   return res.data;
 };
 
@@ -1068,7 +1068,7 @@ export const deletePromoCode = async (promoId: number): Promise<{ message: strin
 export const validatePromoCode = async (
   code: string
 ): Promise<ValidatePromoResponse> => {
-  const res = await axios.post(`/promos/${code.toUpperCase()}/validate`);
+  const res = await api.post(`/promos/${code.toUpperCase()}/validate`);
   return res.data;
 };
 

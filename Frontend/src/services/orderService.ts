@@ -103,12 +103,12 @@ export interface SalesAgentCreateOrderPayload {
 export const createSalesAgentOrder = async (
   payload: SalesAgentCreateOrderPayload
 ): Promise<any> => {
-  const res = await axios.post("/orders/sales-agent", payload);
+  const res = await api.post("/orders/sales-agent", payload);
   return res.data;
 };
 
 export const createOrder = async (payload: CreateOrderPayload): Promise<any> => {
-  const res = await axios.post("/orders", payload);
+  const res = await api.post("/orders", payload);
   return res.data.order;
 };
 
@@ -119,26 +119,26 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<any> => 
 
 /** GET /orders — role-scoped list */
 export const getOrders = async (): Promise<any[]> => {
-  const res = await axios.get('/orders');
+  const res = await api.get('/orders');
   // Backend returns { count, orders } or array directly
   return res.data?.orders ?? res.data ?? [];
 };
 
 /** GET /orders/:id */
 export const getOrderById = async (id: number): Promise<any> => {
-  const res = await axios.get(`/orders/${id}`);
+  const res = await api.get(`/orders/${id}`);
   return res.data;
 };
 
 /** GET /orders/:id/history */
 export const getOrderHistory = async (id: number): Promise<any[]> => {
-  const res = await axios.get(`/orders/${id}/history`);
+  const res = await api.get(`/orders/${id}/history`);
   return res.data?.history ?? res.data ?? [];
 };
 
 /** POST /create-checkout-session */
 export const createCheckoutSession = async (amount: number): Promise<{ session_id: string; url: string }> => {
-  const res = await axios.post("/create-checkout-session", { amount });
+  const res = await api.post("/create-checkout-session", { amount });
   return res.data;
 };
 
@@ -155,7 +155,7 @@ export const acceptOrder = async (
   id: number,
   paymentMethod?: string
 ): Promise<any> => {
-  const res = await axios.post(`/orders/${id}/accept`,
+  const res = await api.post(`/orders/${id}/accept`,
     paymentMethod ? { payment_method: paymentMethod } : {}
   );
   return res.data;
@@ -166,7 +166,7 @@ export const acceptOrder = async (
  * Body: { reason? }
  */
 export const rejectOrder = async (id: number, reason?: string): Promise<any> => {
-  const res = await axios.post(`/orders/${id}/reject`, { reason: reason ?? null });
+  const res = await api.post(`/orders/${id}/reject`, { reason: reason ?? null });
   return res.data;
 };
 
@@ -175,7 +175,7 @@ export const rejectOrder = async (id: number, reason?: string): Promise<any> => 
  * Body: { reason? }
  */
 export const cancelOrder = async (id: number, reason?: string): Promise<any> => {
-  const res = await axios.post(`/orders/${id}/cancel`, { reason: reason ?? null });
+  const res = await api.post(`/orders/${id}/cancel`, { reason: reason ?? null });
   return res.data;
 };
 
@@ -190,7 +190,7 @@ export const assignKitchen = async (
   orderId: number,
   kitchenStaffId: number
 ): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/assign-kitchen`, {
+  const res = await api.post(`/orders/${orderId}/assign-kitchen`, {
     kitchen_staff_id: kitchenStaffId,
   });
   return res.data;
@@ -202,7 +202,7 @@ export const assignKitchen = async (
 
 /** POST /orders/:order_id/start-preparation  (KITCHEN_STAFF) */
 export const startPreparation = async (orderId: number): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/start-preparation`);
+  const res = await api.post(`/orders/${orderId}/start-preparation`);
   return res.data.order;
 };
 
@@ -212,7 +212,7 @@ export const startPreparation = async (orderId: number): Promise<any> => {
  * Backend sets status → READY
  */
 export const markOrderReady = async (orderId: number): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/ready`);
+  const res = await api.post(`/orders/${orderId}/ready`);
   return res.data;
 };
 
@@ -230,7 +230,7 @@ export const assignAgentToOrder = async (
   orderId: number,
   deliveryAgentId: number
 ): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/assign-agent`, {
+  const res = await api.post(`/orders/${orderId}/assign-agent`, {
     delivery_agent_id: deliveryAgentId,
   });
   return res.data;
@@ -251,7 +251,7 @@ export const assignDriverToOrder = async (
   orderId: number,
   driverId: number
 ): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/assign-driver`, {
+  const res = await api.post(`/orders/${orderId}/assign-driver`, {
     driver_id: driverId,
   });
   return res.data;
@@ -265,7 +265,7 @@ export const assignDriverToOrder = async (
  * Called from the DriverOrder dashboard, not from OrderManagement.
  */
 export const driverAcceptOrder = async (orderId: number): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/driver-accept`);
+  const res = await api.post(`/orders/${orderId}/driver-accept`);
   return res.data;
 };
 
@@ -274,7 +274,7 @@ export const driverAcceptOrder = async (orderId: number): Promise<any> => {
  * Bounces order back to ASSIGNED_TO_AGENT so agent can pick another driver.
  */
 export const driverRejectOrder = async (orderId: number): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/driver-reject`);
+  const res = await api.post(`/orders/${orderId}/driver-reject`);
   return res.data;
 };
 
@@ -297,7 +297,7 @@ export const submitDeliveryProof = async (
     customer_confirmation_phone?: string;
   }
 ): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/delivery-proof`, payload);
+  const res = await api.post(`/orders/${orderId}/delivery-proof`, payload);
   return res.data;
 };
 
@@ -310,7 +310,7 @@ export const submitDeliveryProof = async (
  * Also accessible to ADMIN and SHOP_MANAGER.
  */
 export const markOrderDelivered = async (orderId: number): Promise<any> => {
-  const res = await axios.post(`/orders/${orderId}/confirm-delivery`);
+  const res = await api.post(`/orders/${orderId}/confirm-delivery`);
   return res.data;
 };
 
@@ -318,19 +318,19 @@ export const markOrderDelivered = async (orderId: number): Promise<any> => {
 
 /** GET /orders/kitchen/my-orders  (KITCHEN_STAFF) */
 export const getMyKitchenOrders = async (): Promise<any[]> => {
-  const res = await axios.get('/orders/kitchen/my-orders');
+  const res = await api.get('/orders/kitchen/my-orders');
   return res.data?.orders ?? res.data ?? [];
 };
 
 /** GET /orders/agent/my-orders  (DELIVERY_AGENT) */
 export const getMyAgentOrders = async (): Promise<any[]> => {
-  const res = await axios.get('/orders/agent/my-orders');
+  const res = await api.get('/orders/agent/my-orders');
   return res.data?.orders ?? res.data ?? [];
 };
 
 /** GET /orders/driver/my-orders  (DRIVER) */
 export const getMyDriverOrders = async (): Promise<any[]> => {
-  const res = await axios.get('/orders/driver/my-orders');
+  const res = await api.get('/orders/driver/my-orders');
   return res.data?.orders ?? res.data ?? [];
 };
 
@@ -338,20 +338,20 @@ export const getMyDriverOrders = async (): Promise<any[]> => {
 
 /** GET /orders/status/:status */
 export const getOrdersByStatus = async (status: string): Promise<any[]> => {
-  const res = await axios.get(`/orders/status/${status}`);
+  const res = await api.get(`/orders/status/${status}`);
   return res.data?.orders ?? res.data ?? [];
 };
 
 // /** GET /orders/customer/:customer_id */
 // export const getOrdersByCustomer = async (customerId: number): Promise<any[]> => {
-//   const res = await axios.get(`/orders/customer/${customerId}`);
+//   const res = await api.get(`/orders/customer/${customerId}`);
 //   return res.data?.orders ?? res.data ?? [];
 // };
 
 
 export const getOrdersByCustomer = async (customerId: number) => {
   try {
-    const response = await axios.get(`/orders/customer/${customerId}`);
+    const response = await api.get(`/orders/customer/${customerId}`);
     return response.data;
   } catch (error: any) {
     console.log("Status:", error.response?.status);
@@ -363,13 +363,13 @@ export const getOrdersByCustomer = async (customerId: number) => {
 
 /** GET /orders/agent/:agent_id  (admin — orders assigned to a delivery agent) */
 export const getOrdersByAgent = async (agentId: number): Promise<any[]> => {
-  const res = await axios.get(`/orders/agent/${agentId}`);
+  const res = await api.get(`/orders/agent/${agentId}`);
   return res.data?.orders ?? res.data ?? [];
 };
 
 /** GET /orders/driver/:driver_id  (admin — orders assigned to a driver) */
 export const getOrdersByDriver = async (driverId: number): Promise<any[]> => {
-  const res = await axios.get(`/orders/driver/${driverId}`);
+  const res = await api.get(`/orders/driver/${driverId}`);
   return res.data?.orders ?? res.data ?? [];
 };
 
@@ -382,7 +382,7 @@ export const uploadOrderImage = async (
 ): Promise<{ image_url: string }> => {
   const form = new FormData();
   form.append('image', file);
-  const res = await axios.post(`/orders/${orderId}/upload-image`, form, {
+  const res = await api.post(`/orders/${orderId}/upload-image`, form, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res.data;
@@ -390,12 +390,12 @@ export const uploadOrderImage = async (
 
 /** GET /orders/:id/images */
 export const getOrderImages = async (orderId: number): Promise<any[]> => {
-  const res = await axios.get(`/orders/${orderId}/images`);
+  const res = await api.get(`/orders/${orderId}/images`);
   return res.data?.images ?? [];
 };
 
 // /** GET /orders?status=PENDING */
 // export const getOrders = async (status?: string): Promise<any[]> => {
-//   const res = await axios.get("/orders", { params: status ? { status } : {} });
+//   const res = await api.get("/orders", { params: status ? { status } : {} });
 //   return res.data.orders;
 // };

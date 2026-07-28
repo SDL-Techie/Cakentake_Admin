@@ -9,7 +9,7 @@ def get_postal_details(country_code, postal_code):
     """
 
     try:
-        url = f"https://axios.zippopotam.us/{country_code}/{postal_code}"
+        url = f"https://api.zippopotam.us/{country_code}/{postal_code}"
 
         response = requests.get(
             url,

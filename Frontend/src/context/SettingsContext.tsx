@@ -31,7 +31,7 @@ export const SettingsProvider = ({
       return;
     }
 
-    // fetch("https://ipaxios.co/json/")
+    // fetch("https://ipapi.co/json/")
      fetch("https://ipinfo.io/json")
       .then((res) => res.json())
       .then((data) => {

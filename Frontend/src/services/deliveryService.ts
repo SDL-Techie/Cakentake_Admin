@@ -12,7 +12,7 @@ import { api } from './api';
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT
  */
 export const getDeliveryPending = async (): Promise<any[]> => {
-  const res = await axios.get('/delivery/pending');
+  const res = await api.get('/delivery/pending');
   return res.data?.orders ?? [];
 };
 
@@ -23,7 +23,7 @@ export const getDeliveryPending = async (): Promise<any[]> => {
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT (sees only their own)
  */
 export const getDeliveryAssigned = async (): Promise<any[]> => {
-  const res = await axios.get('/delivery/assigned');
+  const res = await api.get('/delivery/assigned');
   return res.data?.orders ?? [];
 };
 
@@ -34,7 +34,7 @@ export const getDeliveryAssigned = async (): Promise<any[]> => {
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT (sees only their own)
  */
 export const getDeliveryReady = async (): Promise<any[]> => {
-  const res = await axios.get('/delivery/ready-for-pickup');
+  const res = await api.get('/delivery/ready-for-pickup');
   return res.data?.orders ?? [];
 };
 
@@ -45,7 +45,7 @@ export const getDeliveryReady = async (): Promise<any[]> => {
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT (sees only their own)
  */
 export const getDeliveryProofPending = async (): Promise<any[]> => {
-  const res = await axios.get('/delivery/proof-pending');
+  const res = await api.get('/delivery/proof-pending');
   return res.data?.orders ?? [];
 };
 
@@ -56,7 +56,7 @@ export const getDeliveryProofPending = async (): Promise<any[]> => {
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT (sees only their own)
  */
 export const getDeliveryDelivered = async (): Promise<any[]> => {
-  const res = await axios.get('/delivery/delivered');
+  const res = await api.get('/delivery/delivered');
   return res.data?.orders ?? [];
 };
 
@@ -67,7 +67,7 @@ export const getDeliveryDelivered = async (): Promise<any[]> => {
  * Summary stats for the delivery agent's dashboard header.
  */
 export const getAgentDashboard = async (agentId: number): Promise<any> => {
-  const res = await axios.get(`/delivery-agents/${agentId}/dashboard`);
+  const res = await api.get(`/delivery-agents/${agentId}/dashboard`);
   return res.data;
 };
 
@@ -77,7 +77,7 @@ export const getAgentDashboard = async (agentId: number): Promise<any> => {
  * Role: ADMIN | SHOP_MANAGER | DELIVERY_AGENT
  */
 export const getAgentOrders = async (agentId: number): Promise<any[]> => {
-  const res = await axios.get(`/delivery-agents/${agentId}/orders`);
+  const res = await api.get(`/delivery-agents/${agentId}/orders`);
   return res.data?.orders ?? [];
 };
 
@@ -101,13 +101,13 @@ export interface CreateSlotPayload {
 
 /** GET /delivery-slots */
 export const getDeliverySlots = async (): Promise<DeliverySlot[]> => {
-  const res = await axios.get('/delivery-slots');
+  const res = await api.get('/delivery-slots');
   return res.data?.slots ?? [];
 };
 
 /** POST /delivery-slots  (ADMIN | SHOP_MANAGER) */
 export const createDeliverySlot = async (payload: CreateSlotPayload): Promise<DeliverySlot> => {
-  const res = await axios.post('/delivery-slots', payload);
+  const res = await api.post('/delivery-slots', payload);
   return res.data.slot;
 };
 
@@ -116,11 +116,11 @@ export const updateDeliverySlot = async (
   slotId: number,
   payload: Partial<DeliverySlot>
 ): Promise<DeliverySlot> => {
-  const res = await axios.put(`/delivery-slots/${slotId}`, payload);
+  const res = await api.put(`/delivery-slots/${slotId}`, payload);
   return res.data.slot;
 };
 
 /** DELETE /delivery-slots/:slot_id  (ADMIN | SHOP_MANAGER) */
 export const deleteDeliverySlot = async (slotId: number): Promise<void> => {
-  await axios.delete(`/delivery-slots/${slotId}`);
+  await api.delete(`/delivery-slots/${slotId}`);
 };

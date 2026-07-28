@@ -106,7 +106,7 @@ export default function LoginPage(): React.JSX.Element {
   setLoading(true);
 
   try {
- const res = await storefrontaxios.login<LoginResponse>(
+ const res = await storefrontApi.login<LoginResponse>(
       {
         email: form.identifier,
         password: form.password,

@@ -85,7 +85,7 @@
 //     });
 
 //     // Add JWT token to all requests
-//     this.axios.interceptors.request.use(
+//     this.api.interceptors.request.use(
 //       (config) => {
 //         const token = localStorage.getItem('token');
 //         if (token) {
@@ -97,7 +97,7 @@
 //     );
 
 //     // Handle response errors
-//     this.axios.interceptors.response.use(
+//     this.api.interceptors.response.use(
 //       (response) => response,
 //       (error: AxiosError<any>) => {
 //         const status = error.response?.status || 500;
@@ -123,7 +123,7 @@
 //   async getUsers(role?: UserRole): Promise<User[]> {
 //     try {
 //       const params = role ? { role } : {};
-//       const response = await this.axios.get<{ users: User[] }>('/users', { params });
+//       const response = await this.api.get<{ users: User[] }>('/users', { params });
 //       return response.data.users;
 //     } catch (error) {
 //       console.error('Error fetching users:', error);
@@ -136,7 +136,7 @@
 //    */
 //   async getUserById(userId: number): Promise<User> {
 //     try {
-//       const response = await this.axios.get<{ user: User }>(`/users/${userId}`);
+//       const response = await this.api.get<{ user: User }>(`/users/${userId}`);
 //       return response.data.user;
 //     } catch (error) {
 //       console.error(`Error fetching user ${userId}:`, error);
@@ -149,7 +149,7 @@
 //    */
 //   async createUser(payload: CreateUserPayload): Promise<User> {
 //     try {
-//       const response = await this.axios.post<{ user: User; message: string }>('/users', payload);
+//       const response = await this.api.post<{ user: User; message: string }>('/users', payload);
 //       return response.data.user;
 //     } catch (error) {
 //       console.error('Error creating user:', error);
@@ -162,7 +162,7 @@
 //    */
 //   async updateUser(userId: number, payload: UpdateUserPayload): Promise<User> {
 //     try {
-//       const response = await this.axios.put<{ user: User; message: string }>(`/users/${userId}`, payload);
+//       const response = await this.api.put<{ user: User; message: string }>(`/users/${userId}`, payload);
 //       return response.data.user;
 //     } catch (error) {
 //       console.error(`Error updating user ${userId}:`, error);
@@ -175,7 +175,7 @@
 //    */
 //   async deleteUser(userId: number): Promise<string> {
 //     try {
-//       const response = await this.axios.delete<{ message: string }>(`/users/${userId}`);
+//       const response = await this.api.delete<{ message: string }>(`/users/${userId}`);
 //       return response.data.message;
 //     } catch (error) {
 //       console.error(`Error deleting user ${userId}:`, error);
@@ -190,7 +190,7 @@
 //    */
 //   async getSalesAgents(): Promise<User[]> {
 //     try {
-//       const response = await this.axios.get<{ sales_agents: User[] }>('/owner/sales-agents');
+//       const response = await this.api.get<{ sales_agents: User[] }>('/owner/sales-agents');
 //       return response.data.sales_agents;
 //     } catch (error) {
 //       console.error('Error fetching sales agents:', error);
@@ -203,7 +203,7 @@
 //    */
 //   async getSalesAgent(agentId: number): Promise<User> {
 //     try {
-//       const response = await this.axios.get<{ agent: User }>(`/owner/sales-agents/${agentId}`);
+//       const response = await this.api.get<{ agent: User }>(`/owner/sales-agents/${agentId}`);
 //       return response.data.agent;
 //     } catch (error) {
 //       console.error(`Error fetching sales agent ${agentId}:`, error);
@@ -216,7 +216,7 @@
 //    */
 //   async getDeliveryAgents(): Promise<User[]> {
 //     try {
-//       const response = await this.axios.get<{ delivery_agents: User[] }>('/owner/delivery-agents');
+//       const response = await this.api.get<{ delivery_agents: User[] }>('/owner/delivery-agents');
 //       return response.data.delivery_agents;
 //     } catch (error) {
 //       console.error('Error fetching delivery agents:', error);
@@ -229,7 +229,7 @@
 //    */
 //   async getDeliveryAgent(agentId: number): Promise<User> {
 //     try {
-//       const response = await this.axios.get<{ agent: User }>(`/owner/delivery-agents/${agentId}`);
+//       const response = await this.api.get<{ agent: User }>(`/owner/delivery-agents/${agentId}`);
 //       return response.data.agent;
 //     } catch (error) {
 //       console.error(`Error fetching delivery agent ${agentId}:`, error);
@@ -242,7 +242,7 @@
 //    */
 //   async getDrivers(): Promise<User[]> {
 //     try {
-//       const response = await this.axios.get<{ drivers: User[] }>('/owner/drivers');
+//       const response = await this.api.get<{ drivers: User[] }>('/owner/drivers');
 //       return response.data.drivers;
 //     } catch (error) {
 //       console.error('Error fetching drivers:', error);
@@ -255,7 +255,7 @@
 //    */
 //   async getDriver(driverId: number): Promise<User> {
 //     try {
-//       const response = await this.axios.get<{ driver: User }>(`/owner/drivers/${driverId}`);
+//       const response = await this.api.get<{ driver: User }>(`/owner/drivers/${driverId}`);
 //       return response.data.driver;
 //     } catch (error) {
 //       console.error(`Error fetching driver ${driverId}:`, error);
@@ -270,7 +270,7 @@
 //    */
 //   async getPermissions(): Promise<Permission[]> {
 //     try {
-//       const response = await this.axios.get<{ permissions: Permission[] }>('/permissions');
+//       const response = await this.api.get<{ permissions: Permission[] }>('/permissions');
 //       return response.data.permissions;
 //     } catch (error) {
 //       console.error('Error fetching permissions:', error);
@@ -283,7 +283,7 @@
 //    */
 //   async assignPermission(payload: PermissionPayload): Promise<Permission> {
 //     try {
-//       const response = await this.axios.post<{ permission: Permission; message: string }>(
+//       const response = await this.api.post<{ permission: Permission; message: string }>(
 //         '/permissions/assign',
 //         payload
 //       );
@@ -299,7 +299,7 @@
 //    */
 //   async updatePermission(payload: PermissionPayload): Promise<Permission> {
 //     try {
-//       const response = await this.axios.put<{ permission: Permission; message: string }>(
+//       const response = await this.api.put<{ permission: Permission; message: string }>(
 //         '/permissions/update',
 //         payload
 //       );
@@ -359,7 +359,7 @@
 // export default userService;
 
 
-//import axios from "axios";
+import axios from "axios";
 import { api, BASE_URL } from "./api";
 
 
@@ -457,7 +457,7 @@ export const searchCustomers = async (
 ): Promise<Customer[]> => {
   if (!keyword.trim()) return [];
 
-  const res = await axios.get("/customers/search", {
+  const res = await api.get("/customers/search", {
     params: {
       q: keyword,
     },
@@ -500,37 +500,37 @@ export const deleteUser = async (id: number): Promise<void> => {
 // ─────────────────────────────────────────────────────────────
 
 export const getKitchenStaff = async (): Promise<any[]> => {
-  const res = await axios.get("/kitchen-staff");
+  const res = await api.get("/kitchen-staff");
   return Array.isArray(res.data) ? res.data : res.data?.staff ?? [];
 };
 
 export const getDeliveryAgents = async (): Promise<any[]> => {
-  const res = await axios.get("/delivery-agents");
+  const res = await api.get("/delivery-agents");
   return Array.isArray(res.data) ? res.data : res.data?.agents ?? [];
 };
 
 export const getDrivers = async (): Promise<any[]> => {
-  const res = await axios.get("/drivers");
+  const res = await api.get("/drivers");
   return Array.isArray(res.data) ? res.data : res.data?.drivers ?? [];
 };
 
 export const getAvailableDrivers = async (): Promise<any[]> => {
-  const res = await axios.get("/drivers/available");
+  const res = await api.get("/drivers/available");
   return Array.isArray(res.data) ? res.data : res.data?.drivers ?? [];
 };
 
 export const getDriverDashboard = async (driverId: number): Promise<any> => {
-  const res = await axios.get(`/drivers/${driverId}/dashboard`);
+  const res = await api.get(`/drivers/${driverId}/dashboard`);
   return res.data;
 };
 
 export const getDriverAssigned = async (driverId: number): Promise<any[]> => {
-  const res = await axios.get(`/drivers/${driverId}/assigned`);
+  const res = await api.get(`/drivers/${driverId}/assigned`);
   return res.data?.orders ?? res.data ?? [];
 };
 
 export const getDriverCompleted = async (driverId: number): Promise<any[]> => {
-  const res = await axios.get(`/drivers/${driverId}/completed`);
+  const res = await api.get(`/drivers/${driverId}/completed`);
   return res.data?.orders ?? res.data ?? [];
 };
 
@@ -538,7 +538,7 @@ export const updateDriverStatus = async (
   driverId: number,
   status: "ONLINE" | "BUSY" | "OFFLINE"
 ): Promise<any> => {
-  const res = await axios.post(`/drivers/${driverId}/status`, { status });
+  const res = await api.post(`/drivers/${driverId}/status`, { status });
   return res.data;
 };
 

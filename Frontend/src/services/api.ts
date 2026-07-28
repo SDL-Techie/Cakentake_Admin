@@ -6,7 +6,7 @@ export const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// axios.interceptors.request.use((config) => {
+// api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem("token");
 //   if (token) {
 //     config.headers.Authorization = `Bearer ${token}`;
@@ -14,7 +14,7 @@ export const api = axios.create({
 //   return config;
 // });
 
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   const currency = localStorage.getItem("currency") || "KWD";
 

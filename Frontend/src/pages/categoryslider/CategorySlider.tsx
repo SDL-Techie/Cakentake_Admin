@@ -34,7 +34,7 @@ const CircularCategorySlider = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const response = await storefrontaxios.categories();
+        const response = await storefrontApi.categories();
         const data = response.data;
 
         const transformedCategories: Category[] = data.map((item: any) => ({

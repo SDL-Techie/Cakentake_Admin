@@ -23,13 +23,13 @@
 // ============================================================ */
 // const api = axios.create({ baseURL: 'http://127.0.0.1:5000' });
 
-// axios.interceptors.request.use((config) => {
+// api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem('access_token') || localStorage.getItem('token');
 //   if (token) config.headers.Authorization = `Bearer ${token}`;
 //   return config;
 // });
 
-// axios.interceptors.response.use(
+// api.interceptors.response.use(
 //   (res) => res,
 //   (err) => {
 //     if (err?.response?.status === 401) {
@@ -48,7 +48,7 @@
 //   const data = new FormData();
 //   data.append('file', file);
 //   data.append('upload_preset', UPLOAD_PRESET);
-//   const res = await axios.post(`https://axios.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data);
+//   const res = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data);
 //   return res.data.secure_url;
 // };
 
@@ -395,10 +395,10 @@
 //     try {
 //       let data: any[];
 //       if (catId && catId !== 'all') {
-//         const res = await axios.get(`/products/category/${catId}`);
+//         const res = await api.get(`/products/category/${catId}`);
 //         data = Array.isArray(res.data) ? res.data : (res.data.products || []);
 //       } else {
-//         const res = await axios.get('/products?admin=true');
+//         const res = await api.get('/products?admin=true');
 //         data = Array.isArray(res.data) ? res.data : (res.data.products || []);
 //       }
 //       setProducts(data.map((item: any) => ({
@@ -423,7 +423,7 @@
 //   const fetchCategories = useCallback(async () => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/category');
+//       const res = await api.get('/category');
 //       const data = Array.isArray(res.data) ? res.data : [];
 //       setCategories(data.map((cat: any) => ({
 //         id:       String(cat.id),
@@ -438,7 +438,7 @@
 //   const fetchSubCats = useCallback(async () => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/subcategories');
+//       const res = await api.get('/subcategories');
 //       const data = res.data.subcategories || res.data || [];
 //       setSubCats(data.map((sc: any) => ({
 //         id:                 String(sc.id),
@@ -456,7 +456,7 @@
 
 //   const fetchAllVariants = useCallback(async () => {
 //     try {
-//       const res = await axios.get('/variants');
+//       const res = await api.get('/variants');
 //       const data = res.data.variants || [];
 //       const mapped: Variant[] = data.map((v: any) => ({
 //         id:            String(v.id),
@@ -473,7 +473,7 @@
 //   const fetchVariants = useCallback(async (productId?: string) => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/variants');
+//       const res = await api.get('/variants');
 //       let data = res.data.variants || [];
 //       const pid = productId !== undefined ? productId : variantProductId;
 //       if (pid) {
@@ -497,7 +497,7 @@
 //     if (!vid) return;
 //     setLoading(true);
 //     try {
-//       const res = await axios.get(`/flavors/${vid}`);
+//       const res = await api.get(`/flavors/${vid}`);
 //       const data = res.data.flavors || res.data || [];
 //       setFlavors(data.map((f: any) => ({
 //         id:            String(f.id),
@@ -516,7 +516,7 @@
 //   const fetchAddons = useCallback(async () => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/addons');
+//       const res = await api.get('/addons');
 //       const data = res.data.addons || res.data || [];
 //       setAddons(data.map((a: any) => ({
 //         id:            String(a.id),
@@ -534,7 +534,7 @@
 //   const fetchCombos = useCallback(async () => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/combos');
+//       const res = await api.get('/combos');
 //       const data = res.data.combos || res.data || [];
 //       setCombos(data.map((c: any) => ({
 //         id:              String(c.id),
@@ -580,7 +580,7 @@
 //   const fetchPromoCodes = useCallback(async () => {
 //     setLoading(true);
 //     try {
-//       const res = await axios.get('/promos');
+//       const res = await api.get('/promos');
 //       const data = res.data.promos || res.data || [];
 //       setPromoCodes(data.map((p: any) => ({
 //         id:             String(p.id),
@@ -652,10 +652,10 @@
 //       };
 //       if (pOrigPrice) payload.original_price = Number(pOrigPrice);
 //       if (selProduct) {
-//         await axios.put(`/products/${selProduct.id}`, payload);
+//         await api.put(`/products/${selProduct.id}`, payload);
 //         showToast('Product updated successfully');
 //       } else {
-//         await axios.post('/products', payload);
+//         await api.post('/products', payload);
 //         showToast('Product created successfully');
 //       }
 //       setProductModal(false); setPFile(null);
@@ -667,13 +667,13 @@
 //   const handleDeleteProduct = (id: string) =>
 //     askConfirm('Delete this product? This cannot be undone.', async () => {
 //       try {
-//         await axios.delete(`/products/${id}`);
+//         await api.delete(`/products/${id}`);
 //         showToast('Product deleted'); fetchProducts(activeCatFilter);
 //       } catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 //   const handleToggleProduct = async (prod: Product) => {
 //     try {
-//       await axios.put(`/products/${prod.id}`, { name: prod.name, is_active: !prod.isAvailable });
+//       await api.put(`/products/${prod.id}`, { name: prod.name, is_active: !prod.isAvailable });
 //       showToast(`Product ${!prod.isAvailable ? 'activated' : 'deactivated'}`);
 //       fetchProducts(activeCatFilter);
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Toggle failed', 'error'); }
@@ -691,9 +691,9 @@
 //       if (cFile) { setUploading(true); imageUrl = await uploadToCloudinary(cFile); setUploading(false); }
 //       const payload = { name: cName.trim(), status: 'active', image_url: imageUrl };
 //       if (selCategory) {
-//         await axios.put(`/category/${selCategory.id}`, payload); showToast('Category updated');
+//         await api.put(`/category/${selCategory.id}`, payload); showToast('Category updated');
 //       } else {
-//         await axios.post('/category', payload); showToast('Category created');
+//         await api.post('/category', payload); showToast('Category created');
 //       }
 //       setCategoryModal(false); setCFile(null); fetchCategories();
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Save failed', 'error'); }
@@ -701,7 +701,7 @@
 //   };
 //   const handleDeleteCategory = (id: string) =>
 //     askConfirm('Delete this category? Products in it may be affected.', async () => {
-//       try { await axios.delete(`/category/${id}`); showToast('Category deleted'); fetchCategories(); }
+//       try { await api.delete(`/category/${id}`); showToast('Category deleted'); fetchCategories(); }
 //       catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 
@@ -725,9 +725,9 @@
 //       if (scFile) { setUploading(true); imageUrl = await uploadToCloudinary(scFile); setUploading(false); }
 //       const payload = { name: scName.trim(), description: scDesc.trim(), category_id: Number(scParentId), image_url: imageUrl, is_active: scActive };
 //       if (selSubCat) {
-//         await axios.put(`/subcategories/${selSubCat.id}`, payload); showToast('Subcategory updated');
+//         await api.put(`/subcategories/${selSubCat.id}`, payload); showToast('Subcategory updated');
 //       } else {
-//         await axios.post('/subcategories', payload); showToast('Subcategory created');
+//         await api.post('/subcategories', payload); showToast('Subcategory created');
 //       }
 //       setSubCatModal(false); setScFile(null); fetchSubCats();
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Save failed', 'error'); }
@@ -735,7 +735,7 @@
 //   };
 //   const handleDeleteSubCat = (id: string) =>
 //     askConfirm('Delete this subcategory?', async () => {
-//       try { await axios.delete(`/subcategories/${id}`); showToast('Subcategory deleted'); fetchSubCats(); }
+//       try { await api.delete(`/subcategories/${id}`); showToast('Subcategory deleted'); fetchSubCats(); }
 //       catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 
@@ -756,10 +756,10 @@
 //     e.preventDefault(); setSaving(true);
 //     try {
 //       if (selVariant) {
-//         await axios.put(`/variants/${selVariant.id}`, { name: vName.trim(), price_modifier: Number(vMod), is_active: vActive });
+//         await api.put(`/variants/${selVariant.id}`, { name: vName.trim(), price_modifier: Number(vMod), is_active: vActive });
 //         showToast('Variant updated');
 //       } else {
-//         await axios.post('/variants', { product_id: Number(vProdId), name: vName.trim(), price_modifier: Number(vMod) });
+//         await api.post('/variants', { product_id: Number(vProdId), name: vName.trim(), price_modifier: Number(vMod) });
 //         showToast('Variant created');
 //       }
 //       setVariantModal(false);
@@ -771,7 +771,7 @@
 //   const handleDeleteVariant = (id: string) =>
 //     askConfirm('Delete this variant? Associated flavors will also be removed.', async () => {
 //       try {
-//         await axios.delete(`/variants/${id}`); showToast('Variant deleted');
+//         await api.delete(`/variants/${id}`); showToast('Variant deleted');
 //         await fetchAllVariants(); fetchVariants(variantProductId || undefined);
 //       } catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
@@ -793,10 +793,10 @@
 //     e.preventDefault(); setSaving(true);
 //     try {
 //       if (selFlavor) {
-//         await axios.put(`/flavors/${selFlavor.id}`, { name: flName.trim(), price_modifier: Number(flMod), is_active: flActive });
+//         await api.put(`/flavors/${selFlavor.id}`, { name: flName.trim(), price_modifier: Number(flMod), is_active: flActive });
 //         showToast('Flavor updated');
 //       } else {
-//         await axios.post('/flavors', { variant_id: Number(flVarId), name: flName.trim(), price_modifier: Number(flMod) });
+//         await api.post('/flavors', { variant_id: Number(flVarId), name: flName.trim(), price_modifier: Number(flMod) });
 //         showToast('Flavor created');
 //       }
 //       setFlavorModal(false);
@@ -808,7 +808,7 @@
 //   const handleDeleteFlavor = (id: string) =>
 //     askConfirm('Delete this flavor?', async () => {
 //       try {
-//         await axios.delete(`/flavors/${id}`); showToast('Flavor deleted');
+//         await api.delete(`/flavors/${id}`); showToast('Flavor deleted');
 //         fetchFlavors(flavorVariantId || undefined);
 //       } catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
@@ -842,9 +842,9 @@
 //         is_active: adActive,
 //       };
 //       if (selAddon) {
-//         await axios.put(`/addons/${selAddon.id}`, payload); showToast('Addon updated');
+//         await api.put(`/addons/${selAddon.id}`, payload); showToast('Addon updated');
 //       } else {
-//         await axios.post('/addons', payload); showToast('Addon created');
+//         await api.post('/addons', payload); showToast('Addon created');
 //       }
 //       setAddonModal(false); setAdFile(null); fetchAddons();
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Save failed', 'error'); }
@@ -852,7 +852,7 @@
 //   };
 //   const handleDeleteAddon = (id: string) =>
 //     askConfirm('Delete this addon?', async () => {
-//       try { await axios.delete(`/addons/${id}`); showToast('Addon deleted'); fetchAddons(); }
+//       try { await api.delete(`/addons/${id}`); showToast('Addon deleted'); fetchAddons(); }
 //       catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 
@@ -868,9 +868,9 @@
 //       if (coFile) { setUploading(true); imageUrl = await uploadToCloudinary(coFile); setUploading(false); }
 //       const payload = { name: coName.trim(), description: coDesc.trim(), price: Number(coPrice), discount_amount: Number(coDiscount), image_url: imageUrl, is_active: coAvailable };
 //       if (selCombo) {
-//         await axios.put(`/combos/${selCombo.id}`, payload); showToast('Combo updated');
+//         await api.put(`/combos/${selCombo.id}`, payload); showToast('Combo updated');
 //       } else {
-//         await axios.post('/combos', payload); showToast('Combo created');
+//         await api.post('/combos', payload); showToast('Combo created');
 //       }
 //       setComboModal(false); setCoFile(null); fetchCombos();
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Save failed', 'error'); }
@@ -878,7 +878,7 @@
 //   };
 //   const handleDeleteCombo = (id: string) =>
 //     askConfirm('Delete this combo?', async () => {
-//       try { await axios.delete(`/combos/${id}`); showToast('Combo deleted'); fetchCombos(); }
+//       try { await api.delete(`/combos/${id}`); showToast('Combo deleted'); fetchCombos(); }
 //       catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 
@@ -987,9 +987,9 @@
 //       if (pcMaxUses) payload.max_uses = Number(pcMaxUses);
 //       if (pcExpiry)  payload.expires_at = pcExpiry;
 //       if (selPromoCode) {
-//         await axios.put(`/promos/${selPromoCode.id}`, payload); showToast('Promo code updated');
+//         await api.put(`/promos/${selPromoCode.id}`, payload); showToast('Promo code updated');
 //       } else {
-//         await axios.post('/promos', payload); showToast('Promo code created');
+//         await api.post('/promos', payload); showToast('Promo code created');
 //       }
 //       setPromoCodeModal(false); fetchPromoCodes();
 //     } catch (err: any) { showToast(err?.response?.data?.error || 'Save failed', 'error'); }
@@ -997,7 +997,7 @@
 //   };
 //   const handleDeletePromoCode = (id: string) =>
 //     askConfirm('Delete this promo code?', async () => {
-//       try { await axios.delete(`/promos/${id}`); showToast('Promo code deleted'); fetchPromoCodes(); }
+//       try { await api.delete(`/promos/${id}`); showToast('Promo code deleted'); fetchPromoCodes(); }
 //       catch (err: any) { showToast(err?.response?.data?.error || 'Delete failed', 'error'); }
 //     });
 

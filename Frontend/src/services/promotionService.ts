@@ -64,13 +64,13 @@ export interface CreatePromotionPayload {
 
 /** GET /promotions  (authenticated) */
 export const getPromotions = async (): Promise<Promotion[]> => {
-  const res = await axios.get("/promotions");
+  const res = await api.get("/promotions");
   return res.data.promotions;
 };
 
 /** GET /promotions/active  (public) */
 export const getActivePromotions = async (): Promise<Promotion[]> => {
-  const res = await axios.get("/promotions/active");
+  const res = await api.get("/promotions/active");
   return res.data.promotions;
 };
 
@@ -78,7 +78,7 @@ export const getActivePromotions = async (): Promise<Promotion[]> => {
 // export const createPromotion = async (
 //   payload: Omit<Promotion, "id" | "is_active">
 // ): Promise<Promotion> => {
-//   const res = await axios.post("/promotions", payload);
+//   const res = await api.post("/promotions", payload);
 //   return res.data.promotion;
 // };
 
@@ -86,7 +86,7 @@ export const getActivePromotions = async (): Promise<Promotion[]> => {
 export const createPromotion = async (
   payload: CreatePromotionPayload
 ): Promise<Promotion> => {
-  const res = await axios.post("/promotions", payload);
+  const res = await api.post("/promotions", payload);
   return res.data.promotion;
 };
 
@@ -96,24 +96,24 @@ export const updatePromotion = async (
   promoId: number,
   payload: Partial<Promotion>
 ): Promise<Promotion> => {
-  const res = await axios.put(`/promotions/${promoId}`, payload);
+  const res = await api.put(`/promotions/${promoId}`, payload);
   return res.data.promotion;
 };
 
 /** DELETE /promotions/:promo_id  (ADMIN | SHOP_MANAGER) */
 export const deletePromotion = async (promoId: number): Promise<void> => {
-  await axios.delete(`/promotions/${promoId}`);
+  await api.delete(`/promotions/${promoId}`);
 };
 
 /** POST /promotions/:promo_id/activate  (ADMIN | SHOP_MANAGER) */
 export const activatePromotion = async (promoId: number): Promise<Promotion> => {
-  const res = await axios.post(`/promotions/${promoId}/activate`);
+  const res = await api.post(`/promotions/${promoId}/activate`);
   return res.data.promotion;
 };
 
 /** POST /promotions/:promo_id/deactivate  (ADMIN | SHOP_MANAGER) */
 export const deactivatePromotion = async (promoId: number): Promise<Promotion> => {
-  const res = await axios.post(`/promotions/${promoId}/deactivate`);
+  const res = await api.post(`/promotions/${promoId}/deactivate`);
   return res.data.promotion;
 };
 
@@ -123,7 +123,7 @@ export const addFreeItem = async (
   productId: number,
   quantity: number = 1
 ): Promise<any> => {
-  const res = await axios.post(`/promotions/${promoId}/add-free-item`, {
+  const res = await api.post(`/promotions/${promoId}/add-free-item`, {
     product_id: productId,
     quantity,
   });
@@ -132,14 +132,14 @@ export const addFreeItem = async (
 
 /** DELETE /promotions/:promo_id/remove-free-item  (ADMIN | SHOP_MANAGER) */
 export const removeFreeItem = async (promoId: number, productId: number): Promise<void> => {
-  await axios.delete(`/promotions/${promoId}/remove-free-item`, {
+  await api.delete(`/promotions/${promoId}/remove-free-item`, {
     data: { product_id: productId },
   });
 };
 
 /** GET /promotions/:promo_id/free-items */
 export const getFreeItems = async (promoId: number): Promise<any[]> => {
-  const res = await axios.get(`/promotions/${promoId}/free-items`);
+  const res = await api.get(`/promotions/${promoId}/free-items`);
   return res.data.free_items;
 };
 
@@ -147,13 +147,13 @@ export const getFreeItems = async (promoId: number): Promise<any[]> => {
 
 /** GET /promos  (ADMIN | SHOP_MANAGER) */
 export const getPromos = async (): Promise<PromoCode[]> => {
-  const res = await axios.get("/promos");
+  const res = await api.get("/promos");
   return res.data.promos;
 };
 
 /** GET /promos/active  (public) */
 export const getActivePromos = async (): Promise<PromoCode[]> => {
-  const res = await axios.get("/promos/active");
+  const res = await api.get("/promos/active");
   return res.data.promos;
 };
 
@@ -161,7 +161,7 @@ export const getActivePromos = async (): Promise<PromoCode[]> => {
 export const createPromo = async (
   payload: Omit<PromoCode, "id" | "used_count" | "is_active">
 ): Promise<PromoCode> => {
-  const res = await axios.post("/promos", payload);
+  const res = await api.post("/promos", payload);
   return res.data.promo;
 };
 
@@ -170,19 +170,19 @@ export const updatePromo = async (
   promoId: number,
   payload: Partial<PromoCode>
 ): Promise<PromoCode> => {
-  const res = await axios.put(`/promos/${promoId}`, payload);
+  const res = await api.put(`/promos/${promoId}`, payload);
   return res.data.promo;
 };
 
 /** DELETE /promos/:promo_id  (ADMIN | SHOP_MANAGER) */
 export const deletePromo = async (promoId: number): Promise<void> => {
-  await axios.delete(`/promos/${promoId}`);
+  await api.delete(`/promos/${promoId}`);
 };
 
 /** POST /promos/:code/validate */
 export const validatePromo = async (
   code: string
 ): Promise<{ valid: boolean; promo?: PromoCode; error?: string }> => {
-  const res = await axios.post(`/promos/${code}/validate`);
+  const res = await api.post(`/promos/${code}/validate`);
   return res.data;
 };

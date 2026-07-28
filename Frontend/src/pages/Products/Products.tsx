@@ -98,8 +98,8 @@ const Products: React.FC = () => {
         const currency = localStorage.getItem('currency') || 'AED';
 
         const [prodRes, catRes] = await Promise.all([
-          storefrontaxios.products({ headers: { 'X-Currency': currency } }),
-          storefrontaxios.categories(),
+          storefrontApi.products({ headers: { 'X-Currency': currency } }),
+          storefrontApi.categories(),
         ]);
 
         setProducts(prodRes.data);
@@ -176,7 +176,7 @@ const Products: React.FC = () => {
 
     try {
       setSubLoading(true);
-      const res = await storefrontaxios.subcategories(cat.id);
+      const res = await storefrontApi.subcategories(cat.id);
       setSubcategories(res.data.subcategories || []);
     } catch (err) {
       console.error('Subcategory fetch error', err);

@@ -119,7 +119,7 @@ const Home: FC = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await storefrontaxios.products( {
+        const res = await storefrontApi.products( {
           headers: { 'X-Currency': currency }
         });
         setFeaturedProducts(res.data.slice(0, 4));

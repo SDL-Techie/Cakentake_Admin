@@ -11,13 +11,13 @@
 // // // export const createLoyaltyConfig = async (
 // // //   payload: LoyaltyConfig
 // // // ): Promise<LoyaltyConfig> => {
-// // //   const res = await axios.post("/loyalty-config", payload);
+// // //   const res = await api.post("/loyalty-config", payload);
 // // //   return res.data.config;
 // // // };
 
 // // // /** GET /loyalty-config */
 // // // export const getLoyaltyConfig = async (): Promise<LoyaltyConfig> => {
-// // //   const res = await axios.get("/loyalty-config");
+// // //   const res = await api.get("/loyalty-config");
 // // //   return res.data.config;
 // // // };
 
@@ -25,7 +25,7 @@
 // // // export const updateLoyaltyConfig = async (
 // // //   payload: Partial<LoyaltyConfig>
 // // // ): Promise<LoyaltyConfig> => {
-// // //   const res = await axios.put("/loyalty-config", payload);
+// // //   const res = await api.put("/loyalty-config", payload);
 // // //   return res.data.config;
 // // // };
 
@@ -33,7 +33,7 @@
 // // // export const getLoyaltyPoints = async (
 // // //   customerId: number
 // // // ): Promise<{ customer_id: number; points: number }> => {
-// // //   const res = await axios.get(`/loyalty-points/${customerId}`);
+// // //   const res = await api.get(`/loyalty-points/${customerId}`);
 // // //   return res.data;
 // // // };
 
@@ -43,7 +43,7 @@
 // // //   points: number,
 // // //   orderId?: number
 // // // ): Promise<any> => {
-// // //   const res = await axios.post(`/loyalty-points/${customerId}/redeem`, {
+// // //   const res = await api.post(`/loyalty-points/${customerId}/redeem`, {
 // // //     points,
 // // //     order_id: orderId,
 // // //   });
@@ -52,19 +52,19 @@
 
 // // // /** GET /loyalty-points/report  (ADMIN | SHOP_MANAGER) */
 // // // export const getLoyaltyReport = async (): Promise<any> => {
-// // //   const res = await axios.get("/loyalty-points/report");
+// // //   const res = await api.get("/loyalty-points/report");
 // // //   return res.data;
 // // // };
 
 // // // /** GET /loyalty/ledger?page=1  (ADMIN | SHOP_MANAGER) */
 // // // export const getLoyaltyLedger = async (page: number = 1): Promise<any> => {
-// // //   const res = await axios.get("/loyalty/ledger", { params: { page } });
+// // //   const res = await api.get("/loyalty/ledger", { params: { page } });
 // // //   return res.data;
 // // // };
 
 // // // /** GET /loyalty/ledger/:customer_id */
 // // // export const getCustomerLedger = async (customerId: number): Promise<any[]> => {
-// // //   const res = await axios.get(`/loyalty/ledger/${customerId}`);
+// // //   const res = await api.get(`/loyalty/ledger/${customerId}`);
 // // //   return res.data.ledger;
 // // // };
 
@@ -105,13 +105,13 @@
 // // export const createLoyaltyConfig = async (
 // //   payload: LoyaltyConfig
 // // ): Promise<LoyaltyConfig> => {
-// //   const res = await axios.post("/loyalty-config", payload);
+// //   const res = await api.post("/loyalty-config", payload);
 // //   return res.data.config;
 // // };
 
 // // /** GET /loyalty-config */
 // // export const getLoyaltyConfig = async (): Promise<LoyaltyConfig> => {
-// //   const res = await axios.get("/loyalty-config");
+// //   const res = await api.get("/loyalty-config");
 // //   return res.data.config;
 // // };
 
@@ -119,7 +119,7 @@
 // // export const updateLoyaltyConfig = async (
 // //   payload: Partial<LoyaltyConfig>
 // // ): Promise<LoyaltyConfig> => {
-// //   const res = await axios.put("/loyalty-config", payload);
+// //   const res = await api.put("/loyalty-config", payload);
 // //   return res.data.config;
 // // };
 
@@ -127,7 +127,7 @@
 // // export const getLoyaltyPoints = async (
 // //   customerId: number
 // // ): Promise<{ customer_id: number; points: number }> => {
-// //   const res = await axios.get(`/loyalty-points/${customerId}`);
+// //   const res = await api.get(`/loyalty-points/${customerId}`);
 // //   return res.data;
 // // };
 
@@ -137,7 +137,7 @@
 // //   points: number,
 // //   orderId?: number
 // // ): Promise<any> => {
-// //   const res = await axios.post(`/loyalty-points/${customerId}/redeem`, {
+// //   const res = await api.post(`/loyalty-points/${customerId}/redeem`, {
 // //     points,
 // //     order_id: orderId,
 // //   });
@@ -146,7 +146,7 @@
 
 // // /** GET /loyalty-points/report  (ADMIN | SHOP_MANAGER) */
 // // export const getLoyaltyReport = async (): Promise<LoyaltyReport> => {
-// //   const res = await axios.get("/loyalty-points/report");
+// //   const res = await api.get("/loyalty-points/report");
 // //   return res.data;
 // // };
 
@@ -154,7 +154,7 @@
 // // export const getLoyaltyLedger = async (
 // //   page: number = 1
 // // ): Promise<LoyaltyLedgerResponse> => {
-// //   const res = await axios.get("/loyalty/ledger", { params: { page } });
+// //   const res = await api.get("/loyalty/ledger", { params: { page } });
 // //   return res.data;
 // // };
 
@@ -162,7 +162,7 @@
 // // export const getCustomerLedger = async (
 // //   customerId: number
 // // ): Promise<LoyaltyLedgerEntry[]> => {
-// //   const res = await axios.get(`/loyalty/ledger/${customerId}`);
+// //   const res = await api.get(`/loyalty/ledger/${customerId}`);
 // //   return res.data.ledger;
 // // };
 
@@ -211,7 +211,7 @@
 // -------------------------------- */
 
 // export const getLoyaltyConfig = async (): Promise<LoyaltyConfig> => {
-//   const res = await axios.get("/loyalty-config");
+//   const res = await api.get("/loyalty-config");
 //   return res.data.config;
 // };
 
@@ -222,7 +222,7 @@
 // export const getCustomerLoyalty = async (
 //   customerId: number
 // ): Promise<CustomerLoyalty> => {
-//   const res = await axios.get(`/loyalty/customer/${customerId}`);
+//   const res = await api.get(`/loyalty/customer/${customerId}`);
 //   return res.data;
 // };
 
@@ -233,7 +233,7 @@
 // export const getCustomerPoints = async (
 //   customerId: number
 // ): Promise<number> => {
-//   const res = await axios.get(`/loyalty-points/${customerId}`);
+//   const res = await api.get(`/loyalty-points/${customerId}`);
 //   return res.data.points;
 // };
 
@@ -246,7 +246,7 @@
 //   points: number,
 //   orderId?: number
 // ): Promise<RedeemResponse> => {
-//   const res = await axios.post(
+//   const res = await api.post(
 //     `/loyalty-points/${customerId}/redeem`,
 //     {
 //       points,
@@ -264,7 +264,7 @@
 // export const getCustomerLoyaltyLedger = async (
 //   customerId: number
 // ): Promise<LoyaltyLedger[]> => {
-//   const res = await axios.get(`/loyalty/ledger/${customerId}`);
+//   const res = await api.get(`/loyalty/ledger/${customerId}`);
 //   return res.data.ledger;
 // };
 
@@ -357,21 +357,21 @@ export interface RedeemResponse {
 ============================================================ */
 
 export const getLoyaltyConfig = async (): Promise<LoyaltyConfig> => {
-  const res = await axios.get("/loyalty-config");
+  const res = await api.get("/loyalty-config");
   return res.data.config;
 };
 
 export const createLoyaltyConfig = async (
   data: LoyaltyConfigInput
 ): Promise<LoyaltyConfig> => {
-  const res = await axios.post("/loyalty-config", data);
+  const res = await api.post("/loyalty-config", data);
   return res.data.config;
 };
 
 export const updateLoyaltyConfig = async (
   data: Partial<LoyaltyConfigInput>
 ): Promise<LoyaltyConfig> => {
-  const res = await axios.put("/loyalty-config", data);
+  const res = await api.put("/loyalty-config", data);
   return res.data.config;
 };
 
@@ -383,7 +383,7 @@ export const updateLoyaltyConfig = async (
 export const getLoyaltyPoints = async (
   customerId: number
 ): Promise<CustomerPoints> => {
-  const res = await axios.get(`/loyalty-points/${customerId}`);
+  const res = await api.get(`/loyalty-points/${customerId}`);
   return res.data;
 };
 
@@ -399,7 +399,7 @@ export const getCustomerPoints = async (
 export const getCustomerLoyalty = async (
   customerId: number
 ): Promise<CustomerLoyalty> => {
-  const res = await axios.get(`/loyalty/customer/${customerId}`);
+  const res = await api.get(`/loyalty/customer/${customerId}`);
   return res.data;
 };
 
@@ -418,7 +418,7 @@ export const redeemLoyaltyPoints = async (
   points: number,
   orderId?: number
 ): Promise<RedeemResponse> => {
-  const res = await axios.post(`/loyalty-points/${customerId}/redeem`, {
+  const res = await api.post(`/loyalty-points/${customerId}/redeem`, {
     points,
     order_id: orderId,
   });
@@ -433,7 +433,7 @@ export const redeemLoyaltyPoints = async (
 export const getCustomerLedger = async (
   customerId: number
 ): Promise<LoyaltyLedgerEntry[]> => {
-  const res = await axios.get(`/loyalty/ledger/${customerId}`);
+  const res = await api.get(`/loyalty/ledger/${customerId}`);
   return res.data.ledger;
 };
 
@@ -444,7 +444,7 @@ export const getCustomerLoyaltyLedger = getCustomerLedger;
 export const getLoyaltyLedger = async (
   page: number = 1
 ): Promise<LoyaltyLedgerPage> => {
-  const res = await axios.get(`/loyalty/ledger`, { params: { page } });
+  const res = await api.get(`/loyalty/ledger`, { params: { page } });
   return res.data;
 };
 
@@ -457,7 +457,7 @@ export const addLoyaltyPoints = async (
   points: number,
   orderId?: number
 ): Promise<{ message: string; ledger: LoyaltyLedgerEntry }> => {
-  const res = await axios.post(`/loyalty-points/add`, {
+  const res = await api.post(`/loyalty-points/add`, {
     customer_id: customerId,
     points,
     order_id: orderId,
@@ -470,6 +470,6 @@ export const addLoyaltyPoints = async (
 ============================================================ */
 
 export const getLoyaltyReport = async (): Promise<LoyaltyReport> => {
-  const res = await axios.get(`/loyalty-points/report`);
+  const res = await api.get(`/loyalty-points/report`);
   return res.data;
 };

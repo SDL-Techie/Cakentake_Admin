@@ -145,20 +145,20 @@ const getCurrentUser = (): { id: number; role?: string; name?: string } => {
  */
 export const getSalesAgentOrders = async (agentId?: number): Promise<SalesAgentOrder[]> => {
   const id = agentId ?? getCurrentUser().id;
-  const res = await axios.get('/orders');
+  const res = await api.get('/orders');
   const all: SalesAgentOrder[] = res.data?.orders ?? res.data ?? [];
   return all.filter(o => o.created_by === id || o.creator?.id === id);
 };
 
 export const getOrderById = async (orderId: number): Promise<SalesAgentOrder> => {
-  const res = await axios.get(`/orders/${orderId}`);
+  const res = await api.get(`/orders/${orderId}`);
   return res.data;
 };
 
 export const createSalesAgentOrder = async (
   payload: CreateSalesAgentOrderPayload
 ): Promise<SalesAgentOrder> => {
-  const res = await axios.post('/orders', payload);
+  const res = await api.post('/orders', payload);
   return res.data.order;
 };
 
@@ -172,7 +172,7 @@ export const updateSalesAgentOrder = async (
   orderId: number,
   payload: Partial<CreateSalesAgentOrderPayload>
 ): Promise<SalesAgentOrder> => {
-  const res = await axios.put(`/orders/${orderId}`, payload);
+  const res = await api.put(`/orders/${orderId}`, payload);
   return res.data.order;
 };
 
@@ -183,7 +183,7 @@ export const updateSalesAgentOrder = async (
  * is what this falls back to below rather than a hard delete.
  */
 export const deleteSalesAgentOrder = async (orderId: number, reason?: string): Promise<void> => {
-  await axios.post(`/orders/${orderId}/cancel`, { reason: reason ?? 'Cancelled by sales agent' });
+  await api.post(`/orders/${orderId}/cancel`, { reason: reason ?? 'Cancelled by sales agent' });
 };
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -194,12 +194,12 @@ export const deleteSalesAgentOrder = async (orderId: number, reason?: string): P
 ───────────────────────────────────────────────────────────────────────── */
 
 export const sendPaymentLink = async (orderId: number): Promise<{ payment_link_url: string }> => {
-  const res = await axios.post(`/orders/${orderId}/payment-link`);
+  const res = await api.post(`/orders/${orderId}/payment-link`);
   return res.data;
 };
 
 export const markOrderPaid = async (orderId: number): Promise<SalesAgentOrder> => {
-  const res = await axios.post(`/orders/${orderId}/payment-link/mark-paid`);
+  const res = await api.post(`/orders/${orderId}/payment-link/mark-paid`);
   return res.data.order;
 };
 

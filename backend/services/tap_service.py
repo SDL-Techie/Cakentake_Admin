@@ -1,7 +1,7 @@
 import requests
 from config import Config
 
-TAP_BASE_URL = "https://axios.tap.company/v2"
+TAP_BASE_URL = "https://api.tap.company/v2"
 
 
 def create_knet_charge(order):

@@ -18,7 +18,7 @@ export interface CreateBankChargePayload {
 
 /** GET /bank/charges  (ADMIN | SHOP_MANAGER) */
 export const getBankCharges = async (): Promise<BankCharge[]> => {
-  const res = await axios.get("/bank/charges");
+  const res = await api.get("/bank/charges");
   return res.data.bank_charges;
 };
 
@@ -26,7 +26,7 @@ export const getBankCharges = async (): Promise<BankCharge[]> => {
 export const createBankCharge = async (
   payload: CreateBankChargePayload
 ): Promise<BankCharge> => {
-  const res = await axios.post("/bank/charges", payload);
+  const res = await api.post("/bank/charges", payload);
   return res.data.bank_charge;
 };
 
@@ -35,17 +35,17 @@ export const updateBankCharge = async (
   chargeId: number,
   payload: Partial<CreateBankChargePayload>
 ): Promise<BankCharge> => {
-  const res = await axios.put(`/bank/charges/${chargeId}`, payload);
+  const res = await api.put(`/bank/charges/${chargeId}`, payload);
   return res.data.bank_charge;
 };
 
 /** DELETE /bank/charges/:charge_id  (ADMIN) */
 export const deleteBankCharge = async (chargeId: number): Promise<void> => {
-  await axios.delete(`/bank/charges/${chargeId}`);
+  await api.delete(`/bank/charges/${chargeId}`);
 };
 
 /** GET /bank/charges/report  (ADMIN | SHOP_MANAGER) */
 export const getBankChargesReport = async (): Promise<any> => {
-  const res = await axios.get("/bank/charges/report");
+  const res = await api.get("/bank/charges/report");
   return res.data;
 };

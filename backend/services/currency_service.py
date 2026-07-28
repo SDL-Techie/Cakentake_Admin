@@ -5,7 +5,7 @@ def get_exchange_rate(
     from_currency,
     to_currency
 ):
-    url = f"https://open.er-axios.com/v6/latest/{from_currency}"
+    url = f"https://open.er-api.com/v6/latest/{from_currency}"
 
     response = requests.get(url)
 
