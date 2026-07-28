@@ -101,8 +101,8 @@
 //           return;
 //         }
 
-//         const { data } = await api.get<DetailedOrder>(`http://127.0.0.1:5000/orders/${id}`, {
-//         // const { data } = await storefrontApi.order<DetailedOrder>(`${id}`, {
+//         const { data } = await axios.get<DetailedOrder>(`http://127.0.0.1:5000/orders/${id}`, {
+//         // const { data } = await storefrontaxios.order<DetailedOrder>(`${id}`, {
 //           headers: { Authorization: `Bearer ${token}` }
 //         });
         
@@ -509,8 +509,8 @@ const TrackOrder: React.FC = () => {
           return;
         }
 
-        const { data } = await api.get<DetailedOrder>(`http://127.0.0.1:5000/orders/${id}`, {
-        // const { data } = await storefrontApi.order<DetailedOrder>(`${id}`, {
+        const { data } = await axios.get<DetailedOrder>(`http://127.0.0.1:5000/orders/${id}`, {
+        // const { data } = await storefrontaxios.order<DetailedOrder>(`${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

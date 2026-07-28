@@ -16,7 +16,7 @@ export const getWishlist = async (
   const selectedCurrency =
     currency || localStorage.getItem("currency") || "KWD";
 
-  const res = await api.get(`/wishlist/${userId}`, {
+  const res = await axios.get(`/wishlist/${userId}`, {
     headers: {
       "X-Currency": selectedCurrency,
     },
@@ -29,7 +29,7 @@ export const addToWishlist = async (
   userId: number,
   productId: number
 ) => {
-  const res = await api.post("/wishlist", {
+  const res = await axios.post("/wishlist", {
     user_id: userId,
     product_id: productId,
   });
@@ -38,14 +38,14 @@ export const addToWishlist = async (
 };
 
 export const deleteWishlistItem = async (id: number) => {
-  await api.delete(`/wishlist/${id}`);
+  await axios.delete(`/wishlist/${id}`);
 };
 
 export const updateWishlist = async (
   id: number,
   product_id: number
 ) => {
-  const res = await api.put(`/wishlist/${id}`, {
+  const res = await axios.put(`/wishlist/${id}`, {
     product_id,
   });
 

@@ -40,19 +40,19 @@ export interface CheckDeliveryResponse {
 ============================ */
 
 export const getAreas = async (): Promise<Area[]> => {
-  const res = await api.get("/areas");
+  const res = await axios.get("/areas");
   return res.data.areas;
 };
 
 export const getArea = async (id: number): Promise<Area> => {
-  const res = await api.get(`/areas/${id}`);
+  const res = await axios.get(`/areas/${id}`);
   return res.data.area;
 };
 
 export const createArea = async (
   payload: CreateAreaPayload
 ): Promise<any> => {
-  const res = await api.post("/areas", payload);
+  const res = await axios.post("/areas", payload);
   return res.data;
 };
 
@@ -60,12 +60,12 @@ export const updateArea = async (
   id: number,
   payload: Partial<CreateAreaPayload>
 ): Promise<any> => {
-  const res = await api.put(`/areas/${id}`, payload);
+  const res = await axios.put(`/areas/${id}`, payload);
   return res.data;
 };
 
 export const deleteArea = async (id: number): Promise<any> => {
-  const res = await api.delete(`/areas/${id}`);
+  const res = await axios.delete(`/areas/${id}`);
   return res.data;
 };
 
@@ -77,7 +77,7 @@ export const setAreaCharge = async (
   areaId: number,
   delivery_charge: number
 ): Promise<any> => {
-  const res = await api.post(`/areas/${areaId}/set-charge`, {
+  const res = await axios.post(`/areas/${areaId}/set-charge`, {
     delivery_charge,
   });
 
@@ -92,7 +92,7 @@ export const setAreaMinOrder = async (
   areaId: number,
   min_order_value: number
 ): Promise<any> => {
-  const res = await api.post(`/areas/${areaId}/set-min-order`, {
+  const res = await axios.post(`/areas/${areaId}/set-min-order`, {
     min_order_value,
   });
 
@@ -106,7 +106,7 @@ export const setAreaMinOrder = async (
 export const getAreaOrders = async (
   areaId: number
 ): Promise<any> => {
-  const res = await api.get(`/areas/${areaId}/orders`);
+  const res = await axios.get(`/areas/${areaId}/orders`);
   return res.data.orders;
 };
 
@@ -117,6 +117,6 @@ export const getAreaOrders = async (
 export const checkDelivery = async (
   payload: CheckDeliveryPayload
 ): Promise<CheckDeliveryResponse> => {
-  const res = await api.post("/areas/check-delivery", payload);
+  const res = await axios.post("/areas/check-delivery", payload);
   return res.data;
 };

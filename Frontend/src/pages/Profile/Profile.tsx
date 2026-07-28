@@ -109,7 +109,7 @@ const Profile: React.FC = () => {
         return;
       }
 
-      const profileRes = await storefrontApi.profile(userId, authHeaders());
+      const profileRes = await storefrontaxios.profile(userId, authHeaders());
       const userData: UserProfile = profileRes.data.data || profileRes.data;
       setProfile(userData);
 
@@ -151,7 +151,7 @@ const Profile: React.FC = () => {
         phone_no: editPhone.trim(),
       };
 
-      const profileRes = await storefrontApi.updateProfile(payload, authHeaders());
+      const profileRes = await storefrontaxios.updateProfile(payload, authHeaders());
       const updatedUser = profileRes.data.user || profileRes.data;
 
       const mergedProfile: UserProfile = {

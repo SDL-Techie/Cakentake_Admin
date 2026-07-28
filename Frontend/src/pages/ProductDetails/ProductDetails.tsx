@@ -149,7 +149,7 @@
 //         // 2. Query user's current wishlist state from Flask
 //         if (userId) {
 //           try {
-//             const wishlistRes = await wishlistApi.list(userId);
+//             const wishlistRes = await wishlistaxios.list(userId);
 //             if (wishlistRes.status === 200 && wishlistRes.data.items) {
 //               const existingItem = wishlistRes.data.items.find((item: any) => item.product_id === data.id);
 //               if (existingItem) {
@@ -280,7 +280,7 @@
 
 //     if (!isWishlisted) {
 //       try {
-//         const res = await wishlistApi.create( {
+//         const res = await wishlistaxios.create( {
 //           user_id: userId,
 //           product_id: product.id
 //         });
@@ -296,7 +296,7 @@
 //     } else {
 //       if (!wishlistId) return;
 //       try {
-//         const res = await wishlistApi.remove(wishlistId);
+//         const res = await wishlistaxios.remove(wishlistId);
 //         if (res.status === 200) {
 //           setIsWishlisted(false);
 //           setWishlistId(null);

@@ -77,25 +77,25 @@ export interface UpdateProfilePayload {
 
 /** POST /register */
 export const register = async (payload: RegisterPayload): Promise<User> => {
-  const res = await api.post("/register", payload);
+  const res = await axios.post("/register", payload);
   return res.data.user;
 };
 
 /** POST /admin/register  (ADMIN only) */
 export const adminRegister = async (payload: AdminCreatePayload): Promise<User> => {
-  const res = await api.post("/admin/register", payload);
+  const res = await axios.post("/admin/register", payload);
   return res.data.user;
 };
 
 /** POST /admin/create */
 export const createAdmin = async (payload: RegisterPayload): Promise<User> => {
-  const res = await api.post("/admin/create", payload);
+  const res = await axios.post("/admin/create", payload);
   return res.data.user;
 };
 
 /** POST /login */
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
-  const res = await api.post("/login", payload);
+  const res = await axios.post("/login", payload);
   if (res.data.token) {
     localStorage.setItem("token", res.data.token);
   }
@@ -104,42 +104,42 @@ export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
 
 /** GET /user/:user_id */
 export const getUserById = async (userId: number): Promise<User> => {
-  const res = await api.get(`/user/${userId}`);
+  const res = await axios.get(`/user/${userId}`);
   return res.data;
 };
 
 /** GET /profile */
 export const getProfile = async (): Promise<User> => {
-  const res = await api.get("/profile");
+  const res = await axios.get("/profile");
   return res.data;
 };
 
 /** PUT /profile */
 export const updateProfile = async (payload: UpdateProfilePayload): Promise<User> => {
-  const res = await api.put("/profile", payload);
+  const res = await axios.put("/profile", payload);
   return res.data.user;
 };
 
 /** GET /admin/users  (ADMIN only) */
 export const getAllUsers = async (): Promise<User[]> => {
-  const res = await api.get("/admin/users");
+  const res = await axios.get("/admin/users");
   return res.data.users;
 };
 
 /** POST /logout */
 export const logout = async (): Promise<void> => {
-  await api.post("/logout");
+  await axios.post("/logout");
   localStorage.removeItem("token");
 };
 
 /** PUT /users/change-currency */
 export const changeCurrency = async (userId: number, currencyCode: string): Promise<void> => {
-  await api.put("/users/change-currency", { user_id: userId, currency_code: currencyCode });
+  await axios.put("/users/change-currency", { user_id: userId, currency_code: currencyCode });
 };
 
 /** PUT /change-password */
 export const changePassword = async (payload: ChangePasswordPayload): Promise<void> => {
-  await api.put("/change-password", payload);
+  await axios.put("/change-password", payload);
 };
 
 /** Helpers */

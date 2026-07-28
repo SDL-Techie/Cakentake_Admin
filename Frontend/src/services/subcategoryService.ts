@@ -26,7 +26,7 @@ export interface UpdateSubCategoryPayload {
 
 /** GET /subcategories */
 export const getSubCategories = async (): Promise<SubCategory[]> => {
-  const res = await api.get("/subcategories");
+  const res = await axios.get("/subcategories");
   return res.data.subcategories;
 };
 
@@ -34,7 +34,7 @@ export const getSubCategories = async (): Promise<SubCategory[]> => {
 export const createSubCategory = async (
   payload: CreateSubCategoryPayload
 ): Promise<SubCategory> => {
-  const res = await api.post("/subcategories", payload);
+  const res = await axios.post("/subcategories", payload);
   return res.data.subcategory;
 };
 
@@ -43,7 +43,7 @@ export const updateSubCategory = async (
   subId: number,
   payload: UpdateSubCategoryPayload
 ): Promise<SubCategory> => {
-  const res = await api.put(`/subcategories/${subId}`, payload);
+  const res = await axios.put(`/subcategories/${subId}`, payload);
   return res.data.subcategory;
 };
 
@@ -51,5 +51,5 @@ export const updateSubCategory = async (
 export const deleteSubCategory = async (
   subId: number
 ): Promise<void> => {
-  await api.delete(`/subcategories/${subId}`);
+  await axios.delete(`/subcategories/${subId}`);
 };

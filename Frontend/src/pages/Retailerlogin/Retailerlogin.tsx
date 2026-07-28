@@ -39,7 +39,7 @@
 //     const loadToast = toast.loading("Verifying Retailer Access...");
 
 //     try {
-//       const res = await api.post(
+//       const res = await axios.post(
 //         "http://localhost:4000/api/v1/retailer-login",
 //         { phoneno: phone, password, code }
 //       );

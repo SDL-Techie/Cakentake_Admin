@@ -27,7 +27,7 @@ export interface Address {
 export const createAddress = async (
   payload: Omit<Address, "id" | "user_id">
 ): Promise<Address> => {
-  const res = await api.post("/addresses", payload);
+  const res = await axios.post("/addresses", payload);
   return res.data.address;
 };
 
@@ -36,7 +36,7 @@ export const createAddress = async (
 ============================ */
 
 export const getMyAddresses = async (): Promise<Address[]> => {
-  const res = await api.get("/addresses/my-addresses");
+  const res = await axios.get("/addresses/my-addresses");
   return res.data.addresses;
 };
 
@@ -47,7 +47,7 @@ export const getMyAddresses = async (): Promise<Address[]> => {
 export const getUserAddresses = async (
   userId: number
 ): Promise<Address[]> => {
-  const res = await api.get(`/users/${userId}/addresses`);
+  const res = await axios.get(`/users/${userId}/addresses`);
   return res.data.addresses;
 };
 
@@ -58,7 +58,7 @@ export const getUserAddresses = async (
 export const getAddress = async (
   id: number
 ): Promise<Address> => {
-  const res = await api.get(`/addresses/${id}`);
+  const res = await axios.get(`/addresses/${id}`);
   return res.data.address;
 };
 
@@ -70,7 +70,7 @@ export const updateAddress = async (
   id: number,
   payload: Partial<Omit<Address, "id" | "user_id">>
 ): Promise<Address> => {
-  const res = await api.put(`/addresses/${id}`, payload);
+  const res = await axios.put(`/addresses/${id}`, payload);
   return res.data.address;
 };
 
@@ -81,5 +81,5 @@ export const updateAddress = async (
 export const deleteAddress = async (
   id: number
 ): Promise<void> => {
-  await api.delete(`/addresses/${id}`);
+  await axios.delete(`/addresses/${id}`);
 };

@@ -3,45 +3,45 @@ import { api } from './api';
 export const menuManagementService = {
   getProducts: (categoryId?: string) =>
     categoryId && categoryId !== 'all'
-      ? api.get(`/products/category/${categoryId}`)
-      : api.get('/products?admin=true'),
-  getCategories: () => api.get('/category'),
-  getSubcategories: () => api.get('/subcategories'),
-  getVariants: () => api.get('/variants'),
-  getFlavors: (variantId: string | number) => api.get(`/flavors/${variantId}`),
-  getAddons: () => api.get('/addons'),
-  getCombos: () => api.get('/combos'),
-  getPromoCodes: () => api.get('/promos'),
+      ? axios.get(`/products/category/${categoryId}`)
+      : axios.get('/products?admin=true'),
+  getCategories: () => axios.get('/category'),
+  getSubcategories: () => axios.get('/subcategories'),
+  getVariants: () => axios.get('/variants'),
+  getFlavors: (variantId: string | number) => axios.get(`/flavors/${variantId}`),
+  getAddons: () => axios.get('/addons'),
+  getCombos: () => axios.get('/combos'),
+  getPromoCodes: () => axios.get('/promos'),
 
-  createProduct: (payload: unknown) => api.post('/products', payload),
-  updateProduct: (id: string | number, payload: unknown) => api.put(`/products/${id}`, payload),
-  deleteProduct: (id: string | number) => api.delete(`/products/${id}`),
+  createProduct: (payload: unknown) => axios.post('/products', payload),
+  updateProduct: (id: string | number, payload: unknown) => axios.put(`/products/${id}`, payload),
+  deleteProduct: (id: string | number) => axios.delete(`/products/${id}`),
 
-  createCategory: (payload: unknown) => api.post('/category', payload),
-  updateCategory: (id: string | number, payload: unknown) => api.put(`/category/${id}`, payload),
-  deleteCategory: (id: string | number) => api.delete(`/category/${id}`),
+  createCategory: (payload: unknown) => axios.post('/category', payload),
+  updateCategory: (id: string | number, payload: unknown) => axios.put(`/category/${id}`, payload),
+  deleteCategory: (id: string | number) => axios.delete(`/category/${id}`),
 
-  createSubcategory: (payload: unknown) => api.post('/subcategories', payload),
-  updateSubcategory: (id: string | number, payload: unknown) => api.put(`/subcategories/${id}`, payload),
-  deleteSubcategory: (id: string | number) => api.delete(`/subcategories/${id}`),
+  createSubcategory: (payload: unknown) => axios.post('/subcategories', payload),
+  updateSubcategory: (id: string | number, payload: unknown) => axios.put(`/subcategories/${id}`, payload),
+  deleteSubcategory: (id: string | number) => axios.delete(`/subcategories/${id}`),
 
-  createVariant: (payload: unknown) => api.post('/variants', payload),
-  updateVariant: (id: string | number, payload: unknown) => api.put(`/variants/${id}`, payload),
-  deleteVariant: (id: string | number) => api.delete(`/variants/${id}`),
+  createVariant: (payload: unknown) => axios.post('/variants', payload),
+  updateVariant: (id: string | number, payload: unknown) => axios.put(`/variants/${id}`, payload),
+  deleteVariant: (id: string | number) => axios.delete(`/variants/${id}`),
 
-  createFlavor: (payload: unknown) => api.post('/flavors', payload),
-  updateFlavor: (id: string | number, payload: unknown) => api.put(`/flavors/${id}`, payload),
-  deleteFlavor: (id: string | number) => api.delete(`/flavors/${id}`),
+  createFlavor: (payload: unknown) => axios.post('/flavors', payload),
+  updateFlavor: (id: string | number, payload: unknown) => axios.put(`/flavors/${id}`, payload),
+  deleteFlavor: (id: string | number) => axios.delete(`/flavors/${id}`),
 
-  createAddon: (payload: unknown) => api.post('/addons', payload),
-  updateAddon: (id: string | number, payload: unknown) => api.put(`/addons/${id}`, payload),
-  deleteAddon: (id: string | number) => api.delete(`/addons/${id}`),
+  createAddon: (payload: unknown) => axios.post('/addons', payload),
+  updateAddon: (id: string | number, payload: unknown) => axios.put(`/addons/${id}`, payload),
+  deleteAddon: (id: string | number) => axios.delete(`/addons/${id}`),
 
-  createCombo: (payload: unknown) => api.post('/combos', payload),
-  updateCombo: (id: string | number, payload: unknown) => api.put(`/combos/${id}`, payload),
-  deleteCombo: (id: string | number) => api.delete(`/combos/${id}`),
+  createCombo: (payload: unknown) => axios.post('/combos', payload),
+  updateCombo: (id: string | number, payload: unknown) => axios.put(`/combos/${id}`, payload),
+  deleteCombo: (id: string | number) => axios.delete(`/combos/${id}`),
 
-  createPromoCode: (payload: unknown) => api.post('/promos', payload),
-  updatePromoCode: (id: string | number, payload: unknown) => api.put(`/promos/${id}`, payload),
-  deletePromoCode: (id: string | number) => api.delete(`/promos/${id}`),
+  createPromoCode: (payload: unknown) => axios.post('/promos', payload),
+  updatePromoCode: (id: string | number, payload: unknown) => axios.put(`/promos/${id}`, payload),
+  deletePromoCode: (id: string | number) => axios.delete(`/promos/${id}`),
 };

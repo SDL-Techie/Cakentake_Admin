@@ -95,7 +95,7 @@ export default function Register(): JSX.Element {
     }
 
     try {
-      const res = await storefrontApi.register( {
+      const res = await storefrontaxios.register( {
         first_name: form.firstName,
         last_name: form.lastName,
         email: form.email,

@@ -4,7 +4,7 @@ import { api } from "./api";
 
 /** GET /variants/:product_id */
 export const getVariants = async (productId: number): Promise<any[]> => {
-  const res = await api.get(`/variants/${productId}`);
+  const res = await axios.get(`/variants/${productId}`);
   return res.data.variants;
 };
 
@@ -14,26 +14,26 @@ export const createVariant = async (payload: {
   name: string;
   price_modifier?: number;
 }): Promise<any> => {
-  const res = await api.post("/variants", payload);
+  const res = await axios.post("/variants", payload);
   return res.data.variant;
 };
 
 /** PUT /variants/:variant_id  (ADMIN | SHOP_MANAGER) */
 export const updateVariant = async (variantId: number, payload: any): Promise<any> => {
-  const res = await api.put(`/variants/${variantId}`, payload);
+  const res = await axios.put(`/variants/${variantId}`, payload);
   return res.data.variant;
 };
 
 /** DELETE /variants/:variant_id  (ADMIN | SHOP_MANAGER) */
 export const deleteVariant = async (variantId: number): Promise<void> => {
-  await api.delete(`/variants/${variantId}`);
+  await axios.delete(`/variants/${variantId}`);
 };
 
 // ─── Flavors ──────────────────────────────────────────────────────────────────
 
 /** GET /flavors/:variant_id */
 export const getFlavors = async (variantId: number): Promise<any[]> => {
-  const res = await api.get(`/flavors/${variantId}`);
+  const res = await axios.get(`/flavors/${variantId}`);
   return res.data.flavors;
 };
 
@@ -43,32 +43,32 @@ export const createFlavor = async (payload: {
   name: string;
   price_modifier?: number;
 }): Promise<any> => {
-  const res = await api.post("/flavors", payload);
+  const res = await axios.post("/flavors", payload);
   return res.data.flavor;
 };
 
 /** PUT /flavors/:flavor_id  (ADMIN | SHOP_MANAGER) */
 export const updateFlavor = async (flavorId: number, payload: any): Promise<any> => {
-  const res = await api.put(`/flavors/${flavorId}`, payload);
+  const res = await axios.put(`/flavors/${flavorId}`, payload);
   return res.data.flavor;
 };
 
 /** DELETE /flavors/:flavor_id  (ADMIN | SHOP_MANAGER) */
 export const deleteFlavor = async (flavorId: number): Promise<void> => {
-  await api.delete(`/flavors/${flavorId}`);
+  await axios.delete(`/flavors/${flavorId}`);
 };
 
 // ─── Addons ───────────────────────────────────────────────────────────────────
 
 /** GET /addons */
 export const getAddons = async (): Promise<any[]> => {
-  const res = await api.get("/addons");
+  const res = await axios.get("/addons");
   return res.data.addons;
 };
 
 /** GET /addons/predefined */
 export const getPredefinedAddons = async (): Promise<any[]> => {
-  const res = await api.get("/addons/predefined");
+  const res = await axios.get("/addons/predefined");
   return res.data.addons;
 };
 
@@ -78,17 +78,17 @@ export const createAddon = async (payload: {
   price?: number;
   is_predefined?: boolean;
 }): Promise<any> => {
-  const res = await api.post("/addons", payload);
+  const res = await axios.post("/addons", payload);
   return res.data.addon;
 };
 
 /** PUT /addons/:addon_id  (ADMIN | SHOP_MANAGER) */
 export const updateAddon = async (addonId: number, payload: any): Promise<any> => {
-  const res = await api.put(`/addons/${addonId}`, payload);
+  const res = await axios.put(`/addons/${addonId}`, payload);
   return res.data.addon;
 };
 
 /** DELETE /addons/:addon_id  (ADMIN | SHOP_MANAGER) */
 export const deleteAddon = async (addonId: number): Promise<void> => {
-  await api.delete(`/addons/${addonId}`);
+  await axios.delete(`/addons/${addonId}`);
 };

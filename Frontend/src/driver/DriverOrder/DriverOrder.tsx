@@ -214,7 +214,7 @@ const DriverOrder: React.FC<Props> = ({ driverId: propDriverId }) => {
   // ── Payment link / QR modal state ─────────────────────────────────────────────
   // The link is auto-generated (server-side, via /payments/:order_id/create-link)
   // the moment the driver opens the modal for an order — no manual paste needed.
-  // Cached per order id so re-opening the same order doesn't re-hit the API.
+  // Cached per order id so re-opening the same order doesn't re-hit the axios.
   const [paymentLinksCache, setPaymentLinksCache] = useState<Record<number, string>>({});
   const [paymentOrder,   setPaymentOrder]   = useState<any | null>(null);
   const [paymentLink,    setPaymentLink]    = useState<string>("");

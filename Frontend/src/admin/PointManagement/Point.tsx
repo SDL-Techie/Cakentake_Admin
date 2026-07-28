@@ -42,7 +42,7 @@ const Point = () => {
     const fetchSettings = async () => {
         try {
             setLoading(true);
-            const res = await api.get('http://localhost:4000/api/v1/getpointsettings', {
+            const res = await axios.get('http://localhost:4000/api/v1/getpointsettings', {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (res.data?.data) {
@@ -60,7 +60,7 @@ const Point = () => {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await api.post('http://localhost:4000/api/v1/createpointsettings', settings, {
+            const res = await axios.post('http://localhost:4000/api/v1/createpointsettings', settings, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             showToast("Loyalty Rules Updated Successfully!", "success");

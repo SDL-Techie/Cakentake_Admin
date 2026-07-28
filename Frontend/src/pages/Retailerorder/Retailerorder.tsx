@@ -90,7 +90,7 @@ const Retailerorder: React.FC = () => {
     const checkPincode = useCallback(async (zip: string) => {
         if (!zip || zip.length !== 6) return;
         try {
-            const r = await api.get<{ success: boolean; deliveryCharge: number }>(`${API}/pincode/${zip}`);
+            const r = await axios.get<{ success: boolean; deliveryCharge: number }>(`${API}/pincode/${zip}`);
             if (r.data.success) { setDeliveryFee(r.data.deliveryCharge); setPincodeErr(''); }
         } catch { setDeliveryFee(0);
             //  setPincodeErr('Delivery unavailable for this pincode.'); 
@@ -99,7 +99,7 @@ const Retailerorder: React.FC = () => {
 
     useEffect(() => {
         if (!customer?.id) return;
-        api.get<{ data: { addresses: Address[]; name: string; phoneno: string } }>(`${API}/profile/${customer.id}`,
+        axios.get<{ data: { addresses: Address[]; name: string; phoneno: string } }>(`${API}/profile/${customer.id}`,
  {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -115,7 +115,7 @@ const Retailerorder: React.FC = () => {
     }, [customer?.id, checkPincode]);
 
     useEffect(() => {
-        api.get<{ data: Category[] }>(`${API}/category`)
+        axios.get<{ data: Category[] }>(`${API}/category`)
             .then(r => { if (r.data?.data) setCategories(r.data.data); })
             .catch(console.error);
     }, []);
@@ -123,7 +123,7 @@ const Retailerorder: React.FC = () => {
     useEffect(() => {
         if (!selectedCat) return;
         setLoading(true);
-        api.get<{ data: Product[] }>(`${API}/category/${selectedCat}`)
+        axios.get<{ data: Product[] }>(`${API}/category/${selectedCat}`)
             .then(r => setProducts(r.data.data || []))
             .catch(() => setProducts([]))
             .finally(() => setLoading(false));
@@ -153,7 +153,7 @@ const Retailerorder: React.FC = () => {
         const updated: Address[] = [...addresses, { ...newAddr, isDefault: addresses.length === 0 }];
         try {
             setIsSaving(true);
-            await api.put(`${API}/profile/${customer?.id}`, { addresses: updated },
+            await axios.put(`${API}/profile/${customer?.id}`, { addresses: updated },
  {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -198,7 +198,7 @@ const Retailerorder: React.FC = () => {
 
         if (logistics.paymentMethod === 'upi') {
             try {
-                const { data } = await api.post(`${API}/initiate-retailer-payment`, {
+                const { data } = await axios.post(`${API}/initiate-retailer-payment`, {
                     pricing: orderPayload.pricing,
                     retailerDetails: orderPayload.retailerDetails,
                 },  {
@@ -215,7 +215,7 @@ const Retailerorder: React.FC = () => {
                     name: 'Rasi Bakery Wholesale', order_id: rzp.orderId,
                     handler: async (response: RzpResponse) => {
                         try {
-                            const vr = await api.post(`${API}/verify-retailer-payment`, { ...response, orderPayload } , {
+                            const vr = await axios.post(`${API}/verify-retailer-payment`, { ...response, orderPayload } , {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -232,7 +232,7 @@ const Retailerorder: React.FC = () => {
             } catch { showToast('❌ Failed to initiate payment.'); setIsSaving(false); }
         } else {
             try {
-                const { data } = await api.post(`${API}/createretailerorder`, orderPayload ,    {
+                const { data } = await axios.post(`${API}/createretailerorder`, orderPayload ,    {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }

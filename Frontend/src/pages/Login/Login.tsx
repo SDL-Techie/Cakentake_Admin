@@ -106,7 +106,7 @@ export default function LoginPage(): React.JSX.Element {
   setLoading(true);
 
   try {
- const res = await storefrontApi.login<LoginResponse>(
+ const res = await storefrontaxios.login<LoginResponse>(
       {
         email: form.identifier,
         password: form.password,
@@ -169,7 +169,7 @@ console.log(role);
   } catch (error: unknown) {
     console.error(error);
 
-    if (api.isAxiosError(error) && error.response) {
+    if (axios.isAxiosError(error) && error.response) {
       const errorData = error.response.data as ErrorResponse;
       toast.error(errorData.error || errorData.message || "Login failed ❌");
     } else {

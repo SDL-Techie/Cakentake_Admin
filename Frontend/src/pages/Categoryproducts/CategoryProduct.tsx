@@ -33,7 +33,7 @@
 //       setLoading(true);
 //       try {
 //         // Fetching from your specific category endpoint
-//         const res = await api.get(`http://localhost:4000/api/v1/category/${categoryname}`);
+//         const res = await axios.get(`http://localhost:4000/api/v1/category/${categoryname}`);
         
 //         if (res.data.success) {
 //           const list = res.data.data

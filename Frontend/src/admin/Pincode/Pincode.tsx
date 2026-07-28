@@ -21,7 +21,7 @@ const Pincode = () => {
   const fetchPincodes = async () => {
     try {
       setLoading(true);
-      const res = await pincodeApi.list();;
+      const res = await pincodeaxios.list();;
       setPincodes(res.data);
     } catch (err) {
       console.error("Error fetching pincodes", err);
@@ -39,7 +39,7 @@ const Pincode = () => {
   e.preventDefault();
 
   try {
-    await pincodeApi.create( {
+    await pincodeaxios.create( {
       pincode: formData.pincode,
       delivery_charge: Number(formData.deliveryCharge), // ✅ FIX
     });
@@ -59,7 +59,7 @@ const [selectedId, setSelectedId] = useState<number | null>(null);
 //   if (!selectedId) return;
 
 //   try {
-//     await api.delete(
+//     await axios.delete(
 //     );
 
 //     toast.success("Deleted successfully");
@@ -76,7 +76,7 @@ const handleDelete = async () => {
   try {
     setDeleting(selectedId);
 
-    await pincodeApi.remove(selectedId);
+    await pincodeaxios.remove(selectedId);
 
     toast.success("Deleted successfully");
 

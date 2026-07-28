@@ -113,7 +113,7 @@ const getItemAddOns = (item: OrderItem): string[] => {
 //   try {
 //     const token = localStorage.getItem("token");
 
-//     const response = await api.post(
+//     const response = await axios.post(
 //       "http://127.0.0.1:5000/payments/create-link",
 //       {
 //         order_id: orderId,
@@ -296,7 +296,7 @@ const Orders: React.FC = () => {
 //         }
 
 //         // Request user orders using standard auth configurations if necessary
-//         // const { data } = await api.get<Order | Order[]>(
+//         // const { data } = await axios.get<Order | Order[]>(
 //         //   `http://127.0.0.1:5000/orders/user/${userId}`,
 //         //   {
 //         //     headers: {

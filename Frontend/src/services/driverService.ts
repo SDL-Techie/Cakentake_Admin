@@ -56,37 +56,37 @@
 
 // /** GET /drivers  — all users with role=DRIVER */
 // export const getDrivers = async (): Promise<any[]> => {
-//   const res = await api.get("/drivers");
+//   const res = await axios.get("/drivers");
 //   return res.data.drivers ?? [];
 // };
 
 // /** GET /drivers/available  — drivers with no active order */
 // export const getAvailableDrivers = async (): Promise<any[]> => {
-//   const res = await api.get("/drivers/available");
+//   const res = await axios.get("/drivers/available");
 //   return res.data.drivers ?? [];
 // };
 
 // /** GET /drivers/:id/dashboard */
 // export const getDriverDashboard = async (driverId: number): Promise<DriverDashboard> => {
-//   const res = await api.get(`/drivers/${driverId}/dashboard`);
+//   const res = await axios.get(`/drivers/${driverId}/dashboard`);
 //   return res.data;
 // };
 
 // /** GET /drivers/:id/assigned  — active orders for this driver */
 // export const getDriverAssigned = async (driverId: number): Promise<any[]> => {
-//   const res = await api.get(`/drivers/${driverId}/assigned`);
+//   const res = await axios.get(`/drivers/${driverId}/assigned`);
 //   return res.data.orders ?? [];
 // };
 
 // /** GET /drivers/:id/completed  — DELIVERED orders for this driver */
 // export const getDriverCompleted = async (driverId: number): Promise<any[]> => {
-//   const res = await api.get(`/drivers/${driverId}/completed`);
+//   const res = await axios.get(`/drivers/${driverId}/completed`);
 //   return res.data.orders ?? [];
 // };
 
 // /** GET /drivers/:id/report */
 // export const getDriverReport = async (driverId: number): Promise<any> => {
-//   const res = await api.get(`/drivers/${driverId}/report`);
+//   const res = await axios.get(`/drivers/${driverId}/report`);
 //   return res.data;
 // };
 
@@ -98,7 +98,7 @@
 //   driverId: number,
 //   status: DriverAvailability
 // ): Promise<any> => {
-//   const res = await api.post(`/drivers/${driverId}/status`, { status });
+//   const res = await axios.post(`/drivers/${driverId}/status`, { status });
 //   return res.data;
 // };
 
@@ -111,7 +111,7 @@
 //  * Also sets driver.availability_status = "BUSY" on the backend.
 //  */
 // export const driverAcceptOrder = async (orderId: number): Promise<any> => {
-//   const res = await api.post(`/orders/${orderId}/driver-accept`);
+//   const res = await axios.post(`/orders/${orderId}/driver-accept`);
 //   return res.data;
 // };
 
@@ -121,7 +121,7 @@
 //  * Sets driver.availability_status = "ONLINE" on the backend.
 //  */
 // export const driverRejectOrder = async (orderId: number): Promise<any> => {
-//   const res = await api.post(`/orders/${orderId}/driver-reject`);
+//   const res = await axios.post(`/orders/${orderId}/driver-reject`);
 //   return res.data;
 // };
 
@@ -144,7 +144,7 @@
 //     customer_confirmation_phone?: string;
 //   }
 // ): Promise<any> => {
-//   const res = await api.post(`/orders/${orderId}/delivery-proof`, payload);
+//   const res = await axios.post(`/orders/${orderId}/delivery-proof`, payload);
 //   return res.data;
 // };
 
@@ -160,7 +160,7 @@
 // ): Promise<string> => {
 //   const form = new FormData();
 //   form.append("image", file);
-//   const res = await api.post(`/orders/${orderId}/upload-image`, form, {
+//   const res = await axios.post(`/orders/${orderId}/upload-image`, form, {
 //     headers: { "Content-Type": "multipart/form-data" },
 //     onUploadProgress: (e) => {
 //       if (onProgress && e.total) {
@@ -176,13 +176,13 @@
 
 // /** GET /drivers/:id/settlements  — driver views their own settlements */
 // export const getDriverSettlements = async (driverId: number): Promise<SettlementListResponse> => {
-//   const res = await api.get(`/drivers/${driverId}/settlements`);
+//   const res = await axios.get(`/drivers/${driverId}/settlements`);
 //   return res.data;
 // };
 
 // /** GET /drivers/:id/unsettled-orders  — DELIVERED orders not yet in any settlement */
 // export const getUnsettledOrders = async (driverId: number): Promise<any> => {
-//   const res = await api.get(`/drivers/${driverId}/unsettled-orders`);
+//   const res = await axios.get(`/drivers/${driverId}/unsettled-orders`);
 //   return res.data;
 // };
 
@@ -191,7 +191,7 @@
 //   driver_id?: number;
 //   status?: "PENDING" | "PAID";
 // }): Promise<{ settlements: Settlement[]; count: number }> => {
-//   const res = await api.get("/driver-settlements", { params });
+//   const res = await axios.get("/driver-settlements", { params });
 //   return res.data;
 // };
 
@@ -199,7 +199,7 @@
 // export const createSettlement = async (
 //   payload: CreateSettlementPayload
 // ): Promise<{ message: string; settlement: Settlement }> => {
-//   const res = await api.post("/driver-settlements", payload);
+//   const res = await axios.post("/driver-settlements", payload);
 //   return res.data;
 // };
 
@@ -211,7 +211,7 @@
 //   settlementId: number,
 //   payload?: { payment_source?: string; reference?: string }
 // ): Promise<{ message: string; settlement: Settlement }> => {
-//   const res = await api.post(`/driver-settlements/${settlementId}/pay`, payload ?? {});
+//   const res = await axios.post(`/driver-settlements/${settlementId}/pay`, payload ?? {});
 //   return res.data;
 // };
 
@@ -219,7 +219,7 @@
 // export const getSettlementDetail = async (
 //   settlementId: number
 // ): Promise<{ settlement: Settlement }> => {
-//   const res = await api.get(`/driver-settlements/${settlementId}`);
+//   const res = await axios.get(`/driver-settlements/${settlementId}`);
 //   return res.data;
 // };
 
@@ -298,40 +298,40 @@ export interface CreateSettlementPayload {
 // ─────────────────────────────────────────────────────────────
 
 export const getDrivers = async (): Promise<any[]> => {
-  const res = await api.get("/drivers");
+  const res = await axios.get("/drivers");
   return res.data.drivers ?? [];
 };
 
 export const getAvailableDrivers = async (): Promise<any[]> => {
-  const res = await api.get("/drivers/available");
+  const res = await axios.get("/drivers/available");
   return res.data.drivers ?? [];
 };
 
 export const getDriverDashboard = async (
   driverId: number
 ): Promise<DriverDashboard> => {
-  const res = await api.get(`/drivers/${driverId}/dashboard`);
+  const res = await axios.get(`/drivers/${driverId}/dashboard`);
   return res.data;
 };
 
 export const getDriverAssigned = async (
   driverId: number
 ): Promise<any[]> => {
-  const res = await api.get(`/drivers/${driverId}/assigned`);
+  const res = await axios.get(`/drivers/${driverId}/assigned`);
   return res.data.orders ?? [];
 };
 
 export const getDriverCompleted = async (
   driverId: number
 ): Promise<any[]> => {
-  const res = await api.get(`/drivers/${driverId}/completed`);
+  const res = await axios.get(`/drivers/${driverId}/completed`);
   return res.data.orders ?? [];
 };
 
 export const getDriverReport = async (
   driverId: number
 ): Promise<any> => {
-  const res = await api.get(`/drivers/${driverId}/report`);
+  const res = await axios.get(`/drivers/${driverId}/report`);
   return res.data;
 };
 
@@ -339,7 +339,7 @@ export const updateDriverStatus = async (
   driverId: number,
   status: DriverAvailability
 ) => {
-  const res = await api.post(`/drivers/${driverId}/status`, {
+  const res = await axios.post(`/drivers/${driverId}/status`, {
     status,
   });
 
@@ -353,7 +353,7 @@ export const updateDriverStatus = async (
 export const driverAcceptOrder = async (
   orderId: number
 ) => {
-  const res = await api.post(`/orders/${orderId}/driver-accept`);
+  const res = await axios.post(`/orders/${orderId}/driver-accept`);
 
   return res.data;
 };
@@ -361,7 +361,7 @@ export const driverAcceptOrder = async (
 export const driverRejectOrder = async (
   orderId: number
 ) => {
-  const res = await api.post(`/orders/${orderId}/driver-reject`);
+  const res = await axios.post(`/orders/${orderId}/driver-reject`);
 
   return res.data;
 };
@@ -375,7 +375,7 @@ export const submitDeliveryProof = async (
     customer_confirmation_phone?: string;
   }
 ) => {
-  const res = await api.post(
+  const res = await axios.post(
     `/orders/${orderId}/delivery-proof`,
     payload
   );
@@ -392,7 +392,7 @@ export const uploadOrderImage = async (
 
   formData.append("image", file);
 
-  const res = await api.post(
+  const res = await axios.post(
     `/orders/${orderId}/upload-image`,
     formData,
     {
@@ -421,7 +421,7 @@ export const uploadOrderImage = async (
 export const getDriverSettlements = async (
   driverId: number
 ): Promise<SettlementListResponse> => {
-  const res = await api.get(
+  const res = await axios.get(
     `/drivers/${driverId}/settlements`
   );
 
@@ -433,7 +433,7 @@ export const getDriverSettlements = async (
 export const getUnsettledOrders = async (
   driverId: number
 ) => {
-  const res = await api.get(
+  const res = await axios.get(
     `/drivers/${driverId}/unsettled-orders`
   );
 
@@ -446,7 +446,7 @@ export const getAllSettlements = async (params?: {
   driver_id?: number;
   status?: "PENDING" | "PAID";
 }) => {
-  const res = await api.get(
+  const res = await axios.get(
     "/driver-settlements",
     {
       params,
@@ -461,7 +461,7 @@ export const getAllSettlements = async (params?: {
 export const getSettlementsByDriver = async (
   driverId: number
 ) => {
-  const res = await api.get(
+  const res = await axios.get(
     `/driver-settlements/driver/${driverId}`
   );
 
@@ -473,7 +473,7 @@ export const getSettlementsByDriver = async (
 export const getSettlementDetail = async (
   settlementId: number
 ) => {
-  const res = await api.get(
+  const res = await axios.get(
     `/driver-settlements/${settlementId}`
   );
 
@@ -485,7 +485,7 @@ export const getSettlementDetail = async (
 export const createSettlement = async (
   payload: CreateSettlementPayload
 ) => {
-  const res = await api.post(
+  const res = await axios.post(
     "/driver-settlements",
     payload
   );
@@ -502,7 +502,7 @@ export const markSettlementPaid = async (
     reference?: string;
   }
 ) => {
-  const res = await api.post(
+  const res = await axios.post(
     `/driver-settlements/${settlementId}/pay`,
     payload ?? {}
   );
@@ -515,7 +515,7 @@ export const markSettlementPaid = async (
 export const deleteSettlement = async (
   settlementId: number
 ) => {
-  const res = await api.delete(
+  const res = await axios.delete(
     `/driver-settlements/${settlementId}`
   );
 
@@ -525,7 +525,7 @@ export const deleteSettlement = async (
 export const getDriverDeliveredOrders = async (
   driverId: number
 ) => {
-  const res = await api.get(
+  const res = await axios.get(
     `/drivers/${driverId}/delivered-orders`
   );
 

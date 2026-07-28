@@ -14,7 +14,7 @@ export const addToCart = async (
 ) => {
   const currency = getCurrency();
 
-  const res = await api.post(
+  const res = await axios.post(
     '/cart',
     {
       user_id: userId,
@@ -32,31 +32,31 @@ export const addToCart = async (
 };
 
 export const getCart = async (userId: number, currency?: string) => {
-  const res = await api.get(`/cart/${userId}`, {
+  const res = await axios.get(`/cart/${userId}`, {
     headers: { 'X-Currency': currency || getCurrency() },
   });
   return res.data;
 };
 
 export const updateCartItem = async (itemId: number, quantity: number) => {
-  const res = await api.put(`/cart/item/${itemId}`, { quantity });
+  const res = await axios.put(`/cart/item/${itemId}`, { quantity });
   return res.data;
 };
 
 export const removeCartItem = async (itemId: number) => {
-  const res = await api.delete(`/cart/item/${itemId}`);
+  const res = await axios.delete(`/cart/item/${itemId}`);
   return res.data;
 };
 
 export const clearCart = async (userId: number) => {
-  const res = await api.delete(`/cart/${userId}`);
+  const res = await axios.delete(`/cart/${userId}`);
   return res.data;
 };
 
 // --- Wishlist (same currency-header pattern, since backend now respects it too) ---
 
 export const addToWishlist = async (userId: number, productId: number) => {
-  const res = await api.post(
+  const res = await axios.post(
     '/api/wishlist',
     { user_id: userId, product_id: productId },
     { headers: { 'X-Currency': getCurrency() } }
@@ -65,13 +65,13 @@ export const addToWishlist = async (userId: number, productId: number) => {
 };
 
 export const getWishlist = async (userId: number, currency?: string) => {
-  const res = await api.get(`/api/wishlist/${userId}`, {
+  const res = await axios.get(`/api/wishlist/${userId}`, {
     headers: { 'X-Currency': currency || getCurrency() },
   });
   return res.data;
 };
 
 export const removeFromWishlist = async (wishlistId: number) => {
-  const res = await api.delete(`/api/wishlist/${wishlistId}`);
+  const res = await axios.delete(`/api/wishlist/${wishlistId}`);
   return res.data;
 };
