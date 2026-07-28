@@ -3588,12 +3588,6 @@ def confirm_delivery(order_id):
 def create_sales_agent_order():
     data = request.get_json(silent=True) or {}
 
-    allowed_currencies = {"INR", "KWD", "AED", "USD", "SAR", "SGD"}
-            currency = str(data.get("currency") or "KWD").strip().upper()
-            print("Currency from frontend:", currency)
-            if currency not in allowed_currencies:
-             currency = "KWD"
-
     print("REQUEST DATA:", data)
     sales_agent = get_current_user()
     # data = request.get_json(silent=True) or {}
@@ -3795,13 +3789,17 @@ def create_sales_agent_order():
         ).upper()
 
 
-        
+        allowed_currencies = {"INR", "KWD", "AED", "USD", "SAR", "SGD"}
+        currency = str(data.get("currency") or "KWD").strip().upper()
+        print("Currency from frontend:", currency)
+        if currency not in allowed_currencies:
+         currency = "KWD"
 
         order = Order(
             user_id=customer.id,
             created_by=sales_agent.id,
             order_number=generate_order_number(),
-            order_type="agent_order",
+            order_type="sales_agent",
             order_source="SALES_AGENT",
             customer_name=customer_name,
             customer_phone=customer_phone,
