@@ -3672,6 +3672,12 @@ def create_sales_agent_order():
                 "error": "Invalid delivery area"
             }), 400
 
+        allowed_currencies = {"INR", "KWD", "AED", "USD", "SAR", "SGD"}
+        currency = str(data.get("currency") or area.currency or "KWD").strip().upper()
+        print("Currency from frontend:", currency)
+        if currency not in allowed_currencies:
+            currency = "KWD"
+
         # ==========================================================
         # FIND OR CREATE CUSTOMER
         # ==========================================================
