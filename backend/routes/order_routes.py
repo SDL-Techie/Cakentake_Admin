@@ -2019,6 +2019,65 @@ def generate_order_number():
     return f"CT-{datetime.now().strftime('%Y%m%d')}-{random.randint(1000,9999)}"
 
 
+def _normalize_sales_agent_payload(data):
+    if not isinstance(data, dict):
+        raise ValueError("Request body must be a JSON object")
+
+    customer_name = (data.get("customer_name") or "").strip()
+    customer_phone = (data.get("customer_phone") or "").strip()
+    customer_email = (data.get("customer_email") or "").strip()
+    customer_alt_phone = (data.get("customer_alt_phone") or "").strip()
+
+    if not customer_name:
+        raise ValueError("customer_name is required")
+
+    if not customer_phone:
+        raise ValueError("customer_phone is required")
+
+    if not customer_email:
+        raise ValueError("customer_email is required")
+
+    area_id = data.get("area_id")
+    if area_id in (None, "", []):
+        raise ValueError("area_id is required")
+
+    items = data.get("items", [])
+    if items is None:
+        items = []
+    if not isinstance(items, list):
+        raise ValueError("items must be an array")
+
+    custom_cake = data.get("custom_cake")
+    if custom_cake is not None and not isinstance(custom_cake, dict):
+        raise ValueError("custom_cake must be an object")
+
+    for item in items:
+        if not isinstance(item, dict):
+            raise ValueError("Each item must be an object")
+
+        if not item.get("product_id"):
+            raise ValueError("Each item must include a product_id")
+
+        quantity = item.get("quantity", 1)
+        try:
+            quantity = int(quantity)
+        except (TypeError, ValueError):
+            raise ValueError("Each item quantity must be a valid integer")
+
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero")
+
+    return {
+        "customer_name": customer_name,
+        "customer_phone": customer_phone,
+        "customer_email": customer_email,
+        "customer_alt_phone": customer_alt_phone,
+        "area_id": area_id,
+        "items": items,
+        "custom_cake": custom_cake,
+    }
+
+
 def build_n8n_payload(order):
     return {
         "body": {
@@ -3593,20 +3652,19 @@ def create_sales_agent_order():
     # data = request.get_json(silent=True) or {}
 
     try:
+        payload = _normalize_sales_agent_payload(data)
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    try:
         # ==========================================================
         # CUSTOMER DETAILS
         # ==========================================================
 
-        customer_name = data.get("customer_name")
-        customer_phone = data.get("customer_phone")
-        customer_email = data.get("customer_email")
-        customer_alt_phone = data.get("customer_alt_phone")
-
-        if not customer_name:
-            return jsonify({"error": "customer_name is required"}), 400
-
-        if not customer_phone:
-            return jsonify({"error": "customer_phone is required"}), 400
+        customer_name = payload["customer_name"]
+        customer_phone = payload["customer_phone"]
+        customer_email = payload["customer_email"]
+        customer_alt_phone = payload["customer_alt_phone"]
 
         # ==========================================================
         # ADDRESS DETAILS
@@ -3649,14 +3707,7 @@ def create_sales_agent_order():
         delivery_notes = data.get("delivery_notes", "")
         country = data.get("country", "Kuwait")
 
-        area_id = data.get("area_id")
-       
-# Only area_id is mandatory
-        if not area_id:
-          return jsonify({"error": "area_id is required"}), 400
-
-
-
+        area_id = payload["area_id"]
 
         # ==========================================================
         # DELIVERY AREA
@@ -3780,8 +3831,8 @@ def create_sales_agent_order():
         #         "error": "Order must contain at least one item"
         #     }), 400
 
-        items = data.get("items", [])
-        custom_cake = data.get("custom_cake")
+        items = payload["items"]
+        custom_cake = payload["custom_cake"]
 
         if not items and not custom_cake:
            return jsonify({
@@ -3793,13 +3844,6 @@ def create_sales_agent_order():
         payment_method = (
             data.get("payment_method") or "COD"
         ).upper()
-
-
-        allowed_currencies = {"INR", "KWD", "AED", "USD", "SAR", "SGD"}
-        currency = str(data.get("currency") or "KWD").strip().upper()
-        print("Currency from frontend:", currency)
-        if currency not in allowed_currencies:
-         currency = "KWD"
 
         order = Order(
             user_id=customer.id,

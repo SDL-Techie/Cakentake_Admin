@@ -6,6 +6,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask import Flask, send_from_directory, make_response, jsonify
+from sqlalchemy import inspect, text
+from sqlalchemy.exc import ProgrammingError, SQLAlchemyError
 
 
 from config import Config
@@ -195,10 +197,53 @@ def api_data():
     return response
 
 
+def ensure_user_schema_columns():
+    with app.app_context():
+        try:
+            inspector = inspect(db.engine)
+            if not inspector.has_table("users"):
+                return
+
+            columns = {column["name"] for column in inspector.get_columns("users")}
+            missing_columns = []
+
+            if "is_active" not in columns:
+                missing_columns.append("ALTER TABLE users ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE")
+            if "created_by" not in columns:
+                missing_columns.append("ALTER TABLE users ADD COLUMN created_by INTEGER")
+            if "default_discount" not in columns:
+                missing_columns.append("ALTER TABLE users ADD COLUMN default_discount NUMERIC(5, 2) NOT NULL DEFAULT 0")
+
+            if missing_columns:
+                with db.engine.begin() as conn:
+                    for statement in missing_columns:
+                        conn.execute(text(statement))
+        except Exception as exc:
+            print("User schema compatibility check skipped:", exc)
+
+
 with app.app_context():
-    db.create_all()
-    seed_admin()
-    seed_currency_rates();
+    try:
+        db.create_all()
+    except ProgrammingError as exc:
+        print("Database schema initialization skipped:", exc)
+    except SQLAlchemyError as exc:
+        print("Database initialization warning:", exc)
+
+    try:
+        ensure_user_schema_columns()
+    except Exception as exc:
+        print("User schema compatibility fix failed:", exc)
+
+    try:
+        seed_admin()
+    except Exception as exc:
+        print("Admin seeding skipped:", exc)
+
+    try:
+        seed_currency_rates()
+    except Exception as exc:
+        print("Currency seeding skipped:", exc)
 
 if __name__ == "__main__":
     app.run(
