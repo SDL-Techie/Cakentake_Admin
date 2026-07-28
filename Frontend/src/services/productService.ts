@@ -3,7 +3,7 @@ import axios from "axios";
 
 // ─── Axios instance ────────────────────────────────────────────────────────────
 
-const api = axios.create({
+const api = api.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });

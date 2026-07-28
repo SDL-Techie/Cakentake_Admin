@@ -77,7 +77,7 @@
 //   constructor() {
 //     this.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
     
-//     this.api = axios.create({
+//     this.api = api.create({
 //       baseURL: this.baseURL,
 //       headers: {
 //         'Content-Type': 'application/json'
@@ -359,7 +359,7 @@
 // export default userService;
 
 
-import axios from "axios";
+//import axios from "axios";
 import { api, BASE_URL } from "./api";
 
 
@@ -445,7 +445,7 @@ export interface Customer {
 // ─────────────────────────────────────────────────────────────
 
 export const getUsers = async (role?: string): Promise<User[]> => {
-  const res = await axios.get(`${BASE_URL}/users`, {
+  const res = await api.get(`${BASE_URL}/users`, {
     headers: getAuthHeaders(),
     params: role ? { role } : {},
   });
@@ -467,14 +467,14 @@ export const searchCustomers = async (
 };
 
 export const getUserById = async (id: number): Promise<User> => {
-  const res = await axios.get(`${BASE_URL}/users/${id}`, {
+  const res = await api.get(`${BASE_URL}/users/${id}`, {
     headers: getAuthHeaders(),
   });
   return res.data.user;
 };
 
 export const createUser = async (payload: CreateUserPayload): Promise<User> => {
-  const res = await axios.post(`${BASE_URL}/users`, payload, {
+  const res = await api.post(`${BASE_URL}/users`, payload, {
     headers: getAuthHeaders(),
   });
   return res.data.user;
@@ -484,13 +484,13 @@ export const updateUser = async (
   id: number,
   payload: UpdateUserPayload
 ): Promise<void> => {
-  await axios.put(`${BASE_URL}/users/${id}`, payload, {
+  await api.put(`${BASE_URL}/users/${id}`, payload, {
     headers: getAuthHeaders(),
   });
 };
 
 export const deleteUser = async (id: number): Promise<void> => {
-  await axios.delete(`${BASE_URL}/users/${id}`, {
+  await api.delete(`${BASE_URL}/users/${id}`, {
     headers: getAuthHeaders(),
   });
 };
@@ -547,7 +547,7 @@ export const updateDriverStatus = async (
 // ─────────────────────────────────────────────────────────────
 
 export const getPermissions = async (): Promise<Permission[]> => {
-  const res = await axios.get(`${BASE_URL}/permissions`, {
+  const res = await api.get(`${BASE_URL}/permissions`, {
     headers: getAuthHeaders(),
   });
   return res.data.permissions;
@@ -556,7 +556,7 @@ export const getPermissions = async (): Promise<Permission[]> => {
 export const assignPermission = async (
   payload: AssignPermissionPayload
 ): Promise<void> => {
-  await axios.post(`${BASE_URL}/permissions/assign`, payload, {
+  await api.post(`${BASE_URL}/permissions/assign`, payload, {
     headers: getAuthHeaders(),
   });
 };
@@ -564,7 +564,7 @@ export const assignPermission = async (
 export const updatePermission = async (
   payload: AssignPermissionPayload
 ): Promise<void> => {
-  await axios.put(`${BASE_URL}/permissions/update`, payload, {
+  await api.put(`${BASE_URL}/permissions/update`, payload, {
     headers: getAuthHeaders(),
   });
 };

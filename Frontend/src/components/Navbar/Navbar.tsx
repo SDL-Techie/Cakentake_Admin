@@ -245,7 +245,7 @@
 // //       const token = localStorage.getItem('token');
 
 // //       if (token) {
-// //         await axios.post(
+// //         await api.post(
 // //           'http://127.0.0.1:5000/logout',
 // //           {},
 // //           { headers: { Authorization: `Bearer ${token}` } }

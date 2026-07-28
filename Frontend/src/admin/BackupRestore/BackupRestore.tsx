@@ -12,7 +12,7 @@ const BackupRestore = () => {
   //   try {
   //     setLoadingBackup(true);
 
-    //   const response = await axios.get(
+    //   const response = await api.get(
     //     "http://localhost:5000/api/v1/backup",
         
     //     {
@@ -26,7 +26,7 @@ const BackupRestore = () => {
     //     }
     //   );
 
-//   const response = await axios.post(
+//   const response = await api.post(
 //     "http://localhost:5000/api/v1/admin/backup",
 //     {},
 //     {
@@ -67,7 +67,7 @@ const handleBackup = async () => {
   try {
     setLoadingBackup(true);
 
-    const response = await axios.post(
+    const response = await api.post(
       "http://localhost:5000/api/v1/admin/backup",
       {},
       {
@@ -98,7 +98,7 @@ const handleBackup = async () => {
   formData.append("file", file);
 
   try {
-    const res = await axios.post(
+    const res = await api.post(
       "http://localhost:5000/api/v1/admin/restore",
       formData,
       {

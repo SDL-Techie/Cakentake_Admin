@@ -169,7 +169,7 @@ console.log(role);
   } catch (error: unknown) {
     console.error(error);
 
-    if (axios.isAxiosError(error) && error.response) {
+    if (api.isAxiosError(error) && error.response) {
       const errorData = error.response.data as ErrorResponse;
       toast.error(errorData.error || errorData.message || "Login failed ❌");
     } else {

@@ -59,7 +59,7 @@ const [selectedId, setSelectedId] = useState<number | null>(null);
 //   if (!selectedId) return;
 
 //   try {
-//     await axios.delete(
+//     await api.delete(
 //     );
 
 //     toast.success("Deleted successfully");

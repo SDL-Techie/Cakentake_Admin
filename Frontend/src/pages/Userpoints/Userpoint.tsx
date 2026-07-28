@@ -37,7 +37,7 @@ const Userpoint: React.FC = () => {
     const fetchPoints = async () => {
         if (!customerphone) return;
         try {
-            const res = await axios.get(`http://localhost:4000/api/v1/user-points/${customerphone}`, {
+            const res = await api.get(`http://localhost:4000/api/v1/user-points/${customerphone}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -55,7 +55,7 @@ const Userpoint: React.FC = () => {
 
     const handleRedeem = async () => {
         try {
-            const res = await axios.post(`http://localhost:4000/api/v1/redeem-points`, { 
+            const res = await api.post(`http://localhost:4000/api/v1/redeem-points`, { 
                 phone: customerphone 
             });
             

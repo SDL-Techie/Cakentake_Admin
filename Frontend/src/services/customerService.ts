@@ -66,7 +66,7 @@ export interface LoyaltyPoints {
  * Get customer dashboard
  */
 export const getCustomerDashboard = async (): Promise<any> => {
-  const res = await axios.get(`${BASE_URL}/customers/dashboard`, {
+  const res = await api.get(`${BASE_URL}/customers/dashboard`, {
     headers: getAuthHeaders(),
   });
   return res.data;
@@ -76,7 +76,7 @@ export const getCustomerDashboard = async (): Promise<any> => {
  * Get all customers
  */
 export const getCustomers = async (): Promise<Customer[]> => {
-  const res = await axios.get(`${BASE_URL}/customers`, {
+  const res = await api.get(`${BASE_URL}/customers`, {
     headers: getAuthHeaders(),
   });
   return res.data.customers;
@@ -86,7 +86,7 @@ export const getCustomers = async (): Promise<Customer[]> => {
  * Get customer by ID
  */
 export const getCustomerById = async (customerId: number): Promise<Customer> => {
-  const res = await axios.get(`${BASE_URL}/customers/${customerId}`, {
+  const res = await api.get(`${BASE_URL}/customers/${customerId}`, {
     headers: getAuthHeaders(),
   });
   return res.data.customer;
@@ -98,7 +98,7 @@ export const getCustomerById = async (customerId: number): Promise<Customer> => 
 export const createCustomer = async (
   payload: CreateCustomerPayload
 ): Promise<Customer> => {
-  const res = await axios.post(`${BASE_URL}/customers`, payload, {
+  const res = await api.post(`${BASE_URL}/customers`, payload, {
     headers: getAuthHeaders(),
   });
   return res.data.customer;
@@ -111,7 +111,7 @@ export const updateCustomer = async (
   customerId: number,
   payload: UpdateCustomerPayload
 ): Promise<void> => {
-  await axios.put(`${BASE_URL}/customers/${customerId}`, payload, {
+  await api.put(`${BASE_URL}/customers/${customerId}`, payload, {
     headers: getAuthHeaders(),
   });
 };
@@ -120,7 +120,7 @@ export const updateCustomer = async (
  * Get customer orders
  */
 export const getCustomerOrders = async (customerId: number): Promise<any[]> => {
-  const res = await axios.get(`${BASE_URL}/customers/${customerId}/orders`, {
+  const res = await api.get(`${BASE_URL}/customers/${customerId}/orders`, {
     headers: getAuthHeaders(),
   });
   return res.data.orders;
@@ -130,7 +130,7 @@ export const getCustomerOrders = async (customerId: number): Promise<any[]> => {
  * Get customer order summary
  */
 export const getCustomerOrderSummary = async (customerId: number): Promise<any> => {
-  const res = await axios.get(`${BASE_URL}/customers/${customerId}/order-summary`, {
+  const res = await api.get(`${BASE_URL}/customers/${customerId}/order-summary`, {
     headers: getAuthHeaders(),
   });
   return res.data;
@@ -140,7 +140,7 @@ export const getCustomerOrderSummary = async (customerId: number): Promise<any> 
  * Get customer addresses
  */
 export const getCustomerAddresses = async (customerId: number): Promise<Address[]> => {
-  const res = await axios.get(`${BASE_URL}/customers/${customerId}/addresses`, {
+  const res = await api.get(`${BASE_URL}/customers/${customerId}/addresses`, {
     headers: getAuthHeaders(),
   });
   return res.data.addresses;
@@ -153,7 +153,7 @@ export const addCustomerAddress = async (
   customerId: number,
   payload: CreateAddressPayload
 ): Promise<Address> => {
-  const res = await axios.post(
+  const res = await api.post(
     `${BASE_URL}/customers/${customerId}/addresses`,
     payload,
     { headers: getAuthHeaders() }
@@ -167,7 +167,7 @@ export const addCustomerAddress = async (
 export const getCustomerLoyaltyPoints = async (
   customerId: number
 ): Promise<LoyaltyPoints> => {
-  const res = await axios.get(`${BASE_URL}/customers/${customerId}/loyalty-points`, {
+  const res = await api.get(`${BASE_URL}/customers/${customerId}/loyalty-points`, {
     headers: getAuthHeaders(),
   });
   return res.data;
@@ -177,7 +177,7 @@ export const getCustomerLoyaltyPoints = async (
  * Get customer loyalty history
  */
 export const getCustomerLoyaltyHistory = async (customerId: number): Promise<any[]> => {
-  const res = await axios.get(
+  const res = await api.get(
     `${BASE_URL}/customers/${customerId}/loyalty-history`,
     { headers: getAuthHeaders() }
   );
@@ -192,7 +192,7 @@ export const getCustomerLoyaltyHistory = async (customerId: number): Promise<any
 export const createAddress = async (
   payload: CreateAddressPayload & { user_id: number }
 ): Promise<Address> => {
-  const res = await axios.post(`${BASE_URL}/addresses`, payload, {
+  const res = await api.post(`${BASE_URL}/addresses`, payload, {
     headers: getAuthHeaders(),
   });
   return res.data.address;
@@ -202,7 +202,7 @@ export const createAddress = async (
  * Get user addresses
  */
 export const getUserAddresses = async (userId: number): Promise<Address[]> => {
-  const res = await axios.get(`${BASE_URL}/users/${userId}/addresses`, {
+  const res = await api.get(`${BASE_URL}/users/${userId}/addresses`, {
     headers: getAuthHeaders(),
   });
   return res.data.addresses;
@@ -212,7 +212,7 @@ export const getUserAddresses = async (userId: number): Promise<Address[]> => {
  * Get address by ID
  */
 export const getAddressById = async (addressId: number): Promise<Address> => {
-  const res = await axios.get(`${BASE_URL}/addresses/${addressId}`, {
+  const res = await api.get(`${BASE_URL}/addresses/${addressId}`, {
     headers: getAuthHeaders(),
   });
   return res.data.address;
@@ -225,7 +225,7 @@ export const updateAddress = async (
   addressId: number,
   payload: CreateAddressPayload
 ): Promise<void> => {
-  await axios.put(`${BASE_URL}/addresses/${addressId}`, payload, {
+  await api.put(`${BASE_URL}/addresses/${addressId}`, payload, {
     headers: getAuthHeaders(),
   });
 };
@@ -234,7 +234,7 @@ export const updateAddress = async (
  * Delete address
  */
 export const deleteAddress = async (addressId: number): Promise<void> => {
-  await axios.delete(`${BASE_URL}/addresses/${addressId}`, {
+  await api.delete(`${BASE_URL}/addresses/${addressId}`, {
     headers: getAuthHeaders(),
   });
 };

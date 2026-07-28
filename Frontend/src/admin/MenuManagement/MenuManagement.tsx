@@ -21,7 +21,7 @@
 // /* ============================================================
 //    AXIOS INSTANCE — reads BOTH 'token' and 'access_token'
 // ============================================================ */
-// const api = axios.create({ baseURL: 'http://127.0.0.1:5000' });
+// const api = api.create({ baseURL: 'http://127.0.0.1:5000' });
 
 // api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem('access_token') || localStorage.getItem('token');
@@ -48,7 +48,7 @@
 //   const data = new FormData();
 //   data.append('file', file);
 //   data.append('upload_preset', UPLOAD_PRESET);
-//   const res = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data);
+//   const res = await api.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data);
 //   return res.data.secure_url;
 // };
 

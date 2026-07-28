@@ -56,7 +56,7 @@ export const retailerApi = {
 };
 
 export const uploadCloudinaryImage = async (cloudName: string, data: FormData) => {
-  const response = await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, data);
+  const response = await api.post(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, data);
   return response;
 };
 
