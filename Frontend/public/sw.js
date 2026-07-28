@@ -30,6 +30,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Ignore Vite dev assets and runtime requests to avoid stale dev bundles
+  if (url.pathname.startsWith('/_vite/') || url.pathname.startsWith('/vite/') || url.pathname.startsWith('/sockjs-node')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;

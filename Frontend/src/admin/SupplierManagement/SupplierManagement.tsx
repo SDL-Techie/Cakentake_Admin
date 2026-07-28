@@ -563,7 +563,7 @@ const SupplierManagement: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Rasool"
+                    placeholder="e.g. ..."
                     value={form.contact_name}
                     onChange={(e) => setForm({ ...form, contact_name: e.target.value })}
                   />

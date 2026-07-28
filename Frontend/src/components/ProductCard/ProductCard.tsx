@@ -216,11 +216,15 @@ interface ProductCardProps {
   userId?: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, userId = 5 }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, userId }) => {
   const navigate = useNavigate();
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [wishlistId, setWishlistId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const storedUser = localStorage.getItem('user');
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+  const effectiveUserId = userId ?? parsedUser?.id ?? null;
 
   // Determine base display price
   const displayPrice = isRetailer ? product.wholesaleprice || product.price : product.price;
@@ -260,7 +264,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, u
       try {
         const currency = localStorage.getItem("currency") || "KWD";
 
-        const items = await getWishlist(userId, currency);
+        const items = await getWishlist(effectiveUserId, currency);
         const existingItem = items.find((item) => item.product_id === product.id);
         if (existingItem) {
           setIsWishlisted(true);
@@ -270,8 +274,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, u
         console.error("Error fetching wishlist status:", error);
       }
     };
-    if (userId && product.id) checkWishlistStatus();
-  }, [userId, product.id]);
+    if (effectiveUserId && product.id) checkWishlistStatus();
+  }, [effectiveUserId, product.id]);
 
   // Handle click toggle to Add/Remove from backend
   const handleWishlistToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -279,16 +283,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, u
     if (isLoading) return;
     setIsLoading(true);
 
-    if (!userId) {
-    toast.error("Please log in to add items to your wishlist");
-    navigate("/login"); // adjust to your actual login route
-    setIsLoading(false);  
-    return;
-  }
+    if (!effectiveUserId) {
+      toast.error("Please log in to add items to your wishlist");
+      navigate("/login"); // adjust to your actual login route
+      setIsLoading(false);
+      return;
+    }
 
     if (!isWishlisted) {
       try {
-        const wishlistItem = await addToWishlist(userId, product.id);
+        const wishlistItem = await addToWishlist(effectiveUserId, product.id);
         setIsWishlisted(true);
         setWishlistId(wishlistItem.id);
         toast.success("Added to favorites");

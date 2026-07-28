@@ -28,12 +28,19 @@ def get_wishlist(user_id):
 
     items = Wishlist.query.filter_by(user_id=user_id).all()
     currency = request.headers.get("X-Currency", "KWD")
-    if not items:
-        return jsonify({
-            "message": "Wishlist Empty"
-        }), 404
+    # if not items:
+    #     return jsonify({
+    #         "message": "Wishlist Empty"
+    #     }), 404
+
+    # return jsonify({
+    #     "user_id": user_id,
+    #     "items": [item.to_dict(currency) for item in items]
+    # }), 200
+
 
     return jsonify({
+        "message": "Wishlist is empty" if not items else "Wishlist fetched successfully",
         "user_id": user_id,
         "items": [item.to_dict(currency) for item in items]
     }), 200

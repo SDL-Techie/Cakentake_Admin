@@ -36,6 +36,34 @@
 #         nullable=False
 #     )
 
+
+#     # ==========================================
+#     # SALES AGENT CUSTOMER SNAPSHOT
+#     # ==========================================
+
+#     customer_name = db.Column(
+#     db.String(150),
+#     nullable=True
+#     )
+
+#     customer_phone = db.Column(
+#     db.String(30),
+#     nullable=True
+#     )
+
+#     customer_email = db.Column(
+#     db.String(120),
+#     nullable=True
+#     )
+
+#     customer_alt_phone = db.Column(
+#     db.String(30),
+#     nullable=True
+#     )
+
+
+  
+
 #     # ==========================================
 #     # DELIVERY
 #     # ==========================================
@@ -65,17 +93,23 @@
 #     nullable=False
 #     )
 
+#     delivery_address_json = db.Column(
+#     db.JSON,
+#     nullable=True
+#     )
+
 #     delivery_area_id = db.Column(
 #     db.Integer,
 #     db.ForeignKey("areas.id"),
-#     nullable=True
+#     nullable=True,
+#     index=True
 #     )
 
 
 #     delivery_area = db.relationship(
 #     "Area",
-#     lazy="joined"
-#     )
+#     foreign_keys=[delivery_area_id]
+#  )
 
 
 #     delivery_date = db.Column(
@@ -189,9 +223,20 @@
 #         default=0
 #     )
 
+#     # Order-level addons (stored as JSON array of { addon_id, quantity, price, total })
+#     order_addons_json = db.Column(
+#         db.JSON,
+#         nullable=True
+#     )
+
+#     order_addons_total = db.Column(
+#         db.Numeric(10, 2),
+#         default=0
+#     )
+
 #     currency = db.Column(
 #         db.String(10),
-#         default="INR"
+#         default="KWD"
 #     )
 
 #     coupon_id = db.Column(
@@ -328,6 +373,12 @@
 #         nullable=True
 #     )
 
+
+#     custom_cake_json = db.Column(
+#     db.JSON,
+#     nullable=True
+#     )
+
 #     # When the driver submits proof of drop-off (photo / notes), before the
 #     # delivery agent gives the final confirmation.
 #     driver_submitted_at = db.Column(
@@ -387,6 +438,11 @@
 #         db.Integer,
 #         db.ForeignKey("order_sources.id"),
 #         nullable=True
+#     )
+
+#     order_source = db.Column(
+#     db.String(50),
+#     nullable=True
 #     )
 
 #     # ==========================================
@@ -479,8 +535,13 @@
 #             "id": self.id,
 #             "order_number": self.order_number,
 #             "order_type": self.order_type,
+#             "order_source": self.order_source,
 
 #             "customer": self._user_brief(self.customer),
+#             "customer_name": self.customer_name,
+# "customer_phone": self.customer_phone,
+# "customer_email": self.customer_email,
+# "customer_alt_phone": self.customer_alt_phone,
 
 #             "status": self.status,
 #             "rejection_reason": self.rejection_reason,
@@ -496,6 +557,9 @@
 #             "grand_total": float(self.grand_total or 0),
 #             "loyalty_coupon": self.loyalty_coupon,
 #             "currency": self.currency,
+
+#             "order_addons": self.order_addons_json or [],
+#             "order_addons_total": float(self.order_addons_total or 0),
 
 #             "kitchen_staff_id": self.kitchen_staff_id,
 #             "kitchen_staff": self._user_brief(self.kitchen_staff),
@@ -544,6 +608,11 @@
 #                 self.out_for_delivery_at.isoformat()
 #                 if self.out_for_delivery_at else None
 #             ),
+#             "order_date": (
+#                self.order_date.isoformat()
+#                if self.order_date
+#               else None
+#              ),
 
 #             "delivery_photo": self.delivery_photo,
 #             "delivery_notes": self.delivery_notes,
@@ -559,33 +628,49 @@
 #                 if self.delivered_at else None
 #             ),
 
+#             "delivery_address_json": self.delivery_address_json,
+
 #             "delivery_confirmed_by": self.delivery_confirmed_by,
 #             "delivery_confirmed_at": (
 #                 self.delivery_confirmed_at.isoformat()
 #                 if self.delivery_confirmed_at else None
 #             ),
 
-#             "delivery_address": {
-#                 "id": self.address.id,
-#                 "street": self.address.street,
-#                 "city": self.address.city,
-#                 "state": self.address.state,
-#                 "pincode": self.address.pincode,
-#                 "country": self.address.country
-#             } if self.address else None,
+#             # "delivery_address": {
+#             #     "id": self.address.id,
+#             #     "street": self.address.street,
+#             #     "city": self.address.city,
+#             #     "state": self.address.state,
+#             #     "pincode": self.address.pincode,
+#             #     "country": self.address.country
+#             # } if self.address else None,
 
+#             "delivery_address": self.address.to_dict() if self.address else None,
+#             "delivery_date": (
+#                 self.delivery_date.isoformat()
+#                 if self.delivery_date else None
+#             ),
+#             "delivery_time_slot": self.delivery_time_slot,
 #             "delivery_area_id": self.delivery_area_id,
-#             "delivery_area": self.delivery_area.to_dict() if self.delivery_area else None,
-
+#             "delivery_area": (
+#              self.delivery_area.to_dict()
+#             if self.delivery_area
+#              else None
+#             ),
+#             "payment_gateway": self.payment_gateway,
+#             "gateway_order_id": self.gateway_order_id,
+#             "gateway_payment_id": self.gateway_payment_id,
+#             "gateway_transaction_id": self.gateway_transaction_id,
+#             "gateway_response": self.gateway_response,
 #             "created_at": self.created_at.isoformat(),
 #             "updated_at": self.updated_at.isoformat(),
-
+#             "created_by": self._user_brief(self.creator),
 #             "greeting_message": self.greeting_message,
 #             "greeting_from": self.greeting_from,
 #             "greeting_to": self.greeting_to,
 #             "delivery_images": self.delivery_images or [],
 #             "order_source_id": self.order_source_id,
-
+#             "custom_cake_json": self.custom_cake_json,
 #             "is_driver_settled": self.is_driver_settled,
 #             "driver_settlement_id": self.driver_settlement_id,
 

@@ -25,6 +25,18 @@ if (!localStorage.getItem('rasi_wishlist')) {
 // developers can call `initializeSampleData()` from the console if they
 // want to seed test values; it is not invoked automatically anymore.
 
+if (import.meta.env.DEV && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((registration) => {
+      registration.unregister().then((success) => {
+        if (success) {
+          console.log('[SW] Unregistered stale service worker in dev mode');
+        }
+      });
+    });
+  });
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>

@@ -5,6 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask import Flask, send_from_directory, make_response, jsonify
 
 
 from config import Config
@@ -44,6 +45,7 @@ from models.misc import (
     DeliverySlot, OrderSource, CustomOrder, AuditLog,
     DriverSettlement, SubCategory
 )
+from models.agent import AgentMenu, AgentMenuProduct, AgentMenuAssignment
 
 # ─── Existing Routes ─────────────────────────────────────────────────────────
 from routes.auth_routes import auth_bp
@@ -58,6 +60,7 @@ from routes.settings_route import settings_bp
 from routes.reward_route import reward_bp
 from routes.pointsetting_routes import point_setting_bp
 from routes.payment_rotes import payment_bp
+from routes.agent_routes import agent_bp
 
 # ─── New Routes ──────────────────────────────────────────────────────────────
 from routes.users_routes import users_bp
@@ -83,7 +86,9 @@ from flask import jsonify
 
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
+
+app = Flask(__name__, static_folder='dist', static_url_path='')
 app.config.from_object(Config)
 
 # ─── Cloudinary ──────────────────────────────────────────────────────────────
@@ -134,6 +139,7 @@ app.register_blueprint(settings_bp)
 app.register_blueprint(reward_bp)
 app.register_blueprint(point_setting_bp)
 app.register_blueprint(payment_bp)
+app.register_blueprint(agent_bp)
 
 # ─── Register New Blueprints ─────────────────────────────────────────────────
 app.register_blueprint(users_bp)
@@ -160,6 +166,33 @@ app.register_blueprint(backup_bp, url_prefix="/api/v1")
 @app.route("/")
 def home():
     return {"message": "Cake N Take Backend Running", "version": "2.0"}
+
+# 1. Serve index.html with no-cache headers
+@app.route('/')
+def index():
+    response = make_response(send_from_directory(app.static_folder, 'index.html'))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+# 2. Serve static assets (JS, CSS, images) with long-term caching
+@app.route('/<path:filename>')
+def static_files(filename):
+    response = make_response(send_from_directory(app.static_folder, filename))
+    if filename.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg')):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    return response
+
+# 3. Example API endpoint (dynamic data, no cache)
+@app.route('/api/data')
+def api_data():
+    data = {"message": "Fresh data from backend"}
+    response = make_response(jsonify(data))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 with app.app_context():
