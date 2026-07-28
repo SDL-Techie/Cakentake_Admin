@@ -10,6 +10,7 @@ import ChatWidget from '../../components/ChatWidget/ChatWidget';
 import { AppPromo } from '../Animation/AppPromo';
 import CakeHeroShowcase from '../Animation/CakeHeroShowcase';
 import { storefrontApi } from '@/src/services/directApiService';
+import { useCurrency } from '../../context/CurrencyContext';
 // import video from "../../../public/assets/banner.mp4";
 // Types for our data
 interface Product {
@@ -70,9 +71,7 @@ const Home: FC = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [cardSlide, setCardSlide] = useState(0);
   const [cardsPerSlide, setCardsPerSlide] = useState(3);
-  const [currency, setCurrency] = useState(
-    localStorage.getItem('currency') || 'INR'
-  );
+  const { currency, setCurrency } = useCurrency();
 
   const flavors = [
     'Dark Truffle',
@@ -132,15 +131,6 @@ const Home: FC = () => {
   }, [currency]);
 
 
-  // Listen for currency changes fired elsewhere in the app
-  useEffect(() => {
-    const handleCurrencyChange = (e: any) => {
-      setCurrency(e.detail);
-    };
-
-    window.addEventListener('currencyChanged', handleCurrencyChange);
-    return () => window.removeEventListener('currencyChanged', handleCurrencyChange);
-  }, []);
 
   // Keep the number of visible cards per slide in sync with viewport width
   useEffect(() => {

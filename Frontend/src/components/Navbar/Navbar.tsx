@@ -1567,6 +1567,7 @@ import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import toast from 'react-hot-toast';
 import { getCustomerLoyalty } from "@/src/services/loyaltyService";
 import { fetchGeoLocationFromIpApi ,  storefrontApi} from '../../services/directApiService';
+import { useCurrency } from '../../context/CurrencyContext';
 import './Navbar.css';
 
 interface NavbarProps {
@@ -1669,9 +1670,7 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const moreDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [currency, setCurrency] = useState(
-    localStorage.getItem('currency') || 'USD'
-  );
+  const { currency, setCurrency } = useCurrency();
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -1880,9 +1879,6 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCurrency = e.target.value;
     setCurrency(newCurrency);
-    localStorage.setItem('currency', newCurrency);
-    window.dispatchEvent(new CustomEvent('currencyChanged', { detail: newCurrency }));
-    window.location.reload();
   };
 
   const leftNavLinks = [

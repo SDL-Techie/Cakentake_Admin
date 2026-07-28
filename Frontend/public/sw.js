@@ -24,6 +24,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname.startsWith('/api') || requestUrl.pathname.startsWith('/products') || requestUrl.pathname.startsWith('/category') || requestUrl.pathname.startsWith('/cart') || requestUrl.pathname.startsWith('/wishlist')) {
+    return;
+  }
+
   // Only handle http/https requests
   const url = new URL(event.request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {

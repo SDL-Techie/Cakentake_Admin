@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './Cart.css';
 import { useCustomerAuth } from '@/src/context/CustomerAuthContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import { getCart, updateCartItem, removeCartItem } from '../../services/cartService';
 
 interface CartAddon {
@@ -53,8 +54,7 @@ const Cart: React.FC = () => {
   const userId = customer?.id || getUserId();
   const activeSession = isLoggedIn || !!userId;
 
-  // Default currency is KWD.
-  const [currency, setCurrency] = useState(localStorage.getItem('currency') || 'KWD');
+  const { currency, setCurrency } = useCurrency();
 
   const currencySymbol: Record<string, string> = {
     INR: '₹',
@@ -96,20 +96,6 @@ const Cart: React.FC = () => {
   // React to currency changes made elsewhere in the app (e.g. a header currency switcher
   // that writes to localStorage). Poll-free approach: listen for the 'storage' event,
   // which fires on other tabs, plus a custom event you can dispatch from your currency switcher.
-  useEffect(() => {
-    const handleCurrencyChange = () => {
-      const newCurrency = localStorage.getItem('currency') || 'KWD';
-      setCurrency(newCurrency);
-    };
-    window.addEventListener('storage', handleCurrencyChange);
-    window.addEventListener('currencyChanged', handleCurrencyChange as EventListener);
-    window.addEventListener('currencychange', handleCurrencyChange as EventListener);
-    return () => {
-      window.removeEventListener('storage', handleCurrencyChange);
-      window.removeEventListener('currencyChanged', handleCurrencyChange as EventListener);
-      window.removeEventListener('currencychange', handleCurrencyChange as EventListener);
-    };
-  }, []);
 
   const handleQuantityChange = async (itemId: number, newQty: number) => {
     if (newQty < 1) return;

@@ -10,6 +10,7 @@ import "./i18n";
 // Sample data helper is kept for manual testing only
 import { initializeSampleData } from './utils/sampleData';
 import { SettingsProvider } from './context/SettingsContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 // ensure storage keys exist; we no longer auto-populate with dummy items
 if (!localStorage.getItem('rasi_cart')) {
@@ -40,9 +41,11 @@ if (import.meta.env.DEV && 'serviceWorker' in navigator) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
-    <SettingsProvider>
-    <App />
-  </SettingsProvider>
+      <SettingsProvider>
+        <CurrencyProvider>
+          <App />
+        </CurrencyProvider>
+      </SettingsProvider>
     </HelmetProvider>
   </StrictMode>,
 );

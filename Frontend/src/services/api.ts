@@ -6,17 +6,18 @@ export const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// api.interceptors.request.use((config) => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+let currentCurrency = (typeof window !== 'undefined' ? localStorage.getItem('currency') : '') || 'KWD';
+
+export const setCurrencyHeader = (currency: string) => {
+  currentCurrency = (currency || 'KWD').toUpperCase();
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('currency', currentCurrency);
+  }
+};
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  const currency = localStorage.getItem("currency") || "KWD";
+  const currency = currentCurrency || localStorage.getItem('currency') || 'KWD';
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

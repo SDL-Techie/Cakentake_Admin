@@ -118,6 +118,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { getCategoryProducts } from "@/src/services/categoryService";
+import { useCurrency } from '../../context/CurrencyContext';
 import './CategoryProduct.css'
 
 const CategoryProduct = () => {
@@ -126,6 +127,7 @@ const CategoryProduct = () => {
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currency } = useCurrency();
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userRole = user.role || 'customer';
@@ -154,7 +156,7 @@ const CategoryProduct = () => {
     };
 
     fetchProducts();
-  }, [id]);
+  }, [id, currency]);
 
   return (
     <>

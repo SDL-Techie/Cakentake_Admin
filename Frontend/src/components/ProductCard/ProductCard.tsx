@@ -57,7 +57,7 @@
 //       }
 //     };
 //     if (userId && product.id) checkWishlistStatus();
-//   }, [userId, product.id]);
+//   }, [userId, product.id, currency]);
 
 //   // Handle click toggle to Add/Remove from backend
 //   const handleWishlistToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -177,6 +177,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './ProductCard.css';
 import { getWishlist, addToWishlist, deleteWishlistItem } from '../../services/whishlistService';
+import { useCurrency } from '../../context/CurrencyContext';
 
 // --- Promotion shape (matches actual /products API response) ---
 interface Promotion {
@@ -218,6 +219,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, userId }) => {
   const navigate = useNavigate();
+  const { currency } = useCurrency();
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [wishlistId, setWishlistId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -262,8 +264,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, u
   useEffect(() => {
     const checkWishlistStatus = async () => {
       try {
-        const currency = localStorage.getItem("currency") || "KWD";
-
         const items = await getWishlist(effectiveUserId, currency);
         const existingItem = items.find((item) => item.product_id === product.id);
         if (existingItem) {
@@ -275,7 +275,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, u
       }
     };
     if (effectiveUserId && product.id) checkWishlistStatus();
-  }, [effectiveUserId, product.id]);
+  }, [effectiveUserId, product.id, currency]);
 
   // Handle click toggle to Add/Remove from backend
   const handleWishlistToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {

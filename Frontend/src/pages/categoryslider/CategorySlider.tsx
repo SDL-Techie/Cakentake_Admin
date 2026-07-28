@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './CategorySlider.css';
 import { storefrontApi } from '../../services/directApiService';
+import { useCurrency } from '../../context/CurrencyContext';
 
 interface Category {
   _id: string;
@@ -13,6 +14,7 @@ interface Category {
 
 const CircularCategorySlider = () => {
   const navigate = useNavigate();
+  const { currency } = useCurrency();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);

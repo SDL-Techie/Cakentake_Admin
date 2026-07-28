@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './Products.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useCurrency } from '../../context/CurrencyContext';
 
 
 // ─── Types (matching actual API response shape) ──────────────────────────────
@@ -65,11 +66,8 @@ interface Product {
   variants: Variant[];
 }
 
-const user = JSON.parse(localStorage.getItem('user') || '{}');
-const isRetailer = user.role?.toLowerCase() === 'retailer';
-const userId = user.id; // ADD THIS
-
 const Products: React.FC = () => {
+  const { currency } = useCurrency();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
@@ -89,13 +87,14 @@ const Products: React.FC = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isRetailer = user.role?.toLowerCase() === 'retailer';
+  const userId = user.id;
 
   // ─── Fetch all products + categories on mount ───────────────────────────────
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const currency = localStorage.getItem('currency') || 'AED';
+        setProducts([]);
 
         const [prodRes, catRes] = await Promise.all([
           storefrontApi.products({ headers: { 'X-Currency': currency } }),
@@ -111,7 +110,7 @@ const Products: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [currency]);
 
   // ─── Derive variants & flavors for the products currently in scope ─────────
   // (scope = selected category, narrowed further by selected subcategory)

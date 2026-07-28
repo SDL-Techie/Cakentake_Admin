@@ -44,6 +44,7 @@ import SalesAgentOrders from './salesagent/salesagentorder/Salesagentorder';
 import Promocode from './pages/Promocode/Promocode';
 import SalesAgentCreateOrder from './salesagent/salesagentorder/Salesagentcreateorder';
 import Cookies from './components/CookieConsent/Cookies';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 
 // Lazy load pages
@@ -205,7 +206,9 @@ function App() {
     <Router>
       <CustomerAuthProvider>
         <CartProvider>
-          <AppContent />
+          <CurrencyProvider>
+            <AppContent />
+          </CurrencyProvider>
         </CartProvider>
       </CustomerAuthProvider>
     </Router>

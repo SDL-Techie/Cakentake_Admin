@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './Wishlist.css';
 import { useCustomerAuth } from '@/src/context/CustomerAuthContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import {
   getWishlist,
   deleteWishlistItem,
@@ -17,9 +18,7 @@ const Wishlist: React.FC = () => {
   const [isAddingAll, setIsAddingAll] = useState(false);
   const [addingItemId, setAddingItemId] = useState<number | null>(null);
   const { customer, isLoggedIn } = useCustomerAuth();
-  const [currency, setCurrency] = useState(
-    localStorage.getItem('currency') || 'KWD'
-  );
+  const { currency, setCurrency } = useCurrency();
 
   const currencySymbol = {
     INR: '₹',
@@ -41,7 +40,7 @@ const Wishlist: React.FC = () => {
     }
   };
 
-  const currentUserId = customer?.id || getUserId();
+  const currentUserId = Number(customer?.id ?? getUserId() ?? 0) || null;
 
   // --- Fetch Wishlist ---
   useEffect(() => {
@@ -71,21 +70,6 @@ const Wishlist: React.FC = () => {
     fetchWishlist();
   }, [currentUserId, currency]);
 
-  useEffect(() => {
-    const updateCurrency = () => {
-      setCurrency(localStorage.getItem('currency') || 'KWD');
-    };
-
-    updateCurrency();
-
-    window.addEventListener('storage', updateCurrency);
-    window.addEventListener('currencyChanged', updateCurrency);
-
-    return () => {
-      window.removeEventListener('storage', updateCurrency);
-      window.removeEventListener('currencyChanged', updateCurrency);
-    };
-  }, []);
 
   // --- Remove Item Helper ---
   const removeFromWishlist = async (wishlistDbId: number) => {
@@ -110,7 +94,7 @@ const Wishlist: React.FC = () => {
 
     setAddingItemId(item.id);
     try {
-      await addToCart(currentUserId, item.product_id, 1);
+      await addToCart(currentUserId as number, item.product_id, 1);
       toast.success(`${item.product_name} added to cart`);
       await removeFromWishlist(item.id);
     } catch (error: any) {
@@ -137,7 +121,7 @@ const Wishlist: React.FC = () => {
     // Use allSettled so one failed item doesn't block the rest
     const results = await Promise.allSettled(
       wishlistItems.map(item =>
-        addToCart(currentUserId, item.product_id, 1).then(() =>
+        addToCart(currentUserId as number, item.product_id, 1).then(() =>
           removeFromWishlist(item.id).then(() => item.id)
         )
       )
