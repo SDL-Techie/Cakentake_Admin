@@ -13,7 +13,14 @@
   --rose-600: #5f7c49;
   --rose-700: #526A45;
   --rose-800: #314631;
-  --rose-gradient: linear-gradient(135deg, var(--rose-500), var(--rose-700));
+  --rose-gradient: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+);
+
   --ub-text: #2d2d2d;
   --ub-text-soft: #6b6b6b;
   --ub-border: #dfe6d5;

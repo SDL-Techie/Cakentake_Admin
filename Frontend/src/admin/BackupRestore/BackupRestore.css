@@ -127,3 +127,59 @@
     margin: 20px 16px;
   }
 }
+
+/* --- Shared Button Custom Base Rulesets --- */
+.btn-backup, .btn-restore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  color: #ffffff;
+  transition: var(--rasi-ac-transition);
+}
+
+/* Action Specific Buttons */
+.btn-backup,
+.btn-restore {
+  background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+  );
+}
+
+.btn-backup:hover:not(:disabled),
+.btn-restore:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #9BBB7E 0%,
+    #7B9A63 30%,
+    #5E7650 65%,
+    #3A5238 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(82, 106, 69, 0.35);
+}
+
+.btn-backup:active:not(:disabled),
+.btn-restore:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(82, 106, 69, 0.25);
+}
+
+/* Loading & Disabled Button States */
+.btn-backup:disabled, .btn-restore:disabled {
+  background: #cbd5e1 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}

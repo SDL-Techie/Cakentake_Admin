@@ -6,8 +6,8 @@ import {
   Agent,
   OwnerAgentOrder,
   PaymentStatus,
-} from "../services/ownerAgentPaymentService"; // adjust path to match project structure
-import "./AgentPayment.css";
+} from "../services/Owneragentpaymentservice"; // adjust path to match project structure
+import "./Agentpayment.css";
 
 type PaymentFilter = "ALL" | "PENDING" | "PAID";
 

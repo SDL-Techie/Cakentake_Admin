@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getMyAgentProducts, AgentProduct as AgentProductRecord } from "../services/agentService";
-import ProductCard from "../components/ProductCard/ProductCard"; // adjust path to match project structure
+import ProductCard from "../components/ProductCard/ProductCard"; 
 import "./AgentProduct.css";
 
 /* ─────────────────────────────────────────────────────────────────────────

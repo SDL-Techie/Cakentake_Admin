@@ -313,50 +313,50 @@ const NAV_SECTIONS = [
           { type: 'link', name: 'Blog Management', icon: <FaUsers />, path: '/admin/blog', roles: ['ADMIN', 'SALES_AGENT'] },
         ],
       },
-      {
-  type: 'group',
-  name: 'Shop Manager',
-  icon: <FaStore />,
-  roles: ['ADMIN', 'SHOP_MANAGER'],
-  children: [
-    {
-      name: 'Shop Dashboard',
-      icon: <FaTachometerAlt />,
-      path: '/admin/shopdashboard',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    },
-    {
-      name: 'Orders',
-      icon: <FaShoppingCart />,
-      path: '/admin/shoporders',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    },
-    {
-      name: 'Payments',
-      icon: <FaMoneyCheckAlt />,
-      path: '/admin/shoppayments',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    },
-    {
-      name: 'Expenses',
-      icon: <FaReceipt />,
-      path: '/admin/shopexpenses',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    },
-    {
-      name: 'Purchase',
-      icon: <FaTruckLoading />,
-      path: '/admin/shoppurchase',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    },
-    {
-      name: 'Cash Drawer',
-      icon: <FaWallet />,
-      path: '/admin/shopcashdrawer',
-      roles: ['ADMIN', 'SHOP_MANAGER']
-    }
-  ]
-},
+//       {
+//   type: 'group',
+//   name: 'Shop Manager',
+//   icon: <FaStore />,
+//   roles: ['ADMIN', 'SHOP_MANAGER'],
+//   children: [
+//     {
+//       name: 'Shop Dashboard',
+//       icon: <FaTachometerAlt />,
+//       path: '/admin/shopdashboard',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     },
+//     {
+//       name: 'Orders',
+//       icon: <FaShoppingCart />,
+//       path: '/admin/shoporders',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     },
+//     {
+//       name: 'Payments',
+//       icon: <FaMoneyCheckAlt />,
+//       path: '/admin/shoppayments',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     },
+//     {
+//       name: 'Expenses',
+//       icon: <FaReceipt />,
+//       path: '/admin/shopexpenses',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     },
+//     {
+//       name: 'Purchase',
+//       icon: <FaTruckLoading />,
+//       path: '/admin/shoppurchase',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     },
+//     {
+//       name: 'Cash Drawer',
+//       icon: <FaWallet />,
+//       path: '/admin/shopcashdrawer',
+//       roles: ['ADMIN', 'SHOP_MANAGER']
+//     }
+//   ]
+// },
           {
         type: 'group', name: 'Agent', icon: <FaChartLine />, roles: ['ADMIN', 'AGENT'],
         children: [

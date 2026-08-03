@@ -5,7 +5,7 @@ import {
   X, ArrowLeft, Mail, RefreshCw, Cookie, Tag as TagIcon,
 } from 'lucide-react';
 import { getPublishedBlogs, getBlogBySlug, BlogSummary, Blog } from '../../services/blogService';
-import './UserBlog.css';
+import './Userblog.css';
 
 const CATEGORIES = ['All', 'Recipes', 'Baking Tips', 'Bakery News', 'Seasonal', 'Nutrition'];
 

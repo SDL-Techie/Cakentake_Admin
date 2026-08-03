@@ -1916,6 +1916,7 @@ interface Order {
   createdByEmail?: string;
   orderSource?: string;
   isSalesAgentOrder: boolean;
+  isAgentAssignedOrder: boolean;
 
   // ── Custom cake order ──
   customCake?: CustomCakeDetails | null;
@@ -2174,6 +2175,8 @@ function normalizeOrder(raw: any): Order {
     orderSource === 'SALES_AGENT' ||
     orderTypeRaw === 'sales_agent';
 
+  const isAgentAssignedOrder = status === 'assigned_to_agent';
+
   // ── Custom cake order ──
   const customCakeRaw = raw?.custom_cake_json ?? null;
   const isCustomCakeOrder = !!customCakeRaw;
@@ -2236,11 +2239,12 @@ function normalizeOrder(raw: any): Order {
     createdByEmail,
     orderSource,
     isSalesAgentOrder,
+    isAgentAssignedOrder,
+
     deliveryMethod: raw?.delivery_method ?? raw?.deliveryMethod ?? raw?.order_type ?? undefined,
     isPickup,
     pickupDate,
     pickupTimeSlot,
-
     customCake,
     isCustomCakeOrder,
 
@@ -2397,6 +2401,11 @@ const OriginBadges: React.FC<{ order: Order }> = ({ order }) => (
     {order.isSalesAgentOrder && (
       <span className="op-origin-badge badge-sales-agent" title={order.createdByName ? `Logged by ${order.createdByName}` : 'Sales agent order'}>
         <UserCheck size={11} /> Sales Agent
+      </span>
+    )}
+    {order.isAgentAssignedOrder && (
+      <span className="op-origin-badge badge-agent-assigned" title="Assigned delivery agent">
+        <Truck size={11} /> Agent Assigned
       </span>
     )}
     {order.isCustomCakeOrder && (
@@ -2867,7 +2876,7 @@ export const OrderManagement: React.FC = () => {
   })();
 
   const rowClassFor = (row: Order) =>
-    `${row.isSalesAgentOrder ? 'row-sales-agent' : ''} ${row.isCustomCakeOrder ? 'row-custom-cake' : ''}`.trim();
+    `${row.isSalesAgentOrder ? 'row-sales-agent' : row.isAgentAssignedOrder ? 'row-agent-assigned' : ''} ${row.isCustomCakeOrder ? 'row-custom-cake' : ''}`.trim();
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
@@ -2909,6 +2918,9 @@ export const OrderManagement: React.FC = () => {
       <div className="op-legend-row">
         <span className="op-legend-item">
           <span className="op-legend-swatch swatch-sales-agent" /> Sales agent order
+        </span>
+        <span className="op-legend-item">
+          <span className="op-legend-swatch swatch-agent-assigned" /> Agent assigned order
         </span>
         <span className="op-legend-item">
           <span className="op-legend-swatch swatch-custom-cake" /> Custom cake order

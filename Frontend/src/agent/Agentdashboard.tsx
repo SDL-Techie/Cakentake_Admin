@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import {
   getAgentDashboard,
   AgentDashboard as AgentDashboardData,
-} from "../services/agentService"; // adjust path to match project structure
-import "./AgentDashboard.css";
+} from "../services/agentService"; 
+import "./Agentdashboard.css";
 
 /* ─────────────────────────────────────────────────────────────────────────
  * NOTE ON DATA SHAPE

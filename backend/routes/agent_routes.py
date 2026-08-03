@@ -363,7 +363,7 @@ def delete_agent_product(id):
 # 7. AGENT GET ONLY HIS PRODUCTS
 @agent_bp.route("/agent/my-products", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def my_agent_products():
 
     agent = get_current_user()
@@ -383,7 +383,7 @@ def my_agent_products():
 
 @agent_bp.route("/agent/products", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_products():
     """Source 1: normal bakery products, unchanged/unfiltered by agent.
 
@@ -400,7 +400,7 @@ def agent_products():
 
 @agent_bp.route("/agent/catalog", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_catalog():
 
     agent = get_current_user()
@@ -433,7 +433,7 @@ def agent_catalog():
 
 @agent_bp.route("/agent/dashboard", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_dashboard():
     agent = get_current_user()
 
@@ -475,7 +475,7 @@ def agent_dashboard():
 
 @agent_bp.route("/agent/orders", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_list_orders():
     agent = get_current_user()
 
@@ -491,7 +491,7 @@ def agent_list_orders():
 
 @agent_bp.route("/agent/orders/<int:order_id>", methods=["GET"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_get_order(order_id):
     agent = get_current_user()
     order = Order.query.get_or_404(order_id)
@@ -504,7 +504,7 @@ def agent_get_order(order_id):
 
 @agent_bp.route("/agent/orders", methods=["POST"])
 @jwt_required()
-@role_required([ROLE_AGENT])
+@role_required([ROLE_AGENT] + ROLE_OWNER_LIST)
 def agent_create_order():
     """
     Same flow as the normal customer order (routes/order_routes.py:create_order),
