@@ -17,7 +17,13 @@
 .pg-hero h1 {
   font-size: 2.4rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #8b1a42, #c23b6a, #d4567a);
+  background:  linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

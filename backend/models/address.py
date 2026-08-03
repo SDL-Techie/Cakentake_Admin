@@ -1,34 +1,3 @@
-# from extensions import db
-
-# class Address(db.Model):
-#     __tablename__ = "addresses"
-
-#     id = db.Column(db.Integer, primary_key=True)
-
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-
-#     street = db.Column(db.String(255), nullable=False)
-#     city = db.Column(db.String(100), nullable=False)
-#     state = db.Column(db.String(100), nullable=False)
-#     pincode = db.Column(db.String(20), nullable=False)
-#     country = db.Column(db.String(100), default="India")
-
-#     user = db.relationship("User", back_populates="addresses")
-
-#     # ✅ MUST BE INSIDE CLASS
-#     def to_dict(self):
-#         return {
-#             "id": self.id,
-#             "user_id": self.user_id,
-#             "street": self.street,
-#             "city": self.city,
-#             "state": self.state,
-#             "pincode": self.pincode,
-#             "country": self.country
-#         }
-
-
-
 from extensions import db
 
 

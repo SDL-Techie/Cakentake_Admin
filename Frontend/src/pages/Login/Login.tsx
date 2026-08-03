@@ -151,6 +151,10 @@ console.log(role);
       navigate("/admin/salesdash");
       break;
 
+     case "AGENT":
+      navigate("/admin/agentdashboard"); // 👈 Navigate to /admin
+      break;
+
     case "DELIVERY_AGENT":
       navigate("/admin/deliverydashboard");
       break;

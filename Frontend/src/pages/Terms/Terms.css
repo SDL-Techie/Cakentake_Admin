@@ -1,16 +1,16 @@
 :root {
-  --pink: #B95E82;
-  --pink-dark: #7a3655;
-  --pink-deep: #4a1f35;
-  --pink-light: #d4889f;
-  --pink-tint: #f9eef4;
-  --pink-tint2: #f2dde9;
+  --pink: #6F8E57;
+  --pink-dark: #526A45;
+  --pink-deep: #314631;
+  --pink-light: #8FAF6E;
+  --pink-tint: #eef3e6;
+  --pink-tint2: #e2ead6;
   --white: #ffffff;
-  --text-body: #3a2030;
-  --text-muted: #8a6070;
-  --border: #e8ccd8;
-  --shadow: 0 4px 24px rgba(185, 94, 130, 0.08);
-  --shadow-hover: 0 8px 32px rgba(185, 94, 130, 0.18);
+  --text-body: #2d3a26;
+  --text-muted: #6b7a5e;
+  --border: #d3e0c4;
+  --shadow: 0 4px 24px rgba(111, 142, 87, 0.08);
+  --shadow-hover: 0 8px 32px rgba(111, 142, 87, 0.18);
   --radius: 12px;
   --radius-sm: 6px;
 }
@@ -405,7 +405,7 @@
   background: var(--pink);
   color: var(--white);
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(185, 94, 130, 0.3);
+  box-shadow: 0 4px 16px rgba(111, 142, 87, 0.3);
 }
 
 .agreement-btn--active:hover {

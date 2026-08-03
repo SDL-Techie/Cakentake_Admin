@@ -1,10 +1,14 @@
 import { api } from './api';
 
 export const menuManagementService = {
-  getProducts: (categoryId?: string) =>
-    categoryId && categoryId !== 'all'
-      ? api.get(`/products/category/${categoryId}`)
-      : api.get('/products?admin=true'),
+  getProducts: (categoryId?: string) => {
+    const params = new URLSearchParams();
+    params.set('admin', 'true');
+    if (categoryId && categoryId !== 'all') {
+      params.set('category_id', categoryId);
+    }
+    return api.get(`/products?${params.toString()}`);
+  },
   getCategories: () => api.get('/category'),
   getSubcategories: () => api.get('/subcategories'),
   getVariants: () => api.get('/variants'),

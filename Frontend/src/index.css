@@ -256,3 +256,19 @@ input:focus, textarea:focus, select:focus {
     font-size: 20px;
   }
 }
+
+/* Ensure action menu icons are visible and use black across owner/agent pages */
+.am-actions-trigger svg,
+.am-actions-menu .am-menu-item-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-block !important;
+  vertical-align: middle;
+  color: #000 !important;
+  stroke: currentColor !important;
+  fill: currentColor !important;
+}
+/* Preserve stroke-only icons when they intentionally set fill="none" */
+.am-actions-menu svg[fill="none"] {
+  fill: none !important;
+}

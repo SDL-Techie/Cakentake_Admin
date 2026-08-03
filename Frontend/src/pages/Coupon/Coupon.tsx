@@ -144,7 +144,7 @@ const Coupon: React.FC = () => {
             <ArrowLeft size={18} /> Back
           </button>
           <h2>Loyalty Rewards</h2>
-          <p>Earn points on every order and redeem them for a discount at checkout.</p>
+          {/* <p>Earn points on every order and redeem them for a discount at checkout.</p> */}
         </div>
 
         {!isActive && (

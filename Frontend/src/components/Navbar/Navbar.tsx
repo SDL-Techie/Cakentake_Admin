@@ -1,17 +1,17 @@
 // // import React, { useState, useEffect, useRef } from 'react';
 // // import { Link, useNavigate, useLocation } from 'react-router-dom';
 // // import { useTranslation } from 'react-i18next';
-// // import axios from 'axios';
 // // import { motion, AnimatePresence, Variants } from 'framer-motion';
 // // import {
 // //   ShoppingCart, User, Menu, X,
 // //   LayoutDashboard, UserCircle, Package, Heart,
 // //   Phone, Mail, Coins, ChevronLeft, ChevronRight, ChevronDown, ArrowUp, LogOut,
-// //   Search, LayoutGrid, Download
+// //   Search, LayoutGrid, Download, Globe
 // // } from 'lucide-react';
 // // import { useCustomerAuth } from '../../context/CustomerAuthContext';
 // // import toast from 'react-hot-toast';
 // // import { getCustomerLoyalty } from "@/src/services/loyaltyService";
+// // import { fetchGeoLocationFromIpApi ,  storefrontApi} from '../../services/directApiService';
 // // import './Navbar.css';
 
 // // interface NavbarProps {
@@ -144,8 +144,7 @@
 // //     }
 
 // //     // First visit
-// //     fetch('https://ipapi.co/json/')
-// //       .then((res) => res.json())
+// //     fetchGeoLocationFromIpApi()
 // //       .then((data) => {
 // //         const country = data.country_code;
 
@@ -217,10 +216,9 @@
 
 // //   // ── Fetch categories via axios ──
 // //   useEffect(() => {
-// //     axios
-// //       .get<Category[]>('http://127.0.0.1:5000/category')
+// //     storefrontApi.categories()
 // //       .then((res) => {
-// //         setCategories(res.data.filter((cat) => cat.status === 'active'));
+// //         setCategories(res.data.filter((cat:any) => cat.status === 'active'));
 // //       })
 // //       .catch((err) => console.error('❌ Category fetch error:', err));
 // //   }, []);
@@ -245,11 +243,7 @@
 // //       const token = localStorage.getItem('token');
 
 // //       if (token) {
-// //         await axios.post(
-// //           'http://127.0.0.1:5000/logout',
-// //           {},
-// //           { headers: { Authorization: `Bearer ${token}` } }
-// //         );
+// //         await storefrontApi.logout();
 // //       }
 
 // //       localStorage.removeItem('token');
@@ -257,7 +251,7 @@
 // //       localStorage.removeItem('userId');
 
 // //       setUserData(null);
-      
+
 // //       setIsUserDropdownOpen(false);
 // //       setIsMenuOpen(false);
 
@@ -405,8 +399,8 @@
 // //           {/* Right action cluster */}
 // //           <div className="mainbar-actions">
 
-// //             {/* Login / user dropdown */}
-// //             <div className="mainbar-login-container" ref={dropdownRef}>
+// //             {/* Login / user dropdown — hidden on mobile, shown from tablet up */}
+// //             <div className="mainbar-login-container mainbar-desktop-only" ref={dropdownRef}>
 // //               <motion.button
 // //                 className="mainbar-login-btn"
 // //                 onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
@@ -479,7 +473,7 @@
 // //             </div>
 
 // //             {/* More dropdown — houses contact info / currency / about / contact links */}
-// //             <div className="mainbar-more-container" ref={moreDropdownRef}>
+// //             <div className="mainbar-more-container mainbar-desktop-only" ref={moreDropdownRef}>
 // //               <motion.button
 // //                 className="mainbar-more-btn"
 // //                 onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
@@ -522,7 +516,7 @@
 // //                       Contact
 // //                     </Link>
 
-                   
+
 
 // //                     <div className="mainbar-more-contact">
 // //                       <span className="dropdown-link mainbar-more-static"><Phone size={14} /> +91-9443476738</span>
@@ -533,7 +527,7 @@
 // //               </AnimatePresence>
 // //             </div>
 
-// //             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+// //             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="mainbar-desktop-only">
 // //               <Link to="/wishlist" className="mainbar-icon-btn" title="Wishlist">
 // //                 <Heart size={18} />
 // //                 <AnimatePresence>
@@ -553,7 +547,7 @@
 // //               </Link>
 // //             </motion.div>
 
-// //             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+// //             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mainbar-desktop-only">
 // //               <Link to="/cart" className="mainbar-cart-btn" title="Cart">
 // //                 <ShoppingCart size={18} />
 // //                 <span className="mainbar-cart-text">Cart</span>
@@ -574,6 +568,7 @@
 // //               </Link>
 // //             </motion.div>
 
+// //             {/* Download App — visible on both desktop and mobile */}
 // //             <motion.button
 // //               className="mainbar-pwa-btn"
 // //               onClick={triggerPwaInstall}
@@ -585,6 +580,7 @@
 // //               <span className="mainbar-pwa-text">Download App</span>
 // //             </motion.button>
 
+// //             {/* Hamburger — mobile only */}
 // //             <motion.button
 // //               className="mobile-menu-btn"
 // //               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -596,7 +592,7 @@
 // //         </div>
 // //       </div>
 
-// //       {/* ── 2. Category bar (icon-tab style) ── */}
+// //       {/* ── 2. Category bar (icon-tab style) — desktop/tablet only, untouched ── */}
 // //       <div className="navbar-categories">
 // //         <motion.button
 // //           className="category-scroll-btn"
@@ -644,7 +640,7 @@
 // //         </motion.button>
 // //       </div>
 
-// //       {/* ── 3. Mobile Drawer (unchanged) ── */}
+// //       {/* ── 3. Mobile Drawer ── */}
 // //       <AnimatePresence>
 // //         {isMenuOpen && (
 // //           <>
@@ -725,6 +721,30 @@
 // //                       <Link to="/profile" onClick={closeMenu} className="drawer-link">View Profile</Link>
 // //                     </>
 // //                   )}
+
+// //                   {/* ── Currency selector (mobile drawer) ──
+// //                       This was previously only reachable via the "More" dropdown,
+// //                       which is hidden on mobile — so mobile users had no way to
+// //                       change currency at all. Added here under My Account. */}
+// //                   <div className="drawer-currency-row">
+// //                     <span className="drawer-currency-label">
+// //                       <Globe size={16} /> Currency
+// //                     </span>
+// //                     <div className="drawer-currency-field">
+// //                       <select
+// //                         value={currency}
+// //                         onChange={handleCurrencyChange}
+// //                         className="drawer-currency-select"
+// //                       >
+// //                         <option value="USD">USD</option>
+// //                         <option value="INR">INR</option>
+// //                         <option value="AED">AED</option>
+// //                         <option value="KWD">KWD</option>
+// //                       </select>
+// //                       <ChevronDown size={12} className="drawer-currency-caret" />
+// //                     </div>
+// //                   </div>
+
 // //                   <Link to="/cart" onClick={closeMenu} className="drawer-item-with-badge">
 // //                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ShoppingCart size={16} /> My Basket</span>
 // //                     {cartCount > 0 && <span className="drawer-item-badge">{cartCount}</span>}
@@ -779,6 +799,7 @@
 
 
 
+
 // import React, { useState, useEffect, useRef } from 'react';
 // import { Link, useNavigate, useLocation } from 'react-router-dom';
 // import { useTranslation } from 'react-i18next';
@@ -787,12 +808,13 @@
 //   ShoppingCart, User, Menu, X,
 //   LayoutDashboard, UserCircle, Package, Heart,
 //   Phone, Mail, Coins, ChevronLeft, ChevronRight, ChevronDown, ArrowUp, LogOut,
-//   Search, LayoutGrid, Download
+//   Search, LayoutGrid, Download, Globe
 // } from 'lucide-react';
 // import { useCustomerAuth } from '../../context/CustomerAuthContext';
 // import toast from 'react-hot-toast';
 // import { getCustomerLoyalty } from "@/src/services/loyaltyService";
 // import { fetchGeoLocationFromIpApi ,  storefrontApi} from '../../services/directApiService';
+// import { useCurrency } from '../../context/CurrencyContext';
 // import './Navbar.css';
 
 // interface NavbarProps {
@@ -895,9 +917,7 @@
 //   const dropdownRef = useRef<HTMLDivElement>(null);
 //   const moreDropdownRef = useRef<HTMLDivElement>(null);
 
-//   const [currency, setCurrency] = useState(
-//     localStorage.getItem('currency') || 'USD'
-//   );
+//   const { currency, setCurrency } = useCurrency();
 
 //   const changeLanguage = (lang: string) => {
 //     i18n.changeLanguage(lang);
@@ -1032,7 +1052,7 @@
 //       localStorage.removeItem('userId');
 
 //       setUserData(null);
-      
+
 //       setIsUserDropdownOpen(false);
 //       setIsMenuOpen(false);
 
@@ -1106,15 +1126,12 @@
 //   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 //     const newCurrency = e.target.value;
 //     setCurrency(newCurrency);
-//     localStorage.setItem('currency', newCurrency);
-//     window.dispatchEvent(new CustomEvent('currencyChanged', { detail: newCurrency }));
-//     window.location.reload();
 //   };
 
 //   const leftNavLinks = [
 //     { to: '/', label: t('home') },
 //     { to: '/orders', label: t('orders') },
-//     { to: '/products', label: t('products') },
+//     { to: '/products', label: t('products') }
 //   ];
 
 //   // const rightNavLinks = [
@@ -1180,8 +1197,8 @@
 //           {/* Right action cluster */}
 //           <div className="mainbar-actions">
 
-//             {/* Login / user dropdown */}
-//             <div className="mainbar-login-container" ref={dropdownRef}>
+//             {/* Login / user dropdown — hidden on mobile, shown from tablet up */}
+//             <div className="mainbar-login-container mainbar-desktop-only" ref={dropdownRef}>
 //               <motion.button
 //                 className="mainbar-login-btn"
 //                 onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
@@ -1254,7 +1271,7 @@
 //             </div>
 
 //             {/* More dropdown — houses contact info / currency / about / contact links */}
-//             <div className="mainbar-more-container" ref={moreDropdownRef}>
+//             <div className="mainbar-more-container mainbar-desktop-only" ref={moreDropdownRef}>
 //               <motion.button
 //                 className="mainbar-more-btn"
 //                 onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
@@ -1297,7 +1314,11 @@
 //                       Contact
 //                     </Link>
 
-                   
+//                      <Link to="/userblog" onClick={() => setIsMoreDropdownOpen(false)} className="dropdown-link">
+//                       Blog
+//                     </Link>
+
+
 
 //                     <div className="mainbar-more-contact">
 //                       <span className="dropdown-link mainbar-more-static"><Phone size={14} /> +91-9443476738</span>
@@ -1308,7 +1329,7 @@
 //               </AnimatePresence>
 //             </div>
 
-//             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+//             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="mainbar-desktop-only">
 //               <Link to="/wishlist" className="mainbar-icon-btn" title="Wishlist">
 //                 <Heart size={18} />
 //                 <AnimatePresence>
@@ -1328,7 +1349,7 @@
 //               </Link>
 //             </motion.div>
 
-//             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+//             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="mainbar-desktop-only">
 //               <Link to="/cart" className="mainbar-cart-btn" title="Cart">
 //                 <ShoppingCart size={18} />
 //                 <span className="mainbar-cart-text">Cart</span>
@@ -1349,6 +1370,7 @@
 //               </Link>
 //             </motion.div>
 
+//             {/* Download App — visible on both desktop and mobile */}
 //             <motion.button
 //               className="mainbar-pwa-btn"
 //               onClick={triggerPwaInstall}
@@ -1360,6 +1382,7 @@
 //               <span className="mainbar-pwa-text">Download App</span>
 //             </motion.button>
 
+//             {/* Hamburger — mobile only */}
 //             <motion.button
 //               className="mobile-menu-btn"
 //               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -1371,7 +1394,7 @@
 //         </div>
 //       </div>
 
-//       {/* ── 2. Category bar (icon-tab style) ── */}
+//       {/* ── 2. Category bar (icon-tab style) — desktop/tablet only, untouched ── */}
 //       <div className="navbar-categories">
 //         <motion.button
 //           className="category-scroll-btn"
@@ -1419,7 +1442,7 @@
 //         </motion.button>
 //       </div>
 
-//       {/* ── 3. Mobile Drawer (unchanged) ── */}
+//       {/* ── 3. Mobile Drawer ── */}
 //       <AnimatePresence>
 //         {isMenuOpen && (
 //           <>
@@ -1500,6 +1523,30 @@
 //                       <Link to="/profile" onClick={closeMenu} className="drawer-link">View Profile</Link>
 //                     </>
 //                   )}
+
+//                   {/* ── Currency selector (mobile drawer) ──
+//                       This was previously only reachable via the "More" dropdown,
+//                       which is hidden on mobile — so mobile users had no way to
+//                       change currency at all. Added here under My Account. */}
+//                   <div className="drawer-currency-row">
+//                     <span className="drawer-currency-label">
+//                       <Globe size={16} /> Currency
+//                     </span>
+//                     <div className="drawer-currency-field">
+//                       <select
+//                         value={currency}
+//                         onChange={handleCurrencyChange}
+//                         className="drawer-currency-select"
+//                       >
+//                         <option value="USD">USD</option>
+//                         <option value="INR">INR</option>
+//                         <option value="AED">AED</option>
+//                         <option value="KWD">KWD</option>
+//                       </select>
+//                       <ChevronDown size={12} className="drawer-currency-caret" />
+//                     </div>
+//                   </div>
+
 //                   <Link to="/cart" onClick={closeMenu} className="drawer-item-with-badge">
 //                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ShoppingCart size={16} /> My Basket</span>
 //                     {cartCount > 0 && <span className="drawer-item-badge">{cartCount}</span>}
@@ -1561,7 +1608,7 @@ import {
   ShoppingCart, User, Menu, X,
   LayoutDashboard, UserCircle, Package, Heart,
   Phone, Mail, Coins, ChevronLeft, ChevronRight, ChevronDown, ArrowUp, LogOut,
-  Search, LayoutGrid, Download, Globe
+  Search, LayoutGrid, Download, Globe, Newspaper
 } from 'lucide-react';
 import { useCustomerAuth } from '../../context/CustomerAuthContext';
 import toast from 'react-hot-toast';
@@ -1653,11 +1700,19 @@ const getUserId = (): number => {
   }
 };
 
+// Contact details reused by the top info bar (desktop) and the
+// "Explore" section of the mobile drawer. Centralised here so both
+// places always stay in sync.
+const CONTACT_PHONE_DISPLAY = '+91 9443476738';
+const CONTACT_PHONE_TEL = 'tel:+919443476738';
+const CONTACT_EMAIL = 'cakentake@gmail.com';
+const CONTACT_EMAIL_MAILTO = 'mailto:cakentake@gmail.com';
+
 export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  // UI-only toggle for the new "More" dropdown (currency / about / contact) — no functional/integration change.
-  const [isMoreDropdownOpen, setIsMoreDropdownOpen] = useState(false);
+  // Toggle for the currency dropdown that now lives where "More" used to be.
+  const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [ordersCount, setOrdersCount] = useState(2);
   const [categories, setCategories] = useState<Category[]>([]);
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -1668,7 +1723,7 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
   const { customer, isLoggedIn, logout } = useCustomerAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const moreDropdownRef = useRef<HTMLDivElement>(null);
+  const currencyDropdownRef = useRef<HTMLDivElement>(null);
 
   const { currency, setCurrency } = useCurrency();
 
@@ -1782,8 +1837,8 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsUserDropdownOpen(false);
       }
-      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target as Node)) {
-        setIsMoreDropdownOpen(false);
+      if (currencyDropdownRef.current && !currencyDropdownRef.current.contains(event.target as Node)) {
+        setIsCurrencyDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -1879,19 +1934,19 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCurrency = e.target.value;
     setCurrency(newCurrency);
+
+      setTimeout(() => {
+    window.location.reload();
+  }, 100);
   };
 
   const leftNavLinks = [
     { to: '/', label: t('home') },
     { to: '/orders', label: t('orders') },
-    { to: '/products', label: t('products') },
+    { to: '/products', label: t('products') }
   ];
 
-  // const rightNavLinks = [
-  //   // { to: '/coupon-user', label: t('rewards') },
-  //   // { to: '/about', label: t('about') },
-  //   // { to: '/contact', label: t('contact') },
-  // ];
+  const isCheckoutPage = location.pathname.startsWith('/checkout');
 
   const renderNavLink = (link: { to: string; label: string }) => {
     const isActive = location.pathname === link.to;
@@ -1909,6 +1964,21 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
     );
   };
 
+  // Reusable currency <select> — the SAME control/logic used everywhere
+  // currency can be changed. Only styling wrappers differ per placement.
+  const CurrencySelect = ({ className = '' }: { className?: string }) => (
+    <select
+      value={currency}
+      onChange={handleCurrencyChange}
+      className={`clean-dropdown ${className}`}
+    >
+      <option value="USD">USD</option>
+      <option value="INR">INR</option>
+      <option value="AED">AED</option>
+      <option value="KWD">KWD</option>
+    </select>
+  );
+
   return (
     <motion.nav
       className="navbar"
@@ -1916,7 +1986,24 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* ── 1. Main bar (logo pill + search + login/more/cart) ── */}
+      {/* ── 0. Top info bar — About / Contact / Blog + phone / email (desktop only) ── */}
+      <div className="navtop-bar">
+        <div className="navtop-links">
+          <Link to="/about" className="navtop-link">About</Link>
+          <Link to="/contact" className="navtop-link">Contact</Link>
+          <Link to="/userblog" className="navtop-link">Blog</Link>
+        </div>
+        <div className="navtop-contact">
+          <a href={CONTACT_PHONE_TEL} className="navtop-contact-item">
+            <Phone size={13} /> {CONTACT_PHONE_DISPLAY}
+          </a>
+          <a href={CONTACT_EMAIL_MAILTO} className="navtop-contact-item">
+            <Mail size={13} /> {CONTACT_EMAIL}
+          </a>
+        </div>
+      </div>
+
+      {/* ── 1. Main bar (logo pill + search + login/currency/cart) ── */}
       <div className="navbar-mainbar">
         <div className="navbar-mainbar-container">
 
@@ -1924,7 +2011,7 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
           <div className="mainbar-logo-wrap">
             <Link to="/" className="mainbar-logo-pill">
               <img src="/assets/logo.png" alt="Cakentake logo" className="mainbar-logo-img" />
-              <span className="mainbar-logo-text">Cakentake</span>
+              {/* <span className="mainbar-logo-text">Cakentake</span> */}
             </Link>
           </div>
 
@@ -1997,12 +2084,6 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
                           </Link>
                         )}
 
-                        {/* {isRetailer && (
-                          <Link to="/retailerorder" onClick={closeMenu} className="dropdown-link retailer">
-                            <LayoutDashboard size={14} /> Retailer Panel
-                          </Link>
-                        )} */}
-
                         {actuallyLoggedIn && userData && !isRetailer && (
                           <Link to="/coupon-user" onClick={closeMenu} className="dropdown-link">
                             <Coins size={14} /> {points} Points
@@ -2023,60 +2104,41 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
               </AnimatePresence>
             </div>
 
-            {/* More dropdown — houses contact info / currency / about / contact links */}
-            <div className="mainbar-more-container mainbar-desktop-only" ref={moreDropdownRef}>
-              <motion.button
-                className="mainbar-more-btn"
-                onClick={() => setIsMoreDropdownOpen(!isMoreDropdownOpen)}
-                whileTap={{ scale: 0.96 }}
-              >
-                <span className="mainbar-login-text">More</span>
-                <ChevronDown size={13} className="mainbar-chevron" />
-              </motion.button>
+            {/* Currency dropdown — takes the place of the old "More" menu.
+                Reuses the exact same currency select + onChange handler. */}
+            {!isCheckoutPage && (
+              <div className="mainbar-currency-container mainbar-desktop-only" ref={currencyDropdownRef}>
+                <motion.button
+                  className="mainbar-currency-btn"
+                  onClick={() => setIsCurrencyDropdownOpen(!isCurrencyDropdownOpen)}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <Globe size={16} />
+                  <span className="mainbar-login-text">Currency</span>
+                  <ChevronDown size={13} className="mainbar-chevron" />
+                </motion.button>
 
-              <AnimatePresence>
-                {isMoreDropdownOpen && (
-                  <motion.div
-                    className="mainbar-dropdown-menu mainbar-more-menu"
-                    variants={dropdownVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <div className="mainbar-more-section">
-                      <span className="mainbar-more-label">Currency</span>
-                      <div className="selector-field selector-field-more">
-                        <select
-                          value={currency}
-                          onChange={handleCurrencyChange}
-                          className="clean-dropdown clean-dropdown-more"
-                        >
-                          <option value="USD">USD</option>
-                          <option value="INR">INR</option>
-                          <option value="AED">AED</option>
-                          <option value="KWD">KWD</option>
-                        </select>
-                        <ChevronDown size={11} className="selector-caret selector-caret-more" />
+                <AnimatePresence>
+                  {isCurrencyDropdownOpen && (
+                    <motion.div
+                      className="mainbar-dropdown-menu mainbar-currency-menu"
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                    >
+                      <div className="mainbar-currency-section">
+                        <span className="mainbar-more-label">Select Currency</span>
+                        <div className="selector-field selector-field-more">
+                          <CurrencySelect className="clean-dropdown-more" />
+                          <ChevronDown size={11} className="selector-caret selector-caret-more" />
+                        </div>
                       </div>
-                    </div>
-
-                    <Link to="/about" onClick={() => setIsMoreDropdownOpen(false)} className="dropdown-link">
-                      About
-                    </Link>
-                    <Link to="/contact" onClick={() => setIsMoreDropdownOpen(false)} className="dropdown-link">
-                      Contact
-                    </Link>
-
-
-
-                    <div className="mainbar-more-contact">
-                      <span className="dropdown-link mainbar-more-static"><Phone size={14} /> +91-9443476738</span>
-                      <span className="dropdown-link mainbar-more-static"><Mail size={14} /> cakentake@gmail.com</span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
 
             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="mainbar-desktop-only">
               <Link to="/wishlist" className="mainbar-icon-btn" title="Wishlist">
@@ -2144,52 +2206,54 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
       </div>
 
       {/* ── 2. Category bar (icon-tab style) — desktop/tablet only, untouched ── */}
-      <div className="navbar-categories">
-        <motion.button
-          className="category-scroll-btn"
-          onClick={() => scrollCategories('left')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <ChevronLeft size={16} />
-        </motion.button>
+      {!isCheckoutPage && (
+        <div className="navbar-categories">
+          <motion.button
+            className="category-scroll-btn"
+            onClick={() => scrollCategories('left')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <ChevronLeft size={16} />
+          </motion.button>
 
-        <div className="categories-scroll-container" ref={scrollRef}>
-          <Link to="/products" className="category-tab" onClick={closeMenu}>
-            <span className="category-tab-icon-wrap">
-              <LayoutGrid size={20} />
-            </span>
-            <span className="category-tab-label">All Treats</span>
-          </Link>
-
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              to={`/categoryproduct/${cat.id}`}
-              className="category-tab"
-              onClick={closeMenu}
-            >
+          <div className="categories-scroll-container" ref={scrollRef}>
+            <Link to="/products" className="category-tab" onClick={closeMenu}>
               <span className="category-tab-icon-wrap">
-                {cat.image ? (
-                  <img src={cat.image} alt={cat.name} className="category-tab-icon-img" />
-                ) : (
-                  <Package size={18} />
-                )}
+                <LayoutGrid size={20} />
               </span>
-              <span className="category-tab-label">{cat.name}</span>
+              <span className="category-tab-label">All Treats</span>
             </Link>
-          ))}
-        </div>
 
-        <motion.button
-          className="category-scroll-btn"
-          onClick={() => scrollCategories('right')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <ChevronRight size={16} />
-        </motion.button>
-      </div>
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                to={`/categoryproduct/${cat.id}`}
+                className="category-tab"
+                onClick={closeMenu}
+              >
+                <span className="category-tab-icon-wrap">
+                  {cat.image ? (
+                    <img src={cat.image} alt={cat.name} className="category-tab-icon-img" />
+                  ) : (
+                    <Package size={18} />
+                  )}
+                </span>
+                <span className="category-tab-label">{cat.name}</span>
+              </Link>
+            ))}
+          </div>
+
+          <motion.button
+            className="category-scroll-btn"
+            onClick={() => scrollCategories('right')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <ChevronRight size={16} />
+          </motion.button>
+        </div>
+      )}
 
       {/* ── 3. Mobile Drawer ── */}
       <AnimatePresence>
@@ -2248,8 +2312,6 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
                   <h3 className="drawer-section-title">Navigation</h3>
                   <Link to="/" onClick={closeMenu} className="drawer-link">Home</Link>
                   <Link to="/products" onClick={closeMenu} className="drawer-link">Products</Link>
-                  <Link to="/about" onClick={closeMenu} className="drawer-link">About</Link>
-                  <Link to="/contact" onClick={closeMenu} className="drawer-link">Contact</Link>
                   <Link to="/coupon-user" onClick={closeMenu} className="drawer-link">Rewards</Link>
                   {isRetailer && (
                     <Link to="/retailerorder" onClick={closeMenu} className="drawer-link retailer">Retailer Bulk Panel</Link>
@@ -2257,6 +2319,22 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
                   {isAdmin && (
                     <Link to="/admin/dashboard" onClick={closeMenu} className="drawer-link admin">Admin Dashboard</Link>
                   )}
+                </motion.div>
+
+                {/* ── Explore: About / Contact / Blog + phone / email (mobile) ── */}
+                <motion.div className="drawer-section drawer-explore" variants={drawerItem}>
+                  <h3 className="drawer-section-title">Explore</h3>
+                  <Link to="/about" onClick={closeMenu} className="drawer-link">About</Link>
+                  <Link to="/contact" onClick={closeMenu} className="drawer-link">Contact</Link>
+                  <Link to="/userblog" onClick={closeMenu} className="drawer-link">
+                    <Newspaper size={16} /> Blog
+                  </Link>
+                  <a href={CONTACT_PHONE_TEL} className="drawer-link drawer-contact-link">
+                    <Phone size={16} /> {CONTACT_PHONE_DISPLAY}
+                  </a>
+                  <a href={CONTACT_EMAIL_MAILTO} className="drawer-link drawer-contact-link">
+                    <Mail size={16} /> {CONTACT_EMAIL}
+                  </a>
                 </motion.div>
 
                 <motion.div className="drawer-section" variants={drawerItem}>
@@ -2272,29 +2350,6 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
                       <Link to="/profile" onClick={closeMenu} className="drawer-link">View Profile</Link>
                     </>
                   )}
-
-                  {/* ── Currency selector (mobile drawer) ──
-                      This was previously only reachable via the "More" dropdown,
-                      which is hidden on mobile — so mobile users had no way to
-                      change currency at all. Added here under My Account. */}
-                  <div className="drawer-currency-row">
-                    <span className="drawer-currency-label">
-                      <Globe size={16} /> Currency
-                    </span>
-                    <div className="drawer-currency-field">
-                      <select
-                        value={currency}
-                        onChange={handleCurrencyChange}
-                        className="drawer-currency-select"
-                      >
-                        <option value="USD">USD</option>
-                        <option value="INR">INR</option>
-                        <option value="AED">AED</option>
-                        <option value="KWD">KWD</option>
-                      </select>
-                      <ChevronDown size={12} className="drawer-currency-caret" />
-                    </div>
-                  </div>
 
                   <Link to="/cart" onClick={closeMenu} className="drawer-item-with-badge">
                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ShoppingCart size={16} /> My Basket</span>
@@ -2340,6 +2395,28 @@ export default function Navbar({ cartCount, wishlistCount = 0 }: NavbarProps) {
                   </div>
                 </motion.div>
               </motion.div>
+
+              {/* ── Bottom footer: Download App + Currency selector, side by side ── */}
+              <div className="drawer-footer">
+                <button
+                  type="button"
+                  className="drawer-footer-pwa-btn"
+                  onClick={triggerPwaInstall}
+                >
+                  <Download size={16} /> Download App
+                </button>
+
+                {!isCheckoutPage && (
+                  <div className="drawer-footer-currency">
+                    <Globe size={15} />
+                    <span className="drawer-footer-currency-label">Currency</span>
+                    <div className="drawer-currency-field">
+                      <CurrencySelect className="drawer-currency-select" />
+                      <ChevronDown size={12} className="drawer-currency-caret" />
+                    </div>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </>
         )}

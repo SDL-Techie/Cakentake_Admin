@@ -68,120 +68,9 @@ const sections: Section[] = [
       </>
     ),
   },
-  {
-    id: "intellectual",
-    title: "4. Intellectual Property",
-    content: (
-      <>
-        <p>
-          All content on this platform — including but not limited to logos, text, graphics,
-          software, and design — is the exclusive intellectual property of our company and is
-          protected under applicable copyright and trademark laws.
-        </p>
-        <p>
-          You are granted a limited, non-exclusive, non-transferable license to access and use
-          the platform for personal, non-commercial purposes. No rights are transferred to you
-          beyond what is expressly stated in these Terms.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "liability",
-    title: "5. Limitation of Liability",
-    content: (
-      <>
-        <p>
-          To the fullest extent permitted by law, we shall not be liable for any indirect,
-          incidental, special, consequential, or punitive damages arising from your use of or
-          inability to use the service, including loss of data, revenue, or profits.
-        </p>
-        <p>
-          Our total cumulative liability to you for any claims arising from these Terms shall not
-          exceed the amount you paid us, if any, in the twelve (12) months preceding the claim.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "termination",
-    title: "6. Termination",
-    content: (
-      <>
-        <p>
-          We may suspend or terminate your account and access to our services at our sole
-          discretion, with or without cause, and with or without notice. Upon termination, your
-          right to use the service ceases immediately.
-        </p>
-        <p>
-          Provisions of these Terms that by their nature should survive termination — including
-          but not limited to intellectual property, limitation of liability, and governing law —
-          shall continue to apply.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "governing",
-    title: "7. Governing Law",
-    content: (
-      <>
-        <p>
-          These Terms shall be governed by and construed in accordance with the laws of the
-          jurisdiction in which our company is registered, without regard to its conflict of
-          law principles.
-        </p>
-        <p>
-          Any disputes arising under these Terms shall be subject to the exclusive jurisdiction
-          of the competent courts in that jurisdiction, and you hereby consent to such
-          jurisdiction and venue.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "changes",
-    title: "8. Changes to Terms",
-    content: (
-      <>
-        <p>
-          We reserve the right to modify these Terms at any time. When we make material changes,
-          we will notify you via email or a prominent notice on our platform at least 14 days
-          before the changes take effect.
-        </p>
-        <p>
-          It is your responsibility to review these Terms periodically. Your continued use of
-          the service after any changes constitutes your acceptance of the new Terms.
-        </p>
-      </>
-    ),
-  },
-  {
-    id: "contact",
-    title: "9. Contact Us",
-    content: (
-      <>
-        <p>
-          If you have any questions, concerns, or requests regarding these Terms and Conditions,
-          please reach out to our legal team:
-        </p>
-        <div className="contact-block">
-          <div className="contact-item">
-            <span className="contact-label">Email</span>
-            <span className="contact-value">legal@ourcompany.com</span>
-          </div>
-          <div className="contact-item">
-            <span className="contact-label">Address</span>
-            <span className="contact-value">123 Business Ave, Suite 400, City, Country</span>
-          </div>
-          <div className="contact-item">
-            <span className="contact-label">Phone</span>
-            <span className="contact-value">+1 (800) 000-0000</span>
-          </div>
-        </div>
-      </>
-    ),
-  },
+
+
+
 ];
 
 export default function Terms() {
@@ -289,10 +178,10 @@ export default function Terms() {
         </main>
       </div>
 
-      <footer className="tnc-footer">
+      {/* <footer className="tnc-footer">
         <p>© 2026 Our Company. All rights reserved.</p>
         <p>Last updated: June 28, 2026</p>
-      </footer>
+      </footer> */}
     </div>
   );
 }

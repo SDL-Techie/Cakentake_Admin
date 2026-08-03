@@ -12,18 +12,20 @@ class Config:
     DB_PORT = os.getenv("DB_PORT")
     DB_NAME = os.getenv("DB_NAME")
     DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = quote_plus(os.getenv("DB_PASSWORD"))
+    DB_PASSWORD = quote_plus(os.getenv("DB_PASSWORD", ""))
 
-    SQLALCHEMY_DATABASE_URI = (
-        f"postgresql://{os.getenv('DB_USER')}:"
+    # DATABASE_URL is preferred in deployment and also makes local/test
+    # environments easy to override without editing this file.
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or (
+        f"postgresql://{os.getenv('DB_USER', 'postgres')}:"
         f"{DB_PASSWORD}@"
-        f"{os.getenv('DB_HOST')}:"
-        f"{os.getenv('DB_PORT')}/"
-        f"{os.getenv('DB_NAME')}"
+        f"{os.getenv('DB_HOST', 'localhost')}:"
+        f"{os.getenv('DB_PORT', '5432')}/"
+        f"{os.getenv('DB_NAME', 'cakentake')}"
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-me-in-production")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=10)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
@@ -44,3 +46,10 @@ class Config:
 
     STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL")
     STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL")
+
+
+    EXPO_PUSH_URL = os.getenv("EXPO_PUSH_URL", "https://exp.host/--/api/v2/push/send")
+    EXPO_RECEIPTS_URL = os.getenv("EXPO_RECEIPTS_URL", "https://exp.host/--/api/v2/push/getReceipts")
+    EXPO_ACCESS_TOKEN = os.getenv("EXPO_ACCESS_TOKEN", "")
+    NOTIFICATION_SCHEDULER_MODE = os.getenv("NOTIFICATION_SCHEDULER_MODE", "disabled").strip().lower()
+    ENABLE_NOTIFICATION_SCHEDULER = NOTIFICATION_SCHEDULER_MODE == "embedded"

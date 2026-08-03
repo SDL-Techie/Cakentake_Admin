@@ -209,21 +209,49 @@ def complete_kitchen(order_id):
 
     old_status = order.status
 
-    order.status = "READY"
+    # stamp completion
     order.completed_by_kitchen_at = datetime.utcnow()
+
+    # Try to auto-assign a delivery agent. Prefer ONLINE agents, fallback to any active agent.
+    delivery_agent = User.query.filter_by(role="DELIVERY_AGENT", availability_status="ONLINE", is_active=True).order_by(User.id).first()
+    if not delivery_agent:
+        delivery_agent = User.query.filter_by(role="DELIVERY_AGENT", is_active=True).order_by(User.id).first()
+
+    if not delivery_agent:
+        # No agent available — leave as READY and log
+        order.status = "READY"
+        log_order_status(
+            order,
+            old_status,
+            "READY",
+            current_user.id,
+            "Order marked READY — no delivery agent available for auto-assignment"
+        )
+        db.session.commit()
+        return jsonify({
+            "message": "Order marked as READY",
+            "order": order.to_dict(),
+            "note": "No delivery agent available for automatic assignment"
+        }), 200
+
+    # Assign to found delivery agent and move to ASSIGNED_TO_AGENT
+    order.delivery_agent_id = delivery_agent.id
+    order.delivery_agent_assigned_by = current_user.id
+    order.delivery_agent_assigned_at = datetime.utcnow()
+    order.status = "ASSIGNED_TO_AGENT"
 
     log_order_status(
         order,
         old_status,
-        "READY",
+        "ASSIGNED_TO_AGENT",
         current_user.id,
-        f"Order marked READY by {current_user.first_name} {current_user.last_name}"
+        f"Automatically assigned to delivery agent {delivery_agent.first_name} {delivery_agent.last_name}"
     )
 
     db.session.commit()
 
     return jsonify({
-        "message": "Order marked as READY",
+        "message": "Order ready and assigned to delivery agent",
         "order": order.to_dict()
     }), 200
 
@@ -285,3 +313,21 @@ def kitchen_report_week():
 @role_required(["ADMIN", "SHOP_MANAGER", "KITCHEN_STAFF"])
 def kitchen_report_month():
     return _kitchen_report(30)
+
+
+
+@kitchen_bp.route("/kitchen/my-completed-orders", methods=["GET"])
+@jwt_required()
+@role_required(["ADMIN", "SHOP_MANAGER", "KITCHEN_STAFF"])
+def my_completed_orders():
+
+    user_id = int(get_jwt_identity())
+
+    orders = Order.query.filter(
+        Order.completed_by_kitchen_at.isnot(None),
+        Order.preparation_started_by == user_id
+    ).order_by(Order.completed_by_kitchen_at.desc()).all()
+
+    return jsonify({
+        "orders": [order.to_dict() for order in orders]
+    }), 200

@@ -1807,6 +1807,7 @@ interface OrderAddon {
   quantity: number;
   price: number;
   total: number;
+  imageUrl?: string;
 }
 
 interface OrderItem {
@@ -1921,8 +1922,12 @@ interface Order {
   isCustomCakeOrder: boolean;
 
   // ── Delivery scheduling ──
+  deliveryMethod?: string;
+  isPickup?: boolean;
   deliveryDate?: string;
   deliveryTimeSlot?: string;
+  pickupDate?: string;
+  pickupTimeSlot?: string;
 
   // ── Greeting card ──
   greetingTo?: string;
@@ -2099,30 +2104,37 @@ function normalizeOrder(raw: any): Order {
     };
   });
 
-  const orderAddons: OrderAddon[] = (raw?.order_addons ?? raw?.orderAddons ?? []).map((addon: any) => ({
-    addonId: Number(addon?.addon_id ?? addon?.addonId ?? 0),
-    addonName: addon?.addon_name ?? addon?.addonName ?? addon?.name ?? 'Addon',
-    quantity: Number(addon?.quantity ?? 1),
-    price: Number(addon?.price ?? 0),
-    total: Number(addon?.total ?? 0),
-  }));
+  const orderAddons: OrderAddon[] = (raw?.order_addons ?? raw?.orderAddons ?? []).map((addon: any) => {
+    const qty = Number(addon?.quantity ?? 1);
+    const price = Number(addon?.price ?? 0);
+    const total = Number(addon?.total ?? price * qty);
+    const imageUrl = addon?.addon_image ?? addon?.image ?? addon?.image_url ?? addon?.addonImage ?? null;
+    return {
+      addonId: Number(addon?.addon_id ?? addon?.addonId ?? 0),
+      addonName: addon?.addon_name ?? addon?.addonName ?? addon?.name ?? 'Addon',
+      quantity: qty,
+      price: price,
+      total: total,
+      imageUrl: imageUrl,
+    };
+  });
 
   let subtotal = Number(raw?.subtotal ?? raw?.sub_total ?? 0);
   if (!subtotal) {
     subtotal = items.reduce(
-      (sum, it) => sum + (it.lineTotal ?? (it.price + it.addOnPriceTotal) * it.quantity),
+      (sum, it) => sum + it.price * it.quantity,
       0
     );
   }
 
-  const discount       = Number(raw?.discount ?? 0);
-  const deliveryCharge = Number(raw?.delivery_charge ?? raw?.delivery_fee ?? 0);
-  let   total          = Number(raw?.total ?? raw?.grand_total ?? 0);
-  if (!total) total    = subtotal - discount + deliveryCharge;
+  const discount         = Number(raw?.discount ?? 0);
+  const deliveryCharge   = Number(raw?.delivery_charge ?? raw?.delivery_fee ?? 0);
+  const orderAddonsTotal = Number(raw?.order_addons_total ?? raw?.orderAddonsTotal ?? 0);
+  let   total            = Number(raw?.total ?? raw?.grand_total ?? 0);
+  if (!total) total      = subtotal + orderAddonsTotal - discount + deliveryCharge;
 
   const currency      = String(raw?.currency ?? 'INR').toUpperCase();
   const paymentMethod = String(raw?.payment_method ?? 'N/A').toUpperCase();
-  const orderAddonsTotal = Number(raw?.order_addons_total ?? raw?.orderAddonsTotal ?? 0);
   const timeline: TimelineEntry[] = (raw?.history ?? raw?.timeline ?? []).map(mapTimelineEntry);
 
   const agentObj           = raw?.delivery_agent;
@@ -2147,6 +2159,16 @@ function normalizeOrder(raw: any): Order {
   const createdByEmail = createdBy?.email ?? undefined;
   const orderSource    = raw?.order_source ?? undefined;
   const orderTypeRaw   = String(raw?.order_type ?? '').toLowerCase();
+  const deliveryMethodRaw = String(raw?.delivery_method ?? raw?.deliveryMethod ?? raw?.deliveryType ?? '').toLowerCase();
+  const isPickup =
+    deliveryMethodRaw === 'pickup' ||
+    deliveryMethodRaw.includes('pickup') ||
+    orderTypeRaw === 'pickup' ||
+    orderTypeRaw.includes('pickup');
+
+  const pickupDate     = raw?.pickup_date ?? raw?.delivery_date ?? undefined;
+  const pickupTimeSlot = raw?.pickup_time_slot ?? raw?.delivery_time_slot ?? undefined;
+
   const isSalesAgentOrder =
     createdByRole === 'SALES_AGENT' ||
     orderSource === 'SALES_AGENT' ||
@@ -2214,6 +2236,10 @@ function normalizeOrder(raw: any): Order {
     createdByEmail,
     orderSource,
     isSalesAgentOrder,
+    deliveryMethod: raw?.delivery_method ?? raw?.deliveryMethod ?? raw?.order_type ?? undefined,
+    isPickup,
+    pickupDate,
+    pickupTimeSlot,
 
     customCake,
     isCustomCakeOrder,
@@ -3051,13 +3077,18 @@ export const OrderManagement: React.FC = () => {
               )}
             </div>
 
-            {/* Delivery scheduling */}
+            {/* Delivery / Pickup scheduling */}
             <div className="op-fd-section">
-              <h4><CalendarClock size={14} /> Delivery Schedule</h4>
+              <h4><CalendarClock size={14} /> {fullDetailsOrder.isPickup ? 'Pickup Schedule' : 'Delivery Schedule'}</h4>
               <div className="op-fd-grid">
-                <div><span className="lbl">Expected date</span><span>{formatDate(fullDetailsOrder.deliveryDate)}</span></div>
-                <div><span className="lbl">Time slot</span><span>{fullDetailsOrder.deliveryTimeSlot ?? '—'}</span></div>
-                <div><span className="lbl">Area</span><span>{fullDetailsOrder.detailedAddress?.areaName ?? '—'}</span></div>
+                <div><span className="lbl">{fullDetailsOrder.isPickup ? 'Pickup date' : 'Expected date'}</span><span>{formatDate(fullDetailsOrder.isPickup ? fullDetailsOrder.pickupDate ?? fullDetailsOrder.deliveryDate : fullDetailsOrder.deliveryDate)}</span></div>
+                <div><span className="lbl">Time slot</span><span>{fullDetailsOrder.isPickup ? fullDetailsOrder.pickupTimeSlot ?? fullDetailsOrder.deliveryTimeSlot : fullDetailsOrder.deliveryTimeSlot ?? '—'}</span></div>
+                {!fullDetailsOrder.isPickup && (
+                  <div><span className="lbl">Area</span><span>{fullDetailsOrder.detailedAddress?.areaName ?? '—'}</span></div>
+                )}
+                {fullDetailsOrder.isPickup && fullDetailsOrder.deliveryAddress && (
+                  <div><span className="lbl">Pickup Location</span><span>{fullDetailsOrder.deliveryAddress}</span></div>
+                )}
               </div>
             </div>
 
@@ -3070,17 +3101,23 @@ export const OrderManagement: React.FC = () => {
                 <div><span className="lbl">Email</span><span>{fullDetailsOrder.customerEmail ?? '—'}</span></div>
               </div>
               <div className="op-fd-address-block">
-                <p><strong>Address:</strong> {fullDetailsOrder.deliveryAddress}</p>
-                {fullDetailsOrder.detailedAddress && (
-                  <ul className="op-fd-address-list">
-                    {fullDetailsOrder.detailedAddress.building && <li><strong>Building:</strong> {fullDetailsOrder.detailedAddress.building}</li>}
-                    {fullDetailsOrder.detailedAddress.block && <li><strong>Block:</strong> {fullDetailsOrder.detailedAddress.block}</li>}
-                    {fullDetailsOrder.detailedAddress.avenue && <li><strong>Avenue:</strong> {fullDetailsOrder.detailedAddress.avenue}</li>}
-                    {fullDetailsOrder.detailedAddress.street && <li><strong>Street:</strong> {fullDetailsOrder.detailedAddress.street}</li>}
-                    {fullDetailsOrder.detailedAddress.floor && <li><strong>Floor/Apt:</strong> {fullDetailsOrder.detailedAddress.floor} {fullDetailsOrder.detailedAddress.apartment}</li>}
-                    {fullDetailsOrder.detailedAddress.landmark && <li><strong>Landmark:</strong> {fullDetailsOrder.detailedAddress.landmark}</li>}
-                    {fullDetailsOrder.detailedAddress.addressNotes && <li><strong>Address notes:</strong> {fullDetailsOrder.detailedAddress.addressNotes}</li>}
-                  </ul>
+                {fullDetailsOrder.isPickup ? (
+                  <p><strong>Pickup order</strong> — no delivery address is required.</p>
+                ) : (
+                  <>
+                    <p><strong>Address:</strong> {fullDetailsOrder.deliveryAddress}</p>
+                    {fullDetailsOrder.detailedAddress && (
+                      <ul className="op-fd-address-list">
+                        {fullDetailsOrder.detailedAddress.building && <li><strong>Building:</strong> {fullDetailsOrder.detailedAddress.building}</li>}
+                        {fullDetailsOrder.detailedAddress.block && <li><strong>Block:</strong> {fullDetailsOrder.detailedAddress.block}</li>}
+                        {fullDetailsOrder.detailedAddress.avenue && <li><strong>Avenue:</strong> {fullDetailsOrder.detailedAddress.avenue}</li>}
+                        {fullDetailsOrder.detailedAddress.street && <li><strong>Street:</strong> {fullDetailsOrder.detailedAddress.street}</li>}
+                        {fullDetailsOrder.detailedAddress.floor && <li><strong>Floor/Apt:</strong> {fullDetailsOrder.detailedAddress.floor} {fullDetailsOrder.detailedAddress.apartment}</li>}
+                        {fullDetailsOrder.detailedAddress.landmark && <li><strong>Landmark:</strong> {fullDetailsOrder.detailedAddress.landmark}</li>}
+                        {fullDetailsOrder.detailedAddress.addressNotes && <li><strong>Address notes:</strong> {fullDetailsOrder.detailedAddress.addressNotes}</li>}
+                      </ul>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -3119,13 +3156,30 @@ export const OrderManagement: React.FC = () => {
                   <div className="op-fd-addons-list">
                     {fullDetailsOrder.orderAddons.map((addon, idx) => (
                       <div key={`${addon.addonId}-${idx}`} className="op-fd-addon-row">
-                        <div>
-                          <strong>{addon.addonName || `Addon #${addon.addonId}`}</strong>
-                          <div className="op-fd-addon-meta">
-                            Qty: {addon.quantity} · {formatMoney(addon.price, fullDetailsOrder.currency)} each
+                        <div className="op-fd-addon-thumb-wrapper">
+                          {addon.imageUrl ? (
+                            <img
+                              src={addon.imageUrl}
+                              alt={addon.addonName ?? `Addon #${addon.addonId}`}
+                              className="op-fd-addon-thumb"
+                            />
+                          ) : (
+                            <div className="op-fd-addon-thumb-placeholder" />
+                          )}
+                          <div className="op-fd-addon-content">
+                            <strong>
+                              {addon.addonName || `Addon #${addon.addonId}`}
+                              {addon.quantity > 0 ? ` (${addon.quantity} pcs)` : ''}
+                            </strong>
+                            <div className="op-fd-addon-meta">
+                              {formatMoney(addon.price, fullDetailsOrder.currency)} each
+                            </div>
                           </div>
                         </div>
-                        <span>{formatMoney(addon.total, fullDetailsOrder.currency)}</span>
+                        <div className="op-fd-addon-price-block">
+                          <span>{formatMoney(addon.total, fullDetailsOrder.currency)}</span>
+                          <div className="op-fd-addon-note">Rate included in totals</div>
+                        </div>
                       </div>
                     ))}
                     <div className="op-fd-addon-total">
@@ -3189,6 +3243,9 @@ export const OrderManagement: React.FC = () => {
               </div>
               <div className="drawer-cost-breakdown">
                 <div className="cost-row"><span>Subtotal:</span><span>{formatMoney(fullDetailsOrder.subtotal, fullDetailsOrder.currency)}</span></div>
+                {fullDetailsOrder.orderAddonsTotal && fullDetailsOrder.orderAddonsTotal > 0 && (
+                  <div className="cost-row"><span>Add-ons:</span><span>{formatMoney(fullDetailsOrder.orderAddonsTotal, fullDetailsOrder.currency)}</span></div>
+                )}
                 {fullDetailsOrder.discount > 0 && (
                   <div className="cost-row discount">
                     <span>{fullDetailsOrder.loyaltyCoupon ? `Coupon (${fullDetailsOrder.loyaltyCoupon}):` : 'Discount:'}</span>
@@ -3284,13 +3341,13 @@ export const OrderManagement: React.FC = () => {
             </div>
 
             {/* Expected delivery + greeting quick summary */}
-            {(selectedOrder.deliveryDate || selectedOrder.deliveryTimeSlot || selectedOrder.greetingMessage) && (
+            {(selectedOrder.deliveryDate || selectedOrder.deliveryTimeSlot || selectedOrder.pickupDate || selectedOrder.pickupTimeSlot || selectedOrder.greetingMessage) && (
               <div className="drawer-spec-block op-quick-summary-block">
-                {(selectedOrder.deliveryDate || selectedOrder.deliveryTimeSlot) && (
+                {(selectedOrder.isPickup ? (selectedOrder.pickupDate || selectedOrder.pickupTimeSlot) : (selectedOrder.deliveryDate || selectedOrder.deliveryTimeSlot)) && (
                   <p className="profile-row">
-                    <CalendarClock size={13} /> <strong>Expected:</strong>{' '}
-                    {formatDate(selectedOrder.deliveryDate)}
-                    {selectedOrder.deliveryTimeSlot ? ` · ${selectedOrder.deliveryTimeSlot}` : ''}
+                    <CalendarClock size={13} /> <strong>{selectedOrder.isPickup ? 'Pickup' : 'Expected'}:</strong>{' '}
+                    {selectedOrder.isPickup ? formatDate(selectedOrder.pickupDate ?? selectedOrder.deliveryDate) : formatDate(selectedOrder.deliveryDate)}
+                    {selectedOrder.isPickup ? (selectedOrder.pickupTimeSlot ?? selectedOrder.deliveryTimeSlot ? ` · ${selectedOrder.pickupTimeSlot ?? selectedOrder.deliveryTimeSlot}` : '') : (selectedOrder.deliveryTimeSlot ? ` · ${selectedOrder.deliveryTimeSlot}` : '')}
                   </p>
                 )}
                 {selectedOrder.greetingMessage && (
@@ -3347,6 +3404,39 @@ export const OrderManagement: React.FC = () => {
                   </div>
                 ))}
               </div>
+              {selectedOrder.orderAddons?.length > 0 && (
+                <div className="drawer-spec-block op-fd-order-addons">
+                  <h4>Order Add-ons</h4>
+                  <div className="op-fd-addons-list">
+                    {selectedOrder.orderAddons.map((addon, idx) => (
+                      <div key={`${addon.addonId}-${idx}`} className="op-fd-addon-row">
+                        <div className="op-fd-addon-thumb-wrapper">
+                          {addon.imageUrl ? (
+                            <img src={addon.imageUrl} alt={addon.addonName ?? `Addon #${addon.addonId}`} className="op-fd-addon-thumb" />
+                          ) : (
+                            <div className="op-fd-addon-thumb-placeholder" />
+                          )}
+                          <div className="op-fd-addon-content">
+                            <strong>
+                              {addon.addonName || `Addon #${addon.addonId}`}
+                              {addon.quantity > 0 ? ` (${addon.quantity} pcs)` : ''}
+                            </strong>
+                            <div className="op-fd-addon-meta">{formatMoney(addon.price, selectedOrder.currency)} each</div>
+                          </div>
+                        </div>
+                        <div className="op-fd-addon-price-block">
+                          <span>{formatMoney(addon.total, selectedOrder.currency)}</span>
+                          <div className="op-fd-addon-note">Rate included in totals</div>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="op-fd-addon-total">
+                      <strong>Total Add-ons:</strong>
+                      <span>{formatMoney(selectedOrder.orderAddonsTotal ?? selectedOrder.orderAddons.reduce((sum, addon) => sum + addon.total, 0), selectedOrder.currency)}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="drawer-cost-breakdown">
                 <div className="cost-row"><span>Subtotal:</span><span>{formatMoney(selectedOrder.subtotal, selectedOrder.currency)}</span></div>
                 {selectedOrder.discount > 0 && (
@@ -3368,7 +3458,18 @@ export const OrderManagement: React.FC = () => {
               {selectedOrder.customerEmail && (
                 <p className="profile-row"><strong>Email:</strong> {selectedOrder.customerEmail}</p>
               )}
-              <p className="profile-row"><strong>Address:</strong> {selectedOrder.deliveryAddress}</p>
+              {selectedOrder.isPickup ? (
+                <>
+                  <p className="profile-row"><strong>Pickup order:</strong> Yes</p>
+                  {selectedOrder.deliveryAddress ? (
+                    <p className="profile-row"><strong>Pickup Location:</strong> {selectedOrder.deliveryAddress}</p>
+                  ) : (
+                    <p className="profile-row"><strong>Pickup Location:</strong> Not specified</p>
+                  )}
+                </>
+              ) : (
+                <p className="profile-row"><strong>Address:</strong> {selectedOrder.deliveryAddress || 'Not specified'}</p>
+              )}
               <p className="profile-row">
                 <strong>Payment:</strong> {selectedOrder.paymentMethod}
                 {selectedOrder.paymentStatus ? ` · ${selectedOrder.paymentStatus}` : ''}

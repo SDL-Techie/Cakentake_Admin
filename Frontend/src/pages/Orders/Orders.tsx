@@ -105,6 +105,10 @@ const getItemAddOns = (item: OrderItem): string[] => {
   const currentCurrency = order.currency || 'INR';
   const symbol = currentCurrency === 'INR' ? '₹' : currentCurrency;
 
+  // compute item subtotal and addons total as a fallback when backend does not include them
+  const itemSubtotal = (order.items || []).reduce((s, it) => s + (Number(it.price || 0) * Number(it.quantity || 0)), 0);
+  const addonsTotal = Number(order.order_addons_total ?? (order.order_addons ? order.order_addons.reduce((s, a) => s + Number(a.total || 0), 0) : 0));
+  const computedTotal = Number(order.total) || (itemSubtotal + addonsTotal);
 
 // const createPayment = async (
 //   orderId: number,
@@ -172,9 +176,9 @@ const getItemAddOns = (item: OrderItem): string[] => {
               {order.items.length > 2 && (
                 <p className="ct-more-items">+{order.items.length - 2} more items</p>
               )}
-              {order.order_addons_total > 0 && (
+              {addonsTotal > 0 && (
                 <p className="ct-order-addons-summary">
-                  Add-ons: {symbol}{Number(order.order_addons_total).toFixed(2)}
+                  Add-ons: {symbol}{Number(addonsTotal).toFixed(2)}
                 </p>
               )}
             </>
@@ -255,7 +259,7 @@ const getItemAddOns = (item: OrderItem): string[] => {
 )}
 
         <div className="ct-card-footer">
-          <p className="ct-card-total">{symbol}{Number(order.total).toFixed(2)}</p>
+          <p className="ct-card-total">{symbol}{Number(computedTotal).toFixed(2)}</p>
         </div>
 
       </div>

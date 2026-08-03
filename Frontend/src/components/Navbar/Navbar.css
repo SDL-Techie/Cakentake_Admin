@@ -10,7 +10,70 @@
   font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* ── Topbar ── */
+/* ══════════════════════════════════════════════════════════
+   NEW: TOP INFO BAR — About / Contact / Blog + phone / email
+   Desktop / tablet only (>=768px). Compact, white bg, green accents.
+   ══════════════════════════════════════════════════════════ */
+.navtop-bar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 24px;
+  min-height: 36px;
+  background: #FFF8EC;
+  border-bottom: 1px solid #e7efdc;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+@media (min-width: 768px) {
+  .navtop-bar { display: flex; }
+}
+
+.navtop-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navtop-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b4a2f;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+.navtop-link:hover {
+  background: #d8e4c7;
+  color: #2f4626;
+}
+
+.navtop-contact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navtop-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b4a2f;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 14px;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.navtop-contact-item:hover {
+  background: #d8e4c7;
+  color: #2f4626;
+}
+
+/* ── Topbar (legacy — kept in case other markup still references it) ── */
 .navbar-topbar {
   background: linear-gradient(135deg, #8b1a42 0%, #c23b6a 50%, #d4567a 100%);
   font-size: 11px;
@@ -79,7 +142,7 @@
   font-weight: 600;
 }
 
-/* Language / Currency selectors */
+/* Language / Currency selectors (legacy topbar variant) */
 .header-selectors-row {
   display: flex;
   align-items: center;
@@ -134,7 +197,7 @@
   opacity: 0.85;
 }
 
-/* ── Main row ── */
+/* ── Main row (legacy — kept for compatibility) ── */
 .navbar-main {
   background-color: #ffffff;
   border-bottom: 1px solid #f3dbe3;
@@ -257,7 +320,7 @@
   background: linear-gradient(135deg, #8b1a42 0%, #c23b6a 50%, #d4567a 100%);
 }
 
-/* ── CIRCULAR LOGO ── */
+/* ── CIRCULAR LOGO (legacy) ── */
 .logo-container {
   position: relative;
   z-index: 40;
@@ -296,7 +359,6 @@
   display: block;
 }
 
-/* Rotating dashed inner ring */
 .logo-circle-wrap::before {
   content: '';
   position: absolute;
@@ -340,7 +402,7 @@
   .logo-tagline { font-size: 5.5px; }
 }
 
-/* Right action panel */
+/* Right action panel (legacy) */
 .navbar-right {
   display: flex;
   align-items: center;
@@ -401,7 +463,7 @@
   text-align: left;
   font-family: inherit;
 }
-.dropdown-link:hover { background: #fdf2f6; color: #c23b6a; }
+.dropdown-link:hover { background: #d8e4c7; color: #2f4626; }
 .dropdown-link.admin    { color: #047857; }
 .dropdown-link.retailer { color: #0d7a66; }
 .dropdown-link.logout   { color: #dc2626; border-top: 1px solid #f3dbe3; }
@@ -478,7 +540,7 @@
   display: none;
   align-items: center;
   gap: 8px;
-  background: #fdf2f6;
+  background: #FFF8EC;
   padding: 8px 16px;
   border-top: 1px solid #f3dbe3;
 }
@@ -690,9 +752,25 @@
   font-family: inherit;
   transition: color 0.2s;
 }
-.drawer-link:hover { color: #c23b6a; }
+.drawer-link:hover { color: #4a6636; }
 .drawer-link.admin    { color: #047857; font-weight: 600; }
 .drawer-link.retailer { color: #0d7a66; font-weight: 600; }
+
+/* ── Explore section (mobile) — About / Contact / Blog + phone / email ── */
+.drawer-explore .drawer-link {
+  border-radius: 10px;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  transition: background 0.2s, color 0.2s;
+}
+.drawer-explore .drawer-link:hover {
+  background: #d8e4c7;
+  color: #2f4626;
+}
+.drawer-contact-link {
+  font-weight: 600;
+  color: #3b4a2f;
+}
 
 .drawer-account {
   display: flex;
@@ -716,7 +794,7 @@
   transition: color 0.2s;
   font-family: inherit;
 }
-.drawer-item-with-badge:hover { color: #c23b6a; }
+.drawer-item-with-badge:hover { color: #4a6636; }
 
 .drawer-item-badge {
   background: linear-gradient(135deg, #8b1a42 0%, #c23b6a 50%, #d4567a 100%);
@@ -764,9 +842,66 @@
   font-family: inherit;
 }
 .drawer-category-link:hover {
-  border-left-color: #c23b6a;
+  border-left-color: #6f8e57;
   padding-left: 12px;
-  color: #c23b6a;
+  color: #4a6636;
+}
+
+/* ── Mobile drawer bottom footer: Download App + Currency ── */
+.drawer-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #f3dbe3;
+  background: #fbfdf8;
+}
+
+.drawer-footer-pwa-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+  );
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.drawer-footer-pwa-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(82, 106, 69, 0.28);
+}
+
+.drawer-footer-currency {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #d8e4c7;
+  border: 1px solid #c3d4ab;
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: #2f4626;
+  flex-shrink: 0;
+}
+
+.drawer-footer-currency-label {
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* ── Responsive ── */
@@ -787,10 +922,6 @@
 
 /* ══════════════════════════════════════════════════════════
    NAVBAR UI REFRESH — Flipkart-style layout
-   Add everything below to the END of your existing Navbar.css.
-   These are ADDITIVE rules for the new markup; they don't touch
-   any of the classes used by the mobile drawer or dropdown-link
-   items (those are reused as-is).
    ══════════════════════════════════════════════════════════ */
 
 /* ── Main bar shell ── */
@@ -818,9 +949,16 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  background: linear-gradient(135deg, #8b1a42 0%, #c23b6a 50%, #d4567a 100%);
+  /* background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+); */
+
   border-radius: 999px;
-  padding: 6px 16px 6px 8px;
+  /* padding: 6px 16px 6px 8px; */
   box-shadow: 0 4px 14px rgba(139, 26, 66, 0.22);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -830,8 +968,8 @@
 }
 
 .mainbar-logo-img {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: #ffffff;
   object-fit: contain;
@@ -872,7 +1010,7 @@
 
 .mainbar-search-input {
   width: 100%;
-  background: #fdf2f6;
+  background: #fff8ec;
   border: 1.5px solid #f3dbe3;
   color: #2d1620;
   padding: 9px 42px 9px 16px;
@@ -897,7 +1035,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #8b1a42 0%, #c23b6a 50%, #d4567a 100%);
+background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+);
+
   border: none;
   border-radius: 50%;
   color: #ffffff;
@@ -918,12 +1063,12 @@
 
 /* Login button + dropdown */
 .mainbar-login-container,
-.mainbar-more-container {
+.mainbar-currency-container {
   position: relative;
 }
 
 .mainbar-login-btn,
-.mainbar-more-btn {
+.mainbar-currency-btn {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -938,10 +1083,13 @@
   border-radius: 8px;
   transition: color 0.2s, background 0.2s;
 }
-.mainbar-login-btn:hover,
-.mainbar-more-btn:hover {
+.mainbar-login-btn:hover {
   color: #c23b6a;
   background: #fdf2f6;
+}
+.mainbar-currency-btn:hover {
+  color: #2f4626;
+  background: #d8e4c7;
 }
 
 .mainbar-login-text {
@@ -958,11 +1106,11 @@
   .mainbar-chevron { display: inline; opacity: 0.7; }
 }
 
-.mainbar-more-btn {
+.mainbar-currency-btn {
   display: none;
 }
 @media (min-width: 640px) {
-  .mainbar-more-btn { display: flex; }
+  .mainbar-currency-btn { display: flex; }
 }
 
 /* Dropdown menus opening off the main bar */
@@ -979,17 +1127,16 @@
   overflow: hidden;
 }
 
-.mainbar-more-menu {
-  min-width: 230px;
-  padding-bottom: 4px;
+.mainbar-currency-menu {
+  min-width: 210px;
+  padding: 4px 0;
 }
 
-.mainbar-more-section {
+.mainbar-currency-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid #f3dbe3;
 }
 
 .mainbar-more-label {
@@ -1001,35 +1148,19 @@
 }
 
 .selector-field-more {
-  background: #fdf2f6;
-  border: 1px solid #f3dbe3;
+  background: #d8e4c7;
+  border: 1px solid #c3d4ab;
   border-radius: 20px;
   padding: 2px 8px;
 }
 
 .clean-dropdown-more {
-  color: #2d1620;
+  color: #2f4626;
   font-size: 12px;
 }
 
 .selector-caret-more {
-  color: #8b1a42;
-}
-
-.mainbar-more-contact {
-  border-top: 1px solid #f3dbe3;
-  padding-top: 4px;
-  margin-top: 4px;
-}
-
-.mainbar-more-static {
-  cursor: default;
-  font-size: 12.5px;
-  color: #6b5158;
-}
-.mainbar-more-static:hover {
-  background: none;
-  color: #6b5158;
+  color: #4a6636;
 }
 
 /* Wishlist icon button (reuses .badge from existing CSS) */
@@ -1073,7 +1204,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #c23b6a 0%, #e0678a 100%);
+  background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -1137,8 +1274,8 @@
   min-width: 68px;
 }
 .category-tab:hover {
-  background: #fdf2f6;
-  color: #c23b6a;
+  background: #d8e4c7;
+  color: #2f4626;
 }
 
 .category-tab-icon-wrap {
@@ -1167,44 +1304,6 @@
 }
 
 /* ── Small-screen tightening ── */
-/* @media (max-width: 767px) {
-  .navbar-mainbar-container {
-    gap: 8px;
-    padding: 8px 12px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .mainbar-logo-pill {
-    padding: 5px 10px 5px 5px;
-  }
-
-  .mainbar-logo-text {
-    font-size: 13px;
-  }
-
-  .mainbar-actions {
-    gap: 2px;
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .mainbar-search {
-    display: none;
-  }
-
-  .mobile-menu-btn {
-    display: inline-flex;
-    margin-left: auto;
-  }
-
-  .navbar-center.navbar-links-row {
-    display: none;
-  }
-} */
-
-
-
 @media (max-width: 767px) {
   .navbar-mainbar-container {
     display: flex;
@@ -1275,8 +1374,8 @@
 /* ══════════════════════════════════════════════════════════
    MOBILE MAINBAR OVERRIDE
    Only Logo + Download App + Menu button show on mobile.
-   Login, More, Wishlist, Cart are hidden below 768px.
-   Nothing here touches desktop/tablet (min-width: 768px+) styles.
+   Login and Currency dropdown are hidden below 768px
+   (their mobile equivalents live in the drawer instead).
    ══════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   .mainbar-desktop-only {
@@ -1290,64 +1389,4 @@
   .mainbar-pwa-btn {
     padding: 8px 10px;
   }
-}
-
-/* ══════════════════════════════════════════════════════════
-   DRAWER CURRENCY SELECTOR (My Account section, mobile drawer)
-   ══════════════════════════════════════════════════════════ */
-.drawer-currency-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-top: 1px solid #f3dbe3;
-  border-bottom: 1px solid #f3dbe3;
-  margin: 4px 0;
-}
-
-.drawer-currency-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: #2d1620;
-}
-
-.drawer-currency-field {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: #fdf2f6;
-  border: 1px solid #f3dbe3;
-  border-radius: 18px;
-  padding: 4px 22px 4px 12px;
-}
-
-.drawer-currency-select {
-  appearance: none;
-  -webkit-appearance: none;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #8b1a42;
-  cursor: pointer;
-  font-family: 'Poppins', 'Segoe UI', sans-serif;
-}
-
-.drawer-currency-select option {
-  background-color: #ffffff;
-  color: #2d1620;
-  font-weight: 500;
-}
-
-.drawer-currency-caret {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8b1a42;
-  pointer-events: none;
 }

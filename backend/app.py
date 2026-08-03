@@ -5,9 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from flask import Flask, send_from_directory, make_response, jsonify
-from sqlalchemy import inspect, text
-from sqlalchemy.exc import ProgrammingError, SQLAlchemyError
+from flask import send_from_directory, make_response, jsonify
 
 
 from config import Config
@@ -48,6 +46,9 @@ from models.misc import (
     DriverSettlement, SubCategory
 )
 from models.agent import AgentMenu, AgentMenuProduct, AgentMenuAssignment
+from models.push_token import PushToken
+from models.notification_campaign import NotificationCampaign
+from models.notification_recipient import NotificationRecipient
 
 # ─── Existing Routes ─────────────────────────────────────────────────────────
 from routes.auth_routes import auth_bp
@@ -63,6 +64,7 @@ from routes.reward_route import reward_bp
 from routes.pointsetting_routes import point_setting_bp
 from routes.payment_rotes import payment_bp
 from routes.agent_routes import agent_bp
+from routes.ownerpaymentstatus_routes import owner_payment_bp
 
 # ─── New Routes ──────────────────────────────────────────────────────────────
 from routes.users_routes import users_bp
@@ -84,7 +86,9 @@ from routes.reports_routes import reports_bp
 from routes.bank_charges_routes import bank_charges_bp
 from routes.delivery_charges_routes import delivery_charges_bp
 from routes.backup_route import backup_bp
-from flask import jsonify
+from routes.blog_routes import blog_bp
+from routes.notification_campaign_routes import notification_campaign_bp
+from tasks.notification_scheduler import start_notification_scheduler
 
 
 
@@ -142,6 +146,7 @@ app.register_blueprint(reward_bp)
 app.register_blueprint(point_setting_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(agent_bp)
+app.register_blueprint(owner_payment_bp)
 
 # ─── Register New Blueprints ─────────────────────────────────────────────────
 app.register_blueprint(users_bp)
@@ -162,6 +167,8 @@ app.register_blueprint(misc_bp)
 app.register_blueprint(reports_bp)
 app.register_blueprint(bank_charges_bp)
 app.register_blueprint(delivery_charges_bp)
+app.register_blueprint(blog_bp)
+app.register_blueprint(notification_campaign_bp)
 app.register_blueprint(backup_bp, url_prefix="/api/v1")
 
 
@@ -169,81 +176,36 @@ app.register_blueprint(backup_bp, url_prefix="/api/v1")
 def home():
     return {"message": "Cake N Take Backend Running", "version": "2.0"}
 
-# 1. Serve index.html with no-cache headers
-@app.route('/')
-def index():
-    response = make_response(send_from_directory(app.static_folder, 'index.html'))
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
-
-# 2. Serve static assets (JS, CSS, images) with long-term caching
-@app.route('/<path:filename>')
+# Serve frontend assets only when a compiled dist directory is present.
+@app.route("/<path:filename>")
 def static_files(filename):
-    response = make_response(send_from_directory(app.static_folder, filename))
-    if filename.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg')):
-        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
-    return response
-
-# 3. Example API endpoint (dynamic data, no cache)
-@app.route('/api/data')
-def api_data():
-    data = {"message": "Fresh data from backend"}
-    response = make_response(jsonify(data))
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    return response
+    static_root = app.static_folder
+    if static_root and os.path.isfile(os.path.join(static_root, filename)):
+        response = make_response(send_from_directory(static_root, filename))
+        if filename.endswith((".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg")):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
+    return jsonify({"error": "Not found"}), 404
 
 
-def ensure_user_schema_columns():
+def initialize_database():
+    """Optional local bootstrap. Production should use `flask db upgrade`."""
     with app.app_context():
-        try:
-            inspector = inspect(db.engine)
-            if not inspector.has_table("users"):
-                return
-
-            columns = {column["name"] for column in inspector.get_columns("users")}
-            missing_columns = []
-
-            if "is_active" not in columns:
-                missing_columns.append("ALTER TABLE users ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE")
-            if "created_by" not in columns:
-                missing_columns.append("ALTER TABLE users ADD COLUMN created_by INTEGER")
-            if "default_discount" not in columns:
-                missing_columns.append("ALTER TABLE users ADD COLUMN default_discount NUMERIC(5, 2) NOT NULL DEFAULT 0")
-
-            if missing_columns:
-                with db.engine.begin() as conn:
-                    for statement in missing_columns:
-                        conn.execute(text(statement))
-        except Exception as exc:
-            print("User schema compatibility check skipped:", exc)
-
-
-with app.app_context():
-    try:
         db.create_all()
-    except ProgrammingError as exc:
-        print("Database schema initialization skipped:", exc)
-    except SQLAlchemyError as exc:
-        print("Database initialization warning:", exc)
-
-    try:
-        ensure_user_schema_columns()
-    except Exception as exc:
-        print("User schema compatibility fix failed:", exc)
-
-    try:
         seed_admin()
-    except Exception as exc:
-        print("Admin seeding skipped:", exc)
-
-    try:
         seed_currency_rates()
-    except Exception as exc:
-        print("Currency seeding skipped:", exc)
+
+
+if os.getenv("AUTO_INITIALIZE_DATABASE", "false").lower() in {"1", "true", "yes"}:
+    initialize_database()
+
+notification_scheduler = None
+if app.config.get("NOTIFICATION_SCHEDULER_MODE") == "embedded":
+    flask_debug = os.environ.get("FLASK_DEBUG", "0").lower() in {"1", "true", "yes"}
+    is_reloader_child = os.environ.get("WERKZEUG_RUN_MAIN") == "true"
+    if not flask_debug or is_reloader_child:
+        notification_scheduler = start_notification_scheduler(app)
+
 
 if __name__ == "__main__":
     app.run(

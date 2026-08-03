@@ -148,3 +148,9 @@ export const filterMyCompletedOrders = (
   if (!currentUserId) return [];
   return orders.filter((o) => o.preparation_started_by === currentUserId);
 };
+
+
+export const getMyCompletedKitchenOrders = async (): Promise<KitchenOrder[]> => {
+  const res = await api.get("/kitchen/my-completed-orders");
+  return res.data.orders;
+};

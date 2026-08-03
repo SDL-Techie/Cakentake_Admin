@@ -83,29 +83,10 @@ export function AppPromo() {
         <div className="lp-phone-glow" />
         <div className="lp-phone" ref={phoneRef}>
           <div className="lp-phone-notch" />
-          <div className="lp-phone-screen">
-            <div className="lp-phone-header">
-              <span>Welcome to Cake and Take 👋</span>
-              <h4>What are we baking today?</h4>
-            </div>
-            <div className="lp-phone-cakes">
-              {cakes.map((c) => (
-                <div key={c.name} className="lp-phone-cake">
-                  <div
-                    className="thumb"
-                    style={{ backgroundImage: `url(${c.img})` }}
-                  />
-                  <div className="info">
-                    <b>{c.name}</b>
-                    <small>
-                      {c.time} · {c.rating} ★
-                    </small>
-                  </div>
-                  <div className="price">₹{c.price}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div
+            className="lp-phone-screen"
+            style={{ backgroundImage: "url(/assets/mobile_image.jpeg)" }}
+          />
         </div>
       </div>
     </section>

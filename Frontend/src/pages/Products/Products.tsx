@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './Products.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { useCurrency } from '../../context/CurrencyContext';
 
 
 // ─── Types (matching actual API response shape) ──────────────────────────────
@@ -66,8 +65,11 @@ interface Product {
   variants: Variant[];
 }
 
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const isRetailer = user.role?.toLowerCase() === 'retailer';
+const userId = user.id; // ADD THIS
+
 const Products: React.FC = () => {
-  const { currency } = useCurrency();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
@@ -87,22 +89,29 @@ const Products: React.FC = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const isRetailer = user.role?.toLowerCase() === 'retailer';
-  const userId = user.id;
 
   // ─── Fetch all products + categories on mount ───────────────────────────────
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setProducts([]);
+        const currency = localStorage.getItem('currency') || 'AED';
 
         const [prodRes, catRes] = await Promise.all([
           storefrontApi.products({ headers: { 'X-Currency': currency } }),
           storefrontApi.categories(),
         ]);
 
-        setProducts(prodRes.data);
-        setCategories(catRes.data);
+        const productsData = Array.isArray(prodRes.data)
+          ? prodRes.data
+          : prodRes.data?.products || [];
+
+        const categoriesData = Array.isArray(catRes.data)
+          ? catRes.data
+          : catRes.data?.categories || catRes.data?.data || [];
+
+        setProducts(productsData);
+        setCategories(categoriesData);
       } catch (err) {
         console.error('Fetch error', err);
       } finally {
@@ -110,7 +119,7 @@ const Products: React.FC = () => {
       }
     };
     fetchData();
-  }, [currency]);
+  }, []);
 
   // ─── Derive variants & flavors for the products currently in scope ─────────
   // (scope = selected category, narrowed further by selected subcategory)

@@ -3,14 +3,39 @@ import {api} from './api'; // your existing configured axios instance
 // Default currency is KWD per your app's requirement.
 const getCurrency = () => localStorage.getItem('currency') || 'KWD';
 
+// export const addToCart = async (
+//   userId: number,
+//   productId: number,
+//   quantity: number,
+//   variantId?: number | null,
+//   flavorId?: number | null,
+//   shape?: string,
+//   addons: any[] = []
+// ) => {
+//   const currency = getCurrency();
+
+//   const res = await api.post(
+//     '/cart',
+//     {
+//       user_id: userId,
+//       product_id: productId,
+//       quantity,
+//       variant_id: variantId ?? null,
+//       flavor_id: flavorId ?? null,
+//       shape: shape ?? null,
+//       // Only send IDs — backend recomputes price itself, never trust client price.
+//       addons: addons.map(a => ({ id: a.id })),
+//     },
+//     { headers: { 'X-Currency': currency } }
+//   );
+//   return res.data;
+// };
+
+
 export const addToCart = async (
   userId: number,
   productId: number,
-  quantity: number,
-  variantId?: number | null,
-  flavorId?: number | null,
-  shape?: string,
-  addons: any[] = []
+  quantity: number
 ) => {
   const currency = getCurrency();
 
@@ -20,11 +45,6 @@ export const addToCart = async (
       user_id: userId,
       product_id: productId,
       quantity,
-      variant_id: variantId ?? null,
-      flavor_id: flavorId ?? null,
-      shape: shape ?? null,
-      // Only send IDs — backend recomputes price itself, never trust client price.
-      addons: addons.map(a => ({ id: a.id })),
     },
     { headers: { 'X-Currency': currency } }
   );

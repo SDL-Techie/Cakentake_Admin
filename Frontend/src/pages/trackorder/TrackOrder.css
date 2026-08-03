@@ -24,7 +24,7 @@
 
 .to-spinner {
   animation: spin 1s linear infinite;
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 @keyframes spin {
@@ -51,11 +51,17 @@
 }
 
 .to-back-btn:hover {
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 .to-btn-primary {
-  background-color: #B95E82;
+  background: linear-gradient(
+    135deg,
+    #8FAF6E 0%,
+    #6F8E57 30%,
+    #526A45 65%,
+    #314631 100%
+);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -98,8 +104,8 @@
 }
 
 .to-badge-status {
-  background-color: #fdf8fa;
-  color: #B95E82;
+  background-color: #efe8ca;
+  color: #526A45;
   padding: 4px 12px;
   border-radius: 50px;
   font-size: 12px;
@@ -126,7 +132,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 .to-address-name {
@@ -156,7 +162,7 @@
 
 .to-timeline-item.active {
   opacity: 1;
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 .to-timeline-item:not(:last-child)::after {
@@ -170,7 +176,7 @@
 }
 
 .to-timeline-item.completed:not(:last-child)::after {
-  background-color: #B95E82;
+  background-color: #6F8E57;
 }
 
 .to-timeline-icon {
@@ -180,7 +186,7 @@
 }
 
 .to-timeline-item.completed .to-timeline-icon {
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 .to-timeline-content h4 {
@@ -190,7 +196,7 @@
 
 .to-active-tag {
   font-size: 12px;
-  color: #B95E82;
+  color: #6F8E57;
   margin-top: 4px;
 }
 
@@ -233,7 +239,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #fdf8fa;
+  background-color: #FFF8EC;
   padding: 16px;
   border-radius: 8px;
 }
@@ -257,7 +263,7 @@
 .to-price-row.total {
   font-weight: 700;
   font-size: 16px;
-  color: #B95E82;
+  color: #6F8E57;
 }
 
 .to-payment-footer {
@@ -300,7 +306,7 @@
 }
 
 .to-print-action-btn {
-  background: #B95E82;
+  background: #6F8E57;
   color: white;
   border: none;
   padding: 6px 14px;

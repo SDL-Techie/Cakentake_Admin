@@ -398,8 +398,24 @@ export interface ValidatePromoResponse {
  * Public — no JWT required.
  * Returns all products.
  */
-export const getAllProducts = async (): Promise<Product[]> => {
-  const res = await api.get("/products");
+export const getAllProducts = async (
+  currency?: string,
+  agent = false
+): Promise<Product[]> => {
+  // If a currency is provided, pass it explicitly so callers (e.g., Sales Agent UI)
+  // can request the raw stored prices in KWD. The api instance also attaches
+  // X-Currency from localStorage; providing it here overrides that value.
+  const options: any = {};
+
+  if (currency) {
+    options.headers = { "X-Currency": currency };
+  }
+
+  if (agent) {
+    options.params = { agent: "true" };
+  }
+
+  const res = await api.get("/products", options);
   // Backend returns a plain array
   return res.data;
 };

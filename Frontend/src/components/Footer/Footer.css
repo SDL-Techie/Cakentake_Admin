@@ -16,11 +16,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://i.pinimg.com/736x/de/82/17/de8217b8f1bc709a3b7e37e748b6d27e.jpg');
+  /* background-image: url('https://i.pinimg.com/736x/de/82/17/de8217b8f1bc709a3b7e37e748b6d27e.jpg'); */
+   background-image: url('https://i.pinimg.com/1200x/a1/e2/3b/a1e23b7d19e7db5d9f97ee96895e38e7.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.20; /* Low opacity prevents layout contrast from drowning out text structure */
+  opacity: 0.40; /* Low opacity prevents layout contrast from drowning out text structure */
   pointer-events: none; /* Allows pointer pass-through directly to text anchors */
   z-index: 1;
 }

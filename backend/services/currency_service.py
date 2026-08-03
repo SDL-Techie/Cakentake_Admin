@@ -19,15 +19,12 @@ def convert_price(
     currency_code
 ):
 
-    if currency_code == "INR":
+    if currency_code == "KWD":
         return amount
 
     rate = get_exchange_rate(
-        "INR",
+        "KWD",
         currency_code
     )
 
-    return round(
-        amount * rate,
-        2
-    )
+    return round(amount * rate)

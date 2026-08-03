@@ -65,9 +65,18 @@ def get_products():
 
     is_admin = request.args.get("admin") == "true"
 
+    # Admin views (menu management / owner UI) should always display the
+    # original stored price (DB is KWD). Ignore the X-Currency header when
+    # the admin flag is present so the admin sees the raw KWD values.
     if is_admin:
+        currency = "KWD"
+    is_agent = request.args.get("agent") == "true"
+
+    if is_admin or is_agent:
         # Admins see everything (Active + Inactive)
+        # query = Product.query
         query = Product.query
+        currency = "KWD"    
     else:
         # Users/Customers only see active products
         query = Product.query.filter_by(is_active=True)

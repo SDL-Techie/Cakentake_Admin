@@ -85,7 +85,7 @@ const STATUS_COLORS: Record<string, string> = {
   Cancelled: '#f44336',
 };
 
-const SalesAgentDashboard: React.FC = () => {
+const Salesagentdash: React.FC = () => {
   const navigate = useNavigate();
   const user = getUser();
   const displayName = user.first_name || user.name || 'Agent';
@@ -93,11 +93,12 @@ const SalesAgentDashboard: React.FC = () => {
   const [stats, setStats] = useState<SalesAgentDashboardStats | null>(null);
   const [orders, setOrders] = useState<SalesAgentOrder[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sendingLinkId, setSendingLinkId] = useState<number | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (isRefresh = false) => {
+    if (isRefresh) setRefreshing(true); else setLoading(true);
     setError(null);
     try {
       const data = await getSalesAgentDashboard(user.id);
@@ -107,6 +108,7 @@ const SalesAgentDashboard: React.FC = () => {
       setError(e?.response?.data?.error || e?.message || 'Could not load dashboard data');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   }, [user.id]);
 
@@ -154,7 +156,7 @@ const SalesAgentDashboard: React.FC = () => {
     try {
       await sendPaymentLink(order.id);
       toast.success(`Payment link sent for ${order.order_number}`);
-      load();
+      await load(true);
     } catch (e: any) {
       toast.error(e?.response?.data?.error || 'Could not send payment link');
     } finally {
@@ -170,7 +172,7 @@ const SalesAgentDashboard: React.FC = () => {
           <AlertTriangle size={40} />
           <h3>Couldn't load your dashboard</h3>
           <p>{error}</p>
-          <button className="sad-btn sad-btn-primary" onClick={load}>
+          <button className="sad-btn sad-btn-primary" onClick={() => load()}>
             <RefreshCcw size={14} /> Try again
           </button>
         </div>
@@ -193,14 +195,16 @@ const SalesAgentDashboard: React.FC = () => {
             <p className="sad-header-sub">{today} · Welcome back, {displayName}</p>
           </div>
         </div>
-        {/* <motion.button
-          className="sad-btn sad-btn-primary sad-header-cta"
+        <motion.button
+          className="sad-btn sad-btn-ghost sad-header-refresh"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/sales/orders/new')}
+          disabled={refreshing || loading}
+          onClick={() => load(true)}
+          title="Refresh dashboard"
         >
-          <Plus size={15} /> Create Order
-        </motion.button> */}
+          <RefreshCcw size={14} className={refreshing ? 'sad-spin' : ''} /> Refresh
+        </motion.button>
       </header>
 
       {/* ── Top 4 cards ── */}
@@ -408,4 +412,4 @@ const SalesAgentDashboard: React.FC = () => {
   );
 };
 
-export default SalesAgentDashboard;
+export default Salesagentdash;

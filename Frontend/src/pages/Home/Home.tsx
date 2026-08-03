@@ -27,33 +27,33 @@ const IMAGE_CARDS = [
   {
     title: 'Signature Chocolate Cake',
     subtitle: 'Rich dark chocolate with berry accents',
-    image: '/assets/sban1.jpeg'
+    image: '/assets/sban1.png'
   },
   {
     title: 'Vanilla Velvet Slice',
     subtitle: 'Creamy vanilla sponge with caramel drizzle',
-    image: '/assets/sban2.jpeg'
+    image: '/assets/sban2.png'
   },
   {
     title: 'Rose Berry Delight',
     subtitle: 'Floral notes and fresh berries in every bite',
-    image: '/assets/sban3.jpeg'
+    image: '/assets/sban3.png'
   },
   {
     title: 'Lemon Tart Creation',
     subtitle: 'Citrus tart with buttery almond crust',
-    image: '/assets/sban4.jpeg'
+    image: '/assets/sban4.png'
   },
-  {
-    title: 'Caramel Pecan Dream',
-    subtitle: 'Crunchy pecans and salted caramel glaze',
-    image: '/assets/sban5.jpeg'
-  },
-  {
-    title: 'Caramel Pecan Dream',
-    subtitle: 'Crunchy pecans and salted caramel glaze',
-    image: '/assets/sban6.jpeg'
-  }
+  // {
+  //   title: 'Caramel Pecan Dream',
+  //   subtitle: 'Crunchy pecans and salted caramel glaze',
+  //   image: '/assets/sban5.png'
+  // },
+  // {
+  //   title: 'Caramel Pecan Dream',
+  //   subtitle: 'Crunchy pecans and salted caramel glaze',
+  //   image: '/assets/sban6.png'
+  // }
 ];
 
 // Breakpoints used to decide how many cards show per slide.

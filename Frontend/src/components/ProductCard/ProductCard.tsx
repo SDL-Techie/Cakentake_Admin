@@ -1,10 +1,24 @@
 // import React, { useState, useEffect } from 'react';
 // import { motion } from 'framer-motion';
-// import { Heart, Share2, Star } from 'lucide-react';
+// import { Heart, Share2, Star, Tag } from 'lucide-react';
 // import { useNavigate } from 'react-router-dom';
 // import toast from 'react-hot-toast';
 // import './ProductCard.css';
 // import { getWishlist, addToWishlist, deleteWishlistItem } from '../../services/whishlistService';
+
+// // --- Promotion shape (matches actual /products API response) ---
+// interface Promotion {
+//   id: number;
+//   name: string;
+//   description?: string;
+//   discount_type: 'PERCENT' | 'FLAT' | 'AMOUNT' | string;
+//   discount_value: number;
+//   promotion_type: 'DISCOUNT' | 'FREE_ITEM' | string;
+//   is_active: boolean;
+//   start_date?: string;
+//   end_date?: string;
+//   free_items?: any[];
+// }
 
 // // TypeScript Interface matching your Backend Object
 // interface ProductProp {
@@ -20,6 +34,7 @@
 //     id: number;
 //     name: string;
 //   };
+//   promotion?: Promotion | null;
 // }
 
 // interface ProductCardProps {
@@ -29,24 +44,55 @@
 //   userId?: number;
 // }
 
-// const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, userId = 5 }) => {
+// const ProductCard: React.FC<ProductCardProps> = ({ product, index, isRetailer, userId }) => {
 //   const navigate = useNavigate();
 //   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
 //   const [wishlistId, setWishlistId] = useState<number | null>(null);
 //   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+//   const storedUser = localStorage.getItem('user');
+//   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+//   const effectiveUserId = userId ?? parsedUser?.id ?? null;
+
 //   // Determine base display price
 //   const displayPrice = isRetailer ? product.wholesaleprice || product.price : product.price;
 //   const currencySymbol = product.currency || 'AED';
+
+//   // --- Determine promotion label from the real `promotion` object ---
+//   const getPromoLabel = (): string | null => {
+//     const promo = product.promotion;
+//     if (!promo || !promo.is_active) return null;
+
+//     // Skip if the promo window has already ended
+//     if (promo.end_date && new Date(promo.end_date) < new Date()) return null;
+
+//     const hasFreeItems = Array.isArray(promo.free_items) && promo.free_items.length > 0;
+
+//     if (promo.promotion_type === 'FREE_ITEM' || hasFreeItems) {
+//       return 'FREE ITEM';
+//     }
+
+//     if (promo.discount_type === 'PERCENT') {
+//       return `${promo.discount_value}% OFF`;
+//     }
+
+//     // FLAT / AMOUNT or anything else numeric
+//     if (promo.discount_value) {
+//       return `${currencySymbol} ${promo.discount_value} OFF`;
+//     }
+
+//     return null;
+//   };
+
+//   const promoLabel = getPromoLabel();
 
 //   // Check if item is already wishlisted when component mounts
 //   useEffect(() => {
 //     const checkWishlistStatus = async () => {
 //       try {
-//         //const items = await getWishlist(userId);
 //         const currency = localStorage.getItem("currency") || "KWD";
 
-//         const items = await getWishlist(userId, currency);
+//         const items = await getWishlist(effectiveUserId, currency);
 //         const existingItem = items.find((item) => item.product_id === product.id);
 //         if (existingItem) {
 //           setIsWishlisted(true);
@@ -56,8 +102,8 @@
 //         console.error("Error fetching wishlist status:", error);
 //       }
 //     };
-//     if (userId && product.id) checkWishlistStatus();
-//   }, [userId, product.id, currency]);
+//     if (effectiveUserId && product.id) checkWishlistStatus();
+//   }, [effectiveUserId, product.id]);
 
 //   // Handle click toggle to Add/Remove from backend
 //   const handleWishlistToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -65,9 +111,16 @@
 //     if (isLoading) return;
 //     setIsLoading(true);
 
+//     if (!effectiveUserId) {
+//       toast.error("Please log in to add items to your wishlist");
+//       navigate("/login"); // adjust to your actual login route
+//       setIsLoading(false);
+//       return;
+//     }
+
 //     if (!isWishlisted) {
 //       try {
-//         const wishlistItem = await addToWishlist(userId, product.id);
+//         const wishlistItem = await addToWishlist(effectiveUserId, product.id);
 //         setIsWishlisted(true);
 //         setWishlistId(wishlistItem.id);
 //         toast.success("Added to favorites");
@@ -120,6 +173,13 @@
 //     >
 //       {isRetailer && <div className="bakery-wholesale-tag">Wholesale</div>}
 
+//       {promoLabel && (
+//         <div className="bakery-promo-tag">
+//           <Tag size={11} />
+//           {promoLabel}
+//         </div>
+//       )}
+
 //       <div className="bakery-floating-actions">
 //         <button
 //           className={`bakery-action-btn ${isWishlisted ? 'active' : ''} ${isLoading ? 'opacity-50' : ''}`}
@@ -163,10 +223,10 @@
 //       </div>
 //     </motion.div>
 //   );
-
 // };
 
 // export default ProductCard;
+
 
 
 

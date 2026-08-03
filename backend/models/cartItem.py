@@ -24,7 +24,30 @@ class CartItem(db.Model):
     flavor = db.relationship("Flavor")
 
     def to_dict(self, currency="INR"):
-        unit_price = convert(self.total_price, currency) or 0
+        # unit_price = convert(self.total_price, currency) or 0
+
+        # original_price = convert(self.product.original_price, currency) or unit_price
+
+        # active_promotion = next(
+        #     (p for p in (self.product.promotions or []) if getattr(p, "is_active", False)),
+        #     None
+        # )
+        # has_discount = (
+        #     active_promotion is not None
+        #     and original_price > unit_price
+        # )
+
+        product_data = self.product.to_dict(currency)
+
+        unit_price = product_data["price"]
+        original_price = product_data["original_price"]
+
+        has_discount = (
+         product_data.get("promotion") is not None
+         and original_price is not None
+         and original_price > unit_price
+        )
+
 
         converted_addons = [
             {**a, "price": convert(a.get("price", 0), currency)}
@@ -48,6 +71,8 @@ class CartItem(db.Model):
 
             "quantity": self.quantity,
             "unit_price": unit_price,
+            "original_price": original_price,
+            "has_discount": has_discount,
             "subtotal": round(unit_price * self.quantity, 2),
             "currency": currency,
         }

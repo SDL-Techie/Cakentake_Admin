@@ -10,7 +10,8 @@
 .circular-slider-wrapper {
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, #FDFBF7 0%, #faf7f0 100%);
+  /* background: linear-gradient(135deg, #FDFBF7 0%, #faf7f0 100%); */
+  background-color:#efe8ca;
   padding: 80px 20px 60px;
   text-align: center;
 }

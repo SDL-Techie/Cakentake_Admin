@@ -337,6 +337,9 @@ const CustomerManagement: React.FC = () => {
       setDrawerOrders(orders);
     } catch (err: any) {
       showToast(err?.response?.data?.error || "Failed to load customer.", "error");
+      // Prevent leaving an empty/blank drawer open when the fetch fails
+      setDrawerOpen(false);
+      setDrawerCustomer(null);
     } finally {
       setDrawerLoading(false);
       setTabLoading(false);
@@ -626,13 +629,13 @@ const CustomerManagement: React.FC = () => {
                         <td className="sm-muted-text">{formatDate(customer.created_at)}</td>
                         <td>
                           <div className="tbl-actions">
-                            <button
+                            {/* <button
                               className="sage-btn btn-secondary btn-sm sm-icon-btn"
                               title="View"
                               onClick={() => openDrawer(customer)}
                             >
                               <IconEye size={24} />
-                            </button>
+                            </button> */}
                             <button
                               className="sage-btn btn-primary btn-sm sm-icon-btn"
                               title="Edit"

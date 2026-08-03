@@ -65,10 +65,6 @@ export default function PrivacyPolicy() {
         </main>
       </div>
 
-      <footer className="pp-footer">
-        <p>© 2026 Our Company. All rights reserved.</p>
-        <p>Last updated: October 2023</p>
-      </footer>
     </div>
   );
 }

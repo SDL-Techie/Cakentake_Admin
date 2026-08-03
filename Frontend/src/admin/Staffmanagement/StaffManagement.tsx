@@ -603,13 +603,13 @@ setUsers(staffUsers);
                             >
                               <IconEdit size={24} />
                             </button>
-                            <button
+                            {/* <button
                               className="sage-btn btn-primary btn-sm sm-icon-btn"
                               title="Permissions"
                               onClick={() => openPermissionsModal(user)}
                             >
                               <IconKey size={24} />
-                            </button>
+                            </button> */}
                             <button
                               className="sage-btn btn-danger btn-sm sm-icon-btn"
                               title="Delete"

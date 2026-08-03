@@ -1,300 +1,3 @@
-# # from flask import Blueprint, request, jsonify
-# # from flask_jwt_extended import jwt_required, get_jwt_identity
-# # from datetime import datetime
-# # from extensions import db
-# # from models.user import User
-# # from models.order import Order
-# # from middleware.role import role_required
-# # from services.order_history_service import log_order_status
-
-# # driver_bp = Blueprint("driver", __name__)
-
-
-# # @driver_bp.route("/drivers", methods=["GET"])
-# # @jwt_required()
-# # @role_required(["ADMIN", "SHOP_MANAGER", "DELIVERY_AGENT"])
-# # def get_drivers():
-# #     drivers = User.query.filter_by(role="DRIVER").all()
-# #     return jsonify({"drivers": [d.to_dict() for d in drivers]}), 200
-
-
-# # @driver_bp.route("/drivers/available", methods=["GET"])
-# # @jwt_required()
-# # @role_required(["ADMIN", "SHOP_MANAGER", "DELIVERY_AGENT"])
-# # def get_available_drivers():
-# #     # Drivers with no active deliveries
-# #     busy_ids = db.session.query(Order.driver_id).filter(
-# #         Order.status.in_(["READY", "OUT_FOR_DELIVERY","DELIVERY_COMPLETED_PENDING_APPROVAL"]),
-# #         Order.driver_id.isnot(None)
-# #     ).subquery()
-# #     drivers = User.query.filter_by(role="DRIVER").filter(
-# #         ~User.id.in_(busy_ids)
-# #     ).all()
-# #     return jsonify({"drivers": [d.to_dict() for d in drivers]}), 200
-
-
-# # @driver_bp.route("/drivers/<int:driver_id>/dashboard", methods=["GET"])
-# # @jwt_required()
-# # def driver_dashboard(driver_id):
-# #     driver = User.query.get_or_404(driver_id)
-# #     orders = Order.query.filter_by(driver_id=driver_id).all()
-# #     return jsonify({
-# #         "driver": driver.to_dict(),
-# #         "total_orders": len(orders),
-# #         "delivered": sum(1 for o in orders if o.status == "DELIVERED"),
-# #         "active": sum(1 for o in orders if o.status in ["READY", "OUT_FOR_DELIVERY",  "DELIVERY_COMPLETED_PENDING_APPROVAL"])
-# #     }), 200
-
-
-# # @driver_bp.route("/drivers/<int:driver_id>/assigned", methods=["GET"])
-# # @jwt_required()
-# # def driver_assigned(driver_id):
-# #     orders = Order.query.filter(
-# #         Order.driver_id == driver_id,
-# #         Order.status.in_(["READY", "OUT_FOR_DELIVERY",  "DELIVERY_COMPLETED_PENDING_APPROVAL"])
-# #     ).all()
-# #     return jsonify({"orders": [o.to_dict() for o in orders]}), 200
-
-
-# # @driver_bp.route("/drivers/<int:driver_id>/completed", methods=["GET"])
-# # @jwt_required()
-# # def driver_completed(driver_id):
-# #     orders = Order.query.filter_by(driver_id=driver_id, status="DELIVERED").all()
-# #     return jsonify({"orders": [o.to_dict() for o in orders]}), 200
-
-
-# # @driver_bp.route("/drivers/<int:order_id>/delivered", methods=["POST"])
-# # @jwt_required()
-# # @role_required(["DRIVER", "DELIVERY_AGENT", "ADMIN"])
-# # def driver_mark_delivered(order_id):
-# #     order = Order.query.get_or_404(order_id)
-# #     data = request.get_json() or {}
-# #     order.status = "DELIVERED"
-# #     order.delivered_at = datetime.utcnow()
-# #     order.delivery_notes = data.get("notes")
-# #     order.customer_confirmation_name = data.get("customer_name")
-# #     order.customer_confirmation_phone = data.get("customer_phone")
-# #     log_order_status(order.id, "DELIVERED", int(get_jwt_identity()))
-# #     db.session.commit()
-# #     return jsonify({"message": "Delivery confirmed", "order": order.to_dict()}), 200
-
-
-# # @driver_bp.route("/drivers/<int:driver_id>/report", methods=["GET"])
-# # @jwt_required()
-# # def driver_report(driver_id):
-# #     orders = Order.query.filter_by(driver_id=driver_id).all()
-# #     return jsonify({
-# #         "driver_id": driver_id,
-# #         "total": len(orders),
-# #         "delivered": sum(1 for o in orders if o.status == "DELIVERED"),
-# #         "cancelled": sum(1 for o in orders if o.status == "CANCELLED")
-# #     }), 200
-
-
-# # @driver_bp.route("/drivers/<int:driver_id>/status", methods=["POST"])
-# # @jwt_required()
-# # @role_required(["DRIVER", "ADMIN"])
-# # def update_driver_status(driver_id):
-# #     data = request.get_json()
-# #     driver = User.query.get_or_404(driver_id)
-# #     # Store status in a simple field if available; extend model as needed
-# #     return jsonify({"message": "Status updated", "driver_id": driver_id}), 200
-
-
-# # # @driver_bp.route("/drivers/<int:order_id>/accept", methods=["POST"])
-# # # @jwt_required()
-# # # @role_required(["DRIVER"])
-# # # def driver_accept(order_id):
-# # #     order = Order.query.get_or_404(order_id)
-# # #     order.driver_accepted_at = datetime.utcnow()
-# # #     db.session.commit()
-# # #     return jsonify({"message": "Order accepted", "order": order.to_dict()}), 200
-
-
-# # @driver_bp.route("/drivers/<int:order_id>/accept", methods=["POST"])
-# # @jwt_required()
-# # @role_required(["DRIVER"])
-# # def driver_accept(order_id):
-# #     order = Order.query.get_or_404(order_id)
-
-# #     order.driver_accepted_at = datetime.utcnow()
-# #     order.status = "ON_THE_WAY"
-
-# #     db.session.commit()
-
-# #     return jsonify({
-# #         "message": "Order accepted",
-# #         "order": order.to_dict()
-# #     }), 200
-
-# # @driver_bp.route("/drivers/<int:order_id>/reject", methods=["POST"])
-# # @jwt_required()
-# # @role_required(["DRIVER"])
-# # def driver_reject(order_id):
-# #     order = Order.query.get_or_404(order_id)
-# #     order.driver_id = None
-# #     order.driver_assigned_at = None
-# #     db.session.commit()
-# #     return jsonify({"message": "Order rejected", "order": order.to_dict()}), 200
-
-
-
-
-# from flask import Blueprint, request, jsonify
-# from flask_jwt_extended import jwt_required, get_jwt_identity
-# from datetime import datetime
-# from extensions import db
-# from models.user import User
-# from models.order import Order
-# from middleware.role import role_required
-
-# driver_bp = Blueprint("driver", __name__)
-
-
-# # ─── Driver lists (admin / agent) ────────────────────────────────────────────
-
-# @driver_bp.route("/drivers", methods=["GET"])
-# @jwt_required()
-# @role_required(["ADMIN", "SHOP_MANAGER", "DELIVERY_AGENT"])
-# def get_drivers():
-#     """
-#     All users with role=DRIVER.
-#     Used by the delivery agent's driver picker.
-#     """
-#     drivers = User.query.filter_by(role="DRIVER").all()
-#     return jsonify({"drivers": [d.to_dict() for d in drivers]}), 200
-
-
-# @driver_bp.route("/drivers/available", methods=["GET"])
-# @jwt_required()
-# @role_required(["ADMIN", "SHOP_MANAGER", "DELIVERY_AGENT"])
-# def get_available_drivers():
-#     """
-#     Drivers with role=DRIVER and no currently active order.
-#     "Active" means status IN (ASSIGNED_TO_DRIVER, DRIVER_ACCEPTED,
-#     OUT_FOR_DELIVERY, DELIVERY_SUBMITTED).
-#     """
-#     busy_driver_ids = db.session.query(Order.driver_id).filter(
-#         Order.status.in_([
-#             "ASSIGNED_TO_DRIVER", "DRIVER_ACCEPTED",
-#             "OUT_FOR_DELIVERY", "DELIVERY_SUBMITTED"
-#         ]),
-#         Order.driver_id.isnot(None)
-#     ).subquery()
-
-#     drivers = User.query.filter_by(role="DRIVER").filter(
-#         ~User.id.in_(busy_driver_ids)
-#     ).all()
-
-#     return jsonify({"drivers": [d.to_dict() for d in drivers]}), 200
-
-
-# # ─── Driver dashboard ─────────────────────────────────────────────────────────
-
-# @driver_bp.route("/drivers/<int:driver_id>/dashboard", methods=["GET"])
-# @jwt_required()
-# def driver_dashboard(driver_id):
-#     """
-#     Summary stats for a driver's dashboard.
-#     Used in DriverOrder.tsx header section.
-#     """
-#     driver = User.query.get_or_404(driver_id)
-#     orders = Order.query.filter_by(driver_id=driver_id).all()
-
-#     return jsonify({
-#         "driver": driver.to_dict(),
-#         "total_orders": len(orders),
-#         "delivered": sum(1 for o in orders if o.status == "DELIVERED"),
-#         "active": sum(
-#             1 for o in orders
-#             if o.status in [
-#                 "ASSIGNED_TO_DRIVER", "DRIVER_ACCEPTED",
-#                 "OUT_FOR_DELIVERY", "DELIVERY_SUBMITTED"
-#             ]
-#         ),
-#         # today_earnings / rating would need separate tracking tables;
-#         # kept here as stubs for future extension.
-#         "today_earnings": 0,
-#         "rating": float(driver.rating or 0),
-#     }), 200
-
-
-# # ─── Driver's order lists ─────────────────────────────────────────────────────
-
-# @driver_bp.route("/drivers/<int:driver_id>/assigned", methods=["GET"])
-# @jwt_required()
-# def driver_assigned(driver_id):
-#     """
-#     Active orders currently assigned to this driver.
-#     Includes: ASSIGNED_TO_DRIVER, DRIVER_ACCEPTED, OUT_FOR_DELIVERY, DELIVERY_SUBMITTED.
-#     """
-#     orders = Order.query.filter(
-#         Order.driver_id == driver_id,
-#         Order.status.in_([
-#             "ASSIGNED_TO_DRIVER", "DRIVER_ACCEPTED",
-#             "OUT_FOR_DELIVERY", "DELIVERY_SUBMITTED"
-#         ])
-#     ).order_by(Order.created_at.desc()).all()
-
-#     return jsonify({"orders": [o.to_dict() for o in orders]}), 200
-
-
-# @driver_bp.route("/drivers/<int:driver_id>/completed", methods=["GET"])
-# @jwt_required()
-# def driver_completed(driver_id):
-#     """Delivered orders completed by this driver."""
-#     orders = Order.query.filter_by(
-#         driver_id=driver_id, status="DELIVERED"
-#     ).order_by(Order.delivered_at.desc()).all()
-
-#     return jsonify({"orders": [o.to_dict() for o in orders]}), 200
-
-
-# # ─── Driver availability status ───────────────────────────────────────────────
-
-# @driver_bp.route("/drivers/<int:driver_id>/status", methods=["POST"])
-# @jwt_required()
-# @role_required(["DRIVER", "ADMIN"])
-# def update_driver_status(driver_id):
-#     """
-#     POST body: { "status": "ONLINE" | "BUSY" | "OFFLINE" }
-#     Updates User.availability_status (added in fixed User model).
-#     """
-#     data   = request.get_json() or {}
-#     driver = User.query.get_or_404(driver_id)
-#     new_status = (data.get("status") or "OFFLINE").upper()
-
-#     if new_status not in ("ONLINE", "BUSY", "OFFLINE"):
-#         return jsonify({"error": "status must be ONLINE, BUSY, or OFFLINE"}), 400
-
-#     driver.availability_status = new_status
-#     db.session.commit()
-
-#     return jsonify({
-#         "message": "Status updated",
-#         "driver_id": driver_id,
-#         "status": new_status
-#     }), 200
-
-
-# # ─── Driver report ────────────────────────────────────────────────────────────
-
-# @driver_bp.route("/drivers/<int:driver_id>/report", methods=["GET"])
-# @jwt_required()
-# def driver_report(driver_id):
-#     orders = Order.query.filter_by(driver_id=driver_id).all()
-#     return jsonify({
-#         "driver_id": driver_id,
-#         "total": len(orders),
-#         "delivered":  sum(1 for o in orders if o.status == "DELIVERED"),
-#         "cancelled":  sum(1 for o in orders if o.status == "CANCELLED"),
-#         "in_progress": sum(1 for o in orders if o.status in [
-#             "ASSIGNED_TO_DRIVER", "DRIVER_ACCEPTED",
-#             "OUT_FOR_DELIVERY", "DELIVERY_SUBMITTED"
-#         ]),
-#     }), 200
-
-
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
@@ -618,6 +321,36 @@ def get_driver_settlements(driver_id):
 #     }), 201
 
 
+# @driver_bp.route("/driver-settlements/<int:settlement_id>/pay", methods=["POST"])
+# @jwt_required()
+# @role_required(["ADMIN", "SHOP_MANAGER"])
+# def mark_settlement_paid(settlement_id):
+#     """
+#     Owner / shop manager pays the driver — marks settlement as PAID.
+#     Body: { "payment_source": "CASH"|"BANK", "reference": str }
+#     """
+#     data       = request.get_json() or {}
+#     settlement = DriverSettlement.query.get_or_404(settlement_id)
+
+#     if settlement.status == "PAID":
+#         return jsonify({"error": "Settlement is already paid"}), 400
+
+#     settlement.status         = "PAID"
+#     settlement.paid_at        = datetime.utcnow()
+#     settlement.paid_by        = int(get_jwt_identity())
+#     if data.get("payment_source"):
+#         settlement.payment_source = data["payment_source"]
+#     if data.get("reference"):
+#         settlement.reference      = data["reference"]
+
+#     db.session.commit()
+
+#     return jsonify({
+#         "message": "Settlement marked as paid",
+#         "settlement": _settlement_dict(settlement),
+#     }), 200
+
+
 @driver_bp.route("/driver-settlements/<int:settlement_id>/pay", methods=["POST"])
 @jwt_required()
 @role_required(["ADMIN", "SHOP_MANAGER"])
@@ -632,13 +365,27 @@ def mark_settlement_paid(settlement_id):
     if settlement.status == "PAID":
         return jsonify({"error": "Settlement is already paid"}), 400
 
-    settlement.status         = "PAID"
-    settlement.paid_at        = datetime.utcnow()
-    settlement.paid_by        = int(get_jwt_identity())
+    settlement.status  = "PAID"
+    settlement.paid_at = datetime.utcnow()
+
+    # Defensive: don't let identity parsing crash the whole request
+    # before commit() runs.
+    identity = get_jwt_identity()
+    try:
+        settlement.paid_by = int(identity)
+    except (TypeError, ValueError):
+        settlement.paid_by = None
+
     if data.get("payment_source"):
         settlement.payment_source = data["payment_source"]
     if data.get("reference"):
-        settlement.reference      = data["reference"]
+        settlement.reference = data["reference"]
+
+    # Also flip linked orders to settled, since the Delivered Orders
+    # tab reads is_driver_settled, not settlement.status.
+    orders = Order.query.filter_by(driver_settlement_id=settlement.id).all()
+    for order in orders:
+        order.is_driver_settled = True
 
     db.session.commit()
 
@@ -646,7 +393,6 @@ def mark_settlement_paid(settlement_id):
         "message": "Settlement marked as paid",
         "settlement": _settlement_dict(settlement),
     }), 200
-
 
 # @driver_bp.route("/driver-settlements/<int:settlement_id>", methods=["GET"])
 # @jwt_required()
@@ -880,13 +626,15 @@ def get_driver_delivered_orders(driver_id):
                     "phone": order.customer.phone_no if order.customer else None,
                 },
 
-                "address": {
-                    "street": order.address.street if order.address else None,
-                    "city": order.address.city if order.address else None,
-                    "state": order.address.state if order.address else None,
-                    "pincode": order.address.pincode if order.address else None,
-                    "country": order.address.country if order.address else None,
-                },
+                # "address": {
+                #     "street": order.address.street if order.address else None,
+                #     "city": order.address.city if order.address else None,
+                #     "state": order.address.state if order.address else None,
+                #     "pincode": order.address.pincode if order.address else None,
+                #     "country": order.address.country if order.address else None,
+                # },
+
+                "address": order.address.to_dict() if order.address else None,
 
                 "grand_total": float(order.grand_total or 0),
                 "delivery_charge": float(order.delivery_charge or 0),

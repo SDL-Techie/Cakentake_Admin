@@ -532,6 +532,12 @@ export const getDriverDeliveredOrders = async (
   return res.data;
 };
 
+
+export const markCodPaymentPaid = async (orderId: number): Promise<any> => {
+     const res = await api.post(`/orders/${orderId}/mark-cod-paid`);
+     return res.data;
+   };
+
 // ─────────────────────────────────────────────────────────────
 // Default Export
 // ─────────────────────────────────────────────────────────────
@@ -561,4 +567,5 @@ export default {
   markSettlementPaid,
   deleteSettlement,
   getDriverDeliveredOrders,
+  markCodPaymentPaid
 };

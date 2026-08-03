@@ -175,6 +175,20 @@ const currencySymbol = (cur?: string) => {
 
 const fmtCurrency = (n: number | undefined, cur?: string) => `${currencySymbol(cur)}${Number(n || 0).toFixed(0)}`;
 
+// Safely render a value that may be a string, number, or object coming from the API.
+// If it's an object, prefer common display fields (name, first_name, full_name) before falling
+// back to a JSON string so React never receives a raw object as a child.
+const renderValue = (v: any) => {
+  if (v === null || v === undefined) return '';
+  if (typeof v === 'string' || typeof v === 'number') return String(v);
+  if (typeof v === 'object') {
+    return (
+      v.name || v.title || v.first_name || v.firstName || v.full_name || v.email || JSON.stringify(v)
+    );
+  }
+  return String(v);
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const DeliveryOrder: React.FC = () => {
@@ -694,6 +708,63 @@ const DeliveryOrder: React.FC = () => {
                 </span>
               </div>
 
+              {/* Order Origin (placed by / source) */}
+              {(selectedOrder.placed_by || selectedOrder.source || selectedOrder.order_origin || selectedOrder.placed_by_role || selectedOrder.placed_by_email) && (
+                <div className="da-modal-section">
+                  <h5 className="da-modal-section-title">Order Origin</h5>
+                  <div className="da-modal-info-grid">
+                    {selectedOrder.placed_by && (
+                      <div className="da-info-row">
+                        <IconUser size={13} />
+                                            <span>{renderValue(selectedOrder.placed_by)}</span>
+                      </div>
+                    )}
+                    {selectedOrder.placed_by_role && (
+                      <div className="da-info-row">
+                        <span className="da-origin-role">{selectedOrder.placed_by_role}</span>
+                      </div>
+                    )}
+                    {selectedOrder.placed_by_email && (
+                      <div className="da-info-row">
+                        <span>{selectedOrder.placed_by_email}</span>
+                      </div>
+                    )}
+                    {selectedOrder.source && (
+                      <div className="da-info-row">
+                        <span>Source: {selectedOrder.source}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Delivery schedule (expected date / time slot / area) */}
+              {(selectedOrder.expected_delivery_date || selectedOrder.time_slot || selectedOrder.delivery_area || selectedOrder.area) && (
+                <div className="da-modal-section">
+                  <h5 className="da-modal-section-title">Delivery Schedule</h5>
+                  <div className="da-modal-info-grid">
+                    {selectedOrder.expected_delivery_date && (
+                      <div className="da-info-row">
+                        <IconClock size={13} />
+                        <span>{fmtDate(selectedOrder.expected_delivery_date)}</span>
+                      </div>
+                    )}
+                    {selectedOrder.time_slot && (
+                      <div className="da-info-row">
+                        <IconClock size={13} />
+                        <span>{selectedOrder.time_slot}</span>
+                      </div>
+                    )}
+                    {(selectedOrder.delivery_area || selectedOrder.area) && (
+                      <div className="da-info-row">
+                        <IconMapPin size={13} />
+                                            <span>{renderValue(selectedOrder.delivery_area || selectedOrder.area)}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Payment */}
               {selectedOrder.payment_method && (
                 <div className="da-modal-section">
@@ -704,6 +775,9 @@ const DeliveryOrder: React.FC = () => {
                       <span className={`da-payment-chip chip-${(selectedOrder.payment_status || '').toLowerCase()}`}>
                         {selectedOrder.payment_status}
                       </span>
+                    )}
+                    {selectedOrder.currency && (
+                      <span className="da-currency-label">{selectedOrder.currency}</span>
                     )}
                   </div>
                 </div>
@@ -726,25 +800,70 @@ const DeliveryOrder: React.FC = () => {
                         <span>{selectedOrder.customer.phone_no}</span>
                       </div>
                     )}
+                    {selectedOrder.customer.email && (
+                      <div className="da-info-row">
+                        <span className="da-customer-email">{selectedOrder.customer.email}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {/* Delivery address */}
-              {selectedOrder.delivery_address && (
+              {/* Customer & Delivery Address (brief + expanded) */}
+              {selectedOrder.customer && (
                 <div className="da-modal-section">
-                  <h5 className="da-modal-section-title">Delivery Address</h5>
-                  <div className="da-info-row">
-                    <IconMapPin size={13} />
-                    <span>
-                      {selectedOrder.delivery_address.street && `${selectedOrder.delivery_address.street}, `}
-                      {selectedOrder.delivery_address.city}
-                      {selectedOrder.delivery_address.state ? `, ${selectedOrder.delivery_address.state}` : ''}
-                      {selectedOrder.delivery_address.pincode ? ` — ${selectedOrder.delivery_address.pincode}` : ''}
-                    </span>
+                  <h5 className="da-modal-section-title">Customer & Address</h5>
+                  <div className="da-modal-info-grid">
+                    <div className="da-info-row">
+                      <IconUser size={13} />
+                      <span>{renderValue(selectedOrder.customer.first_name || selectedOrder.customer.name || (selectedOrder.customer.first_name && selectedOrder.customer.last_name ? `${selectedOrder.customer.first_name} ${selectedOrder.customer.last_name}` : ''))}</span>
+                    </div>
+                    {selectedOrder.customer.phone_no && (
+                      <div className="da-info-row">
+                        <IconPhone size={13} />
+                        <span>{renderValue(selectedOrder.customer.phone_no)}</span>
+                      </div>
+                    )}
+                    {selectedOrder.customer.email && (
+                      <div className="da-info-row">
+                        <span className="da-customer-email">{renderValue(selectedOrder.customer.email)}</span>
+                      </div>
+                    )}
+
+                    {selectedOrder.delivery_address && (
+                      <div className="da-address-box">
+                        <strong className="da-address-label">Address:</strong>
+                        <div className="da-address-lines">
+                          {selectedOrder.delivery_address.building && (
+                            <div><span className="da-address-field">Building:</span> {renderValue(selectedOrder.delivery_address.building)}</div>
+                          )}
+                          {selectedOrder.delivery_address.block && (
+                            <div><span className="da-address-field">Block:</span> {renderValue(selectedOrder.delivery_address.block)}</div>
+                          )}
+                          {selectedOrder.delivery_address.avenue && (
+                            <div><span className="da-address-field">Avenue:</span> {renderValue(selectedOrder.delivery_address.avenue)}</div>
+                          )}
+                          {selectedOrder.delivery_address.street && (
+                            <div><span className="da-address-field">Street:</span> {renderValue(selectedOrder.delivery_address.street)}</div>
+                          )}
+                          {(selectedOrder.delivery_address.floor || selectedOrder.delivery_address.apt || selectedOrder.delivery_address.apartment) && (
+                            <div><span className="da-address-field">Floor/Apt:</span> {renderValue(selectedOrder.delivery_address.floor || selectedOrder.delivery_address.apt || selectedOrder.delivery_address.apartment)}</div>
+                          )}
+                          {selectedOrder.delivery_address.address_notes && (
+                            <div><span className="da-address-field">Address notes:</span> {renderValue(selectedOrder.delivery_address.address_notes)}</div>
+                          )}
+                          {/* Fallback short line if none of the above present */}
+                          {!selectedOrder.delivery_address.building && !selectedOrder.delivery_address.block && !selectedOrder.delivery_address.avenue && !selectedOrder.delivery_address.street && (
+                            <div>{renderValue(selectedOrder.delivery_address.city)}{selectedOrder.delivery_address.pincode ? ` — ${renderValue(selectedOrder.delivery_address.pincode)}` : ''}</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               )}
+
 
               {/* Assigned driver */}
               {selectedOrder.driver && (
@@ -806,11 +925,22 @@ const DeliveryOrder: React.FC = () => {
                     <div key={item.id || idx} className="da-modal-item-row">
                       <div className="da-modal-item-left">
                         <span className="da-modal-qty">×{item.quantity}</span>
-                        <div>
-                          <p className="da-modal-item-name">{item.product?.name || item.name}</p>
-                          {item.product?.description && (
-                            <p className="da-modal-item-desc">{item.product.description}</p>
+                        <div className="da-modal-item-with-thumb">
+                          {((item.product && (item.product.image || item.product.image_url)) || item.image) && (
+                            <div className="da-item-thumb">
+                              <img
+                                src={item.product?.image || item.product?.image_url || item.image}
+                                alt={item.product?.name || item.name}
+                                onError={(e: any) => { e.target.style.display = 'none'; }}
+                              />
+                            </div>
                           )}
+                          <div>
+                            <p className="da-modal-item-name">{item.product?.name || item.name}</p>
+                            {item.product?.description && (
+                              <p className="da-modal-item-desc">{item.product.description}</p>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <span className="da-modal-item-price">
@@ -850,6 +980,7 @@ const DeliveryOrder: React.FC = () => {
             </div>
 
             <div className="da-modal-footer">
+              <button className="da-modal-print" onClick={() => window.print()}>Print Receipt</button>
               <button className="da-modal-cancel" onClick={() => setModalOpen(false)}>Close</button>
               {renderActionBtn(selectedOrder, true)}
             </div>

@@ -107,6 +107,7 @@ interface Order {
   customCake?: CustomCakeDetails | null;
   isCustomCakeOrder: boolean;
 
+  deliveryMethod?: string;
   deliveryDate?: string;
   deliveryTimeSlot?: string;
 
@@ -189,6 +190,12 @@ function normalizeOrder(raw: any): Order {
     customer?.phone_no ?? customer?.phone ?? customer?.phone_number ?? raw?.customer_phone ?? '—';
   const customerEmail = customer?.email ?? raw?.customer_email ?? undefined;
 
+  const rawDeliveryMethod = raw?.delivery_method ?? raw?.deliveryMethod;
+  const deliveryMethodRaw = typeof rawDeliveryMethod === 'string'
+    ? rawDeliveryMethod.trim().toUpperCase()
+    : '';
+  const isPickupOrder = deliveryMethodRaw === 'PICKUP';
+
   const address = raw?.delivery_address ?? raw?.address ?? {};
   const addressJson = raw?.delivery_address_json ?? {};
   const addressParts = [
@@ -198,16 +205,21 @@ function normalizeOrder(raw: any): Order {
     address?.pincode ?? address?.zip_code ?? address?.postal_code,
     address?.country,
   ].filter(Boolean);
+  const rawDeliveryAddress = raw?.delivery_address;
   const deliveryAddress =
-    typeof raw?.delivery_address === 'string'
-      ? raw.delivery_address
+    isPickupOrder
+      ? (typeof rawDeliveryAddress === 'string' && rawDeliveryAddress.trim() !== ''
+          ? rawDeliveryAddress
+          : 'Pickup order')
+      : typeof rawDeliveryAddress === 'string'
+      ? rawDeliveryAddress
       : addressParts.length
       ? addressParts.join(', ')
       : (addressJson?.address_line1
           ? [addressJson.address_line1, addressJson.address_line2, addressJson.city, addressJson.state]
               .filter(Boolean).join(', ')
           : '—');
-
+ 
   const detailedAddress: DetailedAddress = {
     apartment: address?.apartment || undefined,
     avenue: address?.avenue || undefined,
@@ -291,9 +303,10 @@ function normalizeOrder(raw: any): Order {
     price:   customCakeRaw?.price != null ? Number(customCakeRaw.price) : undefined,
   } : null;
 
-  const deliveryDate     = raw?.delivery_date ?? undefined;
-  const deliveryTimeSlot = raw?.delivery_time_slot ?? undefined;
-
+  const deliveryDate     = raw?.delivery_date ?? raw?.pickup_date ?? undefined;
+  const deliveryTimeSlot = raw?.delivery_time_slot ?? raw?.pickup_time_slot ?? undefined;
+  const deliveryMethod   = deliveryMethodRaw || undefined;
+ 
   const greetingTo      = raw?.greeting_to ?? undefined;
   const greetingFrom    = raw?.greeting_from ?? undefined;
   const greetingMessage = raw?.greeting_message ?? undefined;
@@ -328,13 +341,14 @@ function normalizeOrder(raw: any): Order {
     createdByEmail,
     orderSource,
     isSalesAgentOrder,
-
+    deliveryMethod,
+ 
     customCake,
     isCustomCakeOrder,
-
+ 
     deliveryDate,
     deliveryTimeSlot,
-
+ 
     greetingTo,
     greetingFrom,
     greetingMessage,
@@ -700,10 +714,16 @@ const Salesagentorder: React.FC = () => {
             </div>
 
             <div className="sao-fd-section">
-              <h4><CalendarClock size={14} /> Delivery Schedule</h4>
+              <h4><CalendarClock size={14} /> {fullDetailsOrder.deliveryMethod === 'PICKUP' ? 'Pickup Schedule' : 'Delivery Schedule'}</h4>
               <div className="sao-fd-grid">
-                <div><span className="lbl">Expected date</span><span>{formatDate(fullDetailsOrder.deliveryDate)}</span></div>
-                <div><span className="lbl">Time slot</span><span>{fullDetailsOrder.deliveryTimeSlot ?? '—'}</span></div>
+                <div>
+                  <span className="lbl">{fullDetailsOrder.deliveryMethod === 'PICKUP' ? 'Pickup date' : 'Expected date'}</span>
+                  <span>{formatDate(fullDetailsOrder.deliveryDate)}</span>
+                </div>
+                <div>
+                  <span className="lbl">{fullDetailsOrder.deliveryMethod === 'PICKUP' ? 'Pickup time' : 'Time slot'}</span>
+                  <span>{fullDetailsOrder.deliveryTimeSlot ?? '—'}</span>
+                </div>
                 <div><span className="lbl">Area</span><span>{fullDetailsOrder.detailedAddress?.areaName ?? '—'}</span></div>
               </div>
             </div>

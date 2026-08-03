@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import './Wishlist.css';
 import { useCustomerAuth } from '@/src/context/CustomerAuthContext';
-import { useCurrency } from '../../context/CurrencyContext';
 import {
   getWishlist,
   deleteWishlistItem,
   WishlistItem,
 } from '../../services/whishlistService';
 import { addToCart } from '../../services/cartService';
+import { getProductById } from '../../services/productService';
 
 const Wishlist: React.FC = () => {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
@@ -18,7 +18,9 @@ const Wishlist: React.FC = () => {
   const [isAddingAll, setIsAddingAll] = useState(false);
   const [addingItemId, setAddingItemId] = useState<number | null>(null);
   const { customer, isLoggedIn } = useCustomerAuth();
-  const { currency, setCurrency } = useCurrency();
+  const [currency, setCurrency] = useState(
+    localStorage.getItem('currency') || 'KWD'
+  );
 
   const currencySymbol = {
     INR: '₹',
@@ -40,7 +42,7 @@ const Wishlist: React.FC = () => {
     }
   };
 
-  const currentUserId = Number(customer?.id ?? getUserId() ?? 0) || null;
+  const currentUserId = customer?.id || getUserId();
 
   // --- Fetch Wishlist ---
   useEffect(() => {
@@ -70,6 +72,21 @@ const Wishlist: React.FC = () => {
     fetchWishlist();
   }, [currentUserId, currency]);
 
+  useEffect(() => {
+    const updateCurrency = () => {
+      setCurrency(localStorage.getItem('currency') || 'KWD');
+    };
+
+    updateCurrency();
+
+    window.addEventListener('storage', updateCurrency);
+    window.addEventListener('currencyChanged', updateCurrency);
+
+    return () => {
+      window.removeEventListener('storage', updateCurrency);
+      window.removeEventListener('currencyChanged', updateCurrency);
+    };
+  }, []);
 
   // --- Remove Item Helper ---
   const removeFromWishlist = async (wishlistDbId: number) => {
@@ -94,7 +111,26 @@ const Wishlist: React.FC = () => {
 
     setAddingItemId(item.id);
     try {
-      await addToCart(currentUserId as number, item.product_id, 1);
+      // Fetch product details to determine default variant / flavor so backend receives same context
+      let variantId: number | null = null;
+      let flavorId: number | null = null;
+      let shape: string | null = null;
+      let addonsArr: any[] = [];
+
+      try {
+        const prod = await getProductById(item.product_id);
+        const activeVariants = (prod.variants || []).filter((v: any) => v.is_active);
+        if (activeVariants.length > 0) {
+          variantId = activeVariants[0].id;
+          const activeFlavors = (activeVariants[0].flavors || []).filter((f: any) => f.is_active);
+          if (activeFlavors.length > 0) flavorId = activeFlavors[0].id;
+        }
+      } catch (err) {
+        // If fetch fails, continue and call addToCart without variant/flavor
+        console.warn('Could not fetch product for wishlist item, proceeding without variant:', err);
+      }
+
+      await addToCart(currentUserId, item.product_id, 1, variantId, flavorId, shape, addonsArr);
       toast.success(`${item.product_name} added to cart`);
       await removeFromWishlist(item.id);
     } catch (error: any) {
@@ -120,11 +156,29 @@ const Wishlist: React.FC = () => {
 
     // Use allSettled so one failed item doesn't block the rest
     const results = await Promise.allSettled(
-      wishlistItems.map(item =>
-        addToCart(currentUserId as number, item.product_id, 1).then(() =>
-          removeFromWishlist(item.id).then(() => item.id)
-        )
-      )
+      wishlistItems.map(async (item) => {
+        // For each wishlist item fetch product details to pass variant/flavor context
+        let variantId: number | null = null;
+        let flavorId: number | null = null;
+        let shape: string | null = null;
+        let addonsArr: any[] = [];
+
+        try {
+          const prod = await getProductById(item.product_id);
+          const activeVariants = (prod.variants || []).filter((v: any) => v.is_active);
+          if (activeVariants.length > 0) {
+            variantId = activeVariants[0].id;
+            const activeFlavors = (activeVariants[0].flavors || []).filter((f: any) => f.is_active);
+            if (activeFlavors.length > 0) flavorId = activeFlavors[0].id;
+          }
+        } catch (err) {
+          console.warn('Could not fetch product for wishlist item, adding without variant:', err);
+        }
+
+        await addToCart(currentUserId, item.product_id, 1, variantId, flavorId, shape, addonsArr);
+        await removeFromWishlist(item.id);
+        return item.id;
+      })
     );
 
     const succeededIds = results

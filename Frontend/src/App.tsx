@@ -44,7 +44,15 @@ import SalesAgentOrders from './salesagent/salesagentorder/Salesagentorder';
 import Promocode from './pages/Promocode/Promocode';
 import SalesAgentCreateOrder from './salesagent/salesagentorder/Salesagentcreateorder';
 import Cookies from './components/CookieConsent/Cookies';
-import { CurrencyProvider } from './context/CurrencyContext';
+import AgentManagement from './agent/AgentManagement';
+import AgentMenuManagement from './agent/Agentmenumanagement';
+import AgentProduct from './agent/AgentProduct';
+import AgentOrder from './agent/AgentOrder';
+import Agentfetchorder from './agent/Agentfetchorder';
+import AgentDashboard from './agent/Agentdashboard';
+import AgentPayment from './agent/Agentpayment';
+import BlogManagement from './admin/Blog/BlogManagement';
+import UserBlog from './pages/Blog/Userblog';
 
 
 // Lazy load pages
@@ -129,6 +137,8 @@ const AppContent: React.FC = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/agentproduct" element={<AgentProduct/>}/>
+           
              
             <Route path="/retailerorder" element={<Retailerorder />} />
             <Route path="/coupon-user-points" element={<Userpoint/>} />
@@ -138,6 +148,7 @@ const AppContent: React.FC = () => {
             <Route path="/payment-cancel" element={<h2>Payment Cancelled</h2>}/>
             <Route path="/coupon-user" element={<Coupon/>}/>
             <Route path="/promo" element={<Promocode  />} />
+            <Route path="/userblog" element={<UserBlog/>}/>
               
             <Route path="/cookies" element={<Cookies/>}/>
             {/* Admin Routes wrapped in AdminProtectedRoute Layout wrapper */}
@@ -167,6 +178,13 @@ const AppContent: React.FC = () => {
                 <Route path="salesdash" element={<SalesAgentDashboard/>}/>
                 <Route path="salesorder" element={<SalesAgentOrders/>}/>
                 <Route path="salescreateorder" element={<SalesAgentCreateOrder/>}/>
+                <Route path="agentmanagement" element={<AgentManagement/>}/> 
+                <Route path="agentmenu" element={<AgentMenuManagement/>}/>
+                 <Route path="agentorder" element={<AgentOrder/>}/>
+                 <Route path="agentfetchorder" element={<Agentfetchorder/>}/>
+                 <Route path="agentdashboard" element={<AgentDashboard/>}/>
+                 <Route path="agentpayment" element={<AgentPayment/>}/>
+                 <Route path="blog" element={<BlogManagement/>}/>
               </Route>
             {/* </Route> */}
 
@@ -206,9 +224,7 @@ function App() {
     <Router>
       <CustomerAuthProvider>
         <CartProvider>
-          <CurrencyProvider>
-            <AppContent />
-          </CurrencyProvider>
+          <AppContent />
         </CartProvider>
       </CustomerAuthProvider>
     </Router>

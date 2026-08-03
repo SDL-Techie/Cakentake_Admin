@@ -72,7 +72,11 @@ interface CartItem {
   product_id?: string | number;
   name: string;
   image_url?: string;
+  // `price` is the unit price that will actually be charged (discounted if available)
   price: number;
+  // Preserve original and discounted unit prices when a promotion applies
+  original_price?: number | null;
+  discounted_price?: number | null;
   quantity: number;
   variant_name?: string;
   variant_id?: number;
@@ -737,18 +741,36 @@ const Checkout: React.FC = () => {
   const userPhone: string = user?.phone_no || user?.phone || '';
   const userCurrency = localStorage.getItem('currency') || 'AED';
 
-  const normalizeItem = (item: any): CartItem => ({
-    _id: String(item.product_id || item.id || item._id),
-    product_id: item.product_id || item.id || item._id,
-    name: item.name || item.product?.name || '',
-    image_url: item.image_url || item.product?.image_url || 'https://via.placeholder.com/80',
-    price: Number(item.price || item.product?.price || 0),
-    quantity: Number(item.quantity || 1),
-    variant_name: item.variant_name || item.variant || '',
-    variant_id: item.variant_id,
-    flavor_name: item.flavor_name || item.flavor || '',
-    flavor_id: item.flavor_id,
-  });
+  const normalizeItem = (item: any): CartItem => {
+    const orig = Number(
+      item.original_price ??
+      item.product?.price ??
+      item.price ??
+      0
+    );
+
+    // Support a variety of possible names for discounted price from different sources
+    const discRaw = item.discounted_price ?? item.product?.discounted_price ?? item.discount_price ?? item.discount ?? null;
+    const disc = discRaw != null ? Number(discRaw) : null;
+
+    const charged = disc != null ? disc : orig;
+
+    return {
+      _id: String(item.product_id || item.id || item._id),
+      product_id: item.product_id || item.id || item._id,
+      name: item.name || item.product?.name || '',
+      image_url: item.image_url || item.product?.image_url || 'https://via.placeholder.com/80',
+      // `price` is the effective unit price (discounted if available)
+      price: Number(charged),
+      original_price: Number(orig),
+      discounted_price: disc != null ? Number(disc) : null,
+      quantity: Number(item.quantity || 1),
+      variant_name: item.variant_name || item.variant || '',
+      variant_id: item.variant_id,
+      flavor_name: item.flavor_name || item.flavor || '',
+      flavor_id: item.flavor_id,
+    };
+  };
 
   const resolveItems = (): CartItem[] => {
     if (location.state?.items?.length > 0)
@@ -808,10 +830,10 @@ const Checkout: React.FC = () => {
     setToast({ show: true, msg, type });
   }, []);
 
-  const itemSubtotalFor = (item: CartItem) => item.price * item.quantity;
+  const itemSubtotalFor = (item: CartItem) => Math.round(item.price * item.quantity * 100) / 100;
 
   const subtotal = useMemo(
-    () => items.reduce((s, i) => s + itemSubtotalFor(i), 0),
+    () => Math.round(items.reduce((s, i) => s + itemSubtotalFor(i), 0) * 100) / 100,
     [items]
   );
 
@@ -1130,6 +1152,11 @@ const Checkout: React.FC = () => {
     items.map((item, idx) => ({
       product_id: Number(item.product_id || item.id),
       quantity: item.quantity,
+      // send both original and charged (discounted) unit prices and the line total
+      price: item.price,
+      original_price: item.original_price ?? null,
+      discounted_price: item.discounted_price ?? null,
+      total: Math.round(item.price * item.quantity * 100) / 100,
       custom_json: {
         variant_name: item.variant_name || null,
         variant_id: item.variant_id || null,
@@ -1513,7 +1540,7 @@ const Checkout: React.FC = () => {
                 </div>
 
                 {/* Greeting message (optional) */}
-                <div className="ch-card">
+                {/* <div className="ch-card">
                   <div className="ch-card-hdr">
                     <span className="ch-card-icon"><MessageCircle size={14} /></span>
                     <h3>Greeting Message</h3>
@@ -1565,7 +1592,7 @@ const Checkout: React.FC = () => {
                       </div>
                     </motion.div>
                   )}
-                </div>
+                </div> */}
 
                 <motion.button
                   className={`ch-primary-btn ${!canProceed ? 'ch-btn-dim' : ''}`}
@@ -1626,6 +1653,62 @@ const Checkout: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+
+                
+                {/* Greeting message (optional) */}
+                <div className="ch-card">
+                  <div className="ch-card-hdr">
+                    <span className="ch-card-icon"><MessageCircle size={14} /></span>
+                    <h3>Greeting Message</h3>
+                    <span className="ch-optional">(optional)</span>
+                    <button
+                      className="ch-toggle-btn"
+                      onClick={() => setShowGreeting(v => !v)}
+                    >
+                      {showGreeting ? 'Hide' : 'Add Message'}
+                    </button>
+                  </div>
+
+                  {showGreeting && (
+                    <motion.div
+                      className="ch-greeting-wrap"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <div className="ch-field">
+                        <label className="ch-label">Message</label>
+                        <textarea
+                          className="ch-textarea"
+                          rows={2}
+                          placeholder="e.g. Happy Birthday! Wishing you all the best…"
+                          value={greeting.message}
+                          onChange={e => setGreeting(g => ({ ...g, message: e.target.value }))}
+                        />
+                      </div>
+                      <div className="ch-two-col">
+                        <div className="ch-field">
+                          <label className="ch-label">From</label>
+                          <input
+                            className="ch-input"
+                            placeholder="Your name"
+                            value={greeting.from}
+                            onChange={e => setGreeting(g => ({ ...g, from: e.target.value }))}
+                          />
+                        </div>
+                        <div className="ch-field">
+                          <label className="ch-label">To</label>
+                          <input
+                            className="ch-input"
+                            placeholder="Recipient's name"
+                            value={greeting.to}
+                            onChange={e => setGreeting(g => ({ ...g, to: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
 
                 {/* Payment method — Cash + UPI link only. No payment gateway. */}
@@ -1840,7 +1923,18 @@ const Checkout: React.FC = () => {
                         </div>
                       )}
 
-                      <p className="ch-item-unit-price">{formatAmt(item.price, userCurrency)} each</p>
+                      {item.original_price != null && item.original_price > item.price ? (
+                        <div>
+                          <p className="ch-item-price-original" style={{ textDecoration: 'line-through', color: '#a59' }}>
+                            {formatAmt(item.original_price, userCurrency)}
+                          </p>
+                          <p className="ch-item-unit-price" style={{ fontWeight: 700 }}>
+                            {formatAmt(item.price, userCurrency)} each
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="ch-item-unit-price">{formatAmt(item.price, userCurrency)} each</p>
+                      ) }
                       <div className="ch-qty-ctrl">
                         <motion.button onClick={() => updateQty(idx, item.quantity - 1)} whileTap={{ scale: 0.85 }}>−</motion.button>
                         <span>{item.quantity}</span>

@@ -502,7 +502,8 @@ useEffect(() => {
                 <thead>
                   <tr>
                     {mode === 'create' && <th></th>}
-                    <th>Order #</th><th>Customer</th><th>Amount</th>
+                    <th>Order #</th><th>Customer</th>
+                    {/* <th>Amount</th> */}
                     {/* <th>Delivery Charge</th> */}
                     <th>Delivery Date</th>
                     {/* <th>Address</th> */}
@@ -518,7 +519,7 @@ useEffect(() => {
                       )}
                       <td className="ds-mono">{o.order_number}</td>
                       <td>{custName(o)}</td>
-                      <td>{money(orderAmount(o))}</td>
+                      {/* <td>{money(orderAmount(o))}</td> */}
                       {/* <td>{money(o.delivery_charge)}</td> */}
                       <td>{fmtDate(o.delivery_date)}</td>
                       {/* <td className="ds-addr-cell">{o.deliveryAddress}</td> */}

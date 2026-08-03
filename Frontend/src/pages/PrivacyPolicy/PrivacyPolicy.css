@@ -9,13 +9,13 @@
 .pp-root {
   font-family: 'Inter', sans-serif;
   background-color: #ffffff;
-  color: #3a2030;
+  color: #2B3324;
   min-height: 100vh;
 }
 
 /* === Hero === */
 .pp-hero {
-  background: linear-gradient(135deg, #B95E82 0%, #7a3655 60%, #4a1f35 100%);
+  background: linear-gradient(135deg, #8FAF6E 0%, #6F8E57 30%, #526A45 65%, #314631 100%);
   color: #ffffff;
   padding: 80px 48px 64px;
   text-align: center;
@@ -74,7 +74,7 @@
 .pp-hero-subtitle {
   font-size: 1.05rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.85);
   max-width: 480px;
   margin: 0 auto 24px;
   line-height: 1.6;
@@ -84,7 +84,7 @@
 
 .pp-hero-meta {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.65);
   letter-spacing: 0.04em;
   position: relative;
   z-index: 1;
@@ -105,17 +105,17 @@
 /* === Single Card === */
 .pp-card {
   background: #ffffff;
-  border: 1px solid #e8ccd8;
+  border: 1px solid #E3DBB0;
   border-radius: 16px;
   padding: 40px 40px 8px;
-  box-shadow: 0 4px 24px rgba(185, 94, 130, 0.08);
+  box-shadow: 0 4px 24px rgba(111, 142, 87, 0.1);
 }
 
 /* === Sections === */
 .pp-section {
   margin-bottom: 32px;
   padding-bottom: 32px;
-  border-bottom: 1px solid #e8ccd8;
+  border-bottom: 1px solid #E3DBB0;
 }
 
 .pp-section--last {
@@ -128,24 +128,24 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
   font-weight: 700;
-  color: #7a3655;
+  color: #526A45;
   margin-bottom: 14px;
   padding-left: 16px;
-  border-left: 3px solid #B95E82;
+  border-left: 3px solid #6F8E57;
   line-height: 1.3;
 }
 
 .pp-section-body p {
   font-size: 0.95rem;
   line-height: 1.8;
-  color: #3a2030;
+  color: #2B3324;
   font-weight: 400;
 }
 
 /* === Footer === */
 .pp-footer {
-  background: #4a1f35;
-  color: rgba(255, 255, 255, 0.55);
+  background: #314631;
+  color: rgba(255, 255, 255, 0.6);
   text-align: center;
   padding: 28px 24px;
   font-size: 0.8rem;

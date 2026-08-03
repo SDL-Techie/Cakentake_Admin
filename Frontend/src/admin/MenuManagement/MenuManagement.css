@@ -186,6 +186,16 @@
   justify-content: center;
   cursor: pointer;
 }
+/* Ensure lucide/react SVGs inherit color and render stroke */
+.mm-modal-close svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  color: inherit;
+}
 .mm-modal-close:hover { background: var(--mm-error-bg); color: var(--mm-error); }
 .mm-modal-body { padding: 20px 22px; }
 
